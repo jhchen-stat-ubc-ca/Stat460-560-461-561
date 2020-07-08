@@ -1,0 +1,699 @@
+\chapter{Normal distributions}
+
+Let $X$ be a random variable. Namely, it is a function on a probability
+space ($\Omega, \bbB, P$). Its randomness is inherited from probability
+measure $P$. By definition of random variable, 
+\[
+\{ X \leq t\} = \{ \omega: \omega \in \Omega, X(\omega) \leq t\}
+\]
+is a member of $\bbB$ for any real value $t$.
+Hence, there is a definitive value
+\[
+F_{\mbox{\sc x}}(t) = P( \{ X \leq t\})
+\]
+for any $t \in {\cal F}$. We refer $F_{\sc x}(t)$ as the cumulative
+distribution function (\cdf\ ) of $X$. Often, we omit the subscript and write
+it as $F(t)$. Note $t$ itself is a dummy variable so it does not carry
+any specific meaning other than it stands for a real number.
+In most practices, we use $F(x)$ for the \cdf\ of $X$.
+This can lead to confusion: Once $F(x)$ is used as \cdf\ of $X$,
+$F(y)$ remains the \cdf\ of $X$, not necessarily that of 
+another random variable called $Y$.
+
+The \cdf\ of a random variable largely determines it randomness properties.
+This is the basis of forming distribution families: distributions whose \cdf\
+having a specific algebraic form. 
+Of course, there are often physical causes behind the algebraic form.
+For instance, success-failure experiment is behind the binomial distribution family.
+
+
+Uni- and Multi-variate normal distribution families occupy a special
+space in the classical mathematical statistics. We provide a quick review
+as follows.
+
+
+\section{Uni- and Multivariate normal}
+
+A random variable has standard normal
+distribution if its density function is given by
+\[
+\phi(x) = \frac{1}{\sqrt{2\pi}} \exp( - \frac{1}{2} x^2 ).
+\]
+We generally use
+\[
+\Phi(x) = \int_{-\infty}^x \phi(t) dt
+\]
+to denote the corresponding \cdf. 
+If $X$ has probability density function
+\[
+\phi(x; \mu, \sigma)
+ = \sigma^{-1}  \phi( \frac{x - \mu}{\sigma})
+=
+\frac{1}{\sqrt{2\pi}\sigma } \exp( - \frac{1}{2\sigma^2} x^2 )
+\]
+then it has normal distribution with mean $\mu$ and variance
+$\sigma^2$.
+We use $\Phi(x; \mu, \sigma)$ to denote the corresponding \cdf
+
+If $Z$ has standard normal distribution, then $X = \sigma Z + \mu$ has
+normal distribution with parameters ($\mu, \sigma^2$) which
+represent mean and variance.
+The moment generating function of $X$ is given by
+\[
+M_{\sc x} (t) = \exp( \mu t + \frac{1}{2} \sigma^2 t^2 )
+\]
+which exists for all $t \in {\cal R}$.
+The moment of the standard normal $Z$ are:
+$\bbE(Z) = 0$, $\bbE(Z^2) =1$, $\bbE(Z^3) = 0$ and $\bbE(Z^4) = 3$.
+
+Why is {\bf the normal distribution} normal?
+The {\bf central} limit theorem tells us that
+if $X_1, X_2, \ldots, X_n, \ldots$ is a sequence
+of \iid random variables with $E(X) = 0$ and
+$\var(X) =1$, then
+\[
+P( n^{-1/2} \sum_{i=1}^n X_i \leq x) 
+\to \int_{-\infty}^x \phi(t) dt
+\]
+for all $x$, where $\phi(t)$ is the density function
+of the standard normal distribution (normal with mean 0
+and variance 1).
+
+Recall that many distributions we investigated can be
+viewed as distributions of sum of \iid random variables,
+hence, when properly scaled as in the central limit theorem, 
+their distributions are well approximated by normal. 
+These examples include: binomial, Poisson, Negative binomial, Gamma.
+
+In general, if the outcome of a random quantity is
+influenced by numerous factors and none of them play
+a determining role, then the sum of their effects is
+normally distributed. This reasoning is used to support
+the normality assumption on our ``height'' distribution,
+even though none of us ever had a negative height.
+
+\vspace{1em}
+\noindent
+{\bf Multivariate normal}.
+Let the vector
+${\bZ}=\{Z_1, Z_2, \ldots, Z_d\}'$ consist of independent, 
+standard normally distributed components. 
+Their joint density function is given by
+\[
+f(\bz)
+=
+\{ 2\pi\}^{-d/2} \exp \{ - \frac{1}{2} \bz^\tau \bz \}
+=
+\{ 2\pi\}^{-d/2} \exp \{ - \frac{1}{2} \sum_{j=1}^d z_i^2\}.
+\]
+Easily, we have
+$\bbE({\bZ}) ={\bf 0}$ and $\var(\bZ) = \bbI_d$, the identity matrix.
+The moment generating function of $\bZ$ (joint one) is given by
+\[
+M_z(\bt) = \exp \{ \frac{1}{2} \bt^\tau \bt\}
+\]
+which is in vector form.
+
+Let $\bB$ be a matrix of size $m \times d$ and $\bmu$ be a vector of
+length $m$. 
+Then
+\[
+\bX = \bB\bZ + \bmu
+\]
+is multivariate normally distributed with
+\[
+\bbE(\bX) = \bmu, ~~\var(\bX) = \bB\bB^\tau.
+\]
+We will use notation $\bSigma = \bB\bB^\tau$.
+It is seen that if $\bX$ is multivariate normally
+distributed, $N(\bmu, \bSigma)$, then its linear function,
+$\bY = \bA\bX + \bb$ is also multivariate normally distributed:
+$N(\bA \bmu + \bb, \bA \bSigma \bA^\tau)$.
+
+
+Note this claim does not require $\bSigma$ nor $\bA$ to have
+full rank. It also implies all marginal distributions of a
+multivariate normal random vector is normally distributed.
+The inverse is not completely true: if all marginal
+distributions of a random vector are normal, the
+random vector does not necessarily have multivariate
+normal distribution. However, if {\bf all} linear
+combinations of $\bX$ has normal distribution, then
+the random vector $\bX$ has multivariate normal
+distribution.
+
+When $\bSigma$ has full rank, then $N(\bmu, \bSigma)$
+has a density function given by
+\[
+\phi(\bx; \bmu, \bSigma)
+=
+(2\pi)^{-d/2} \{\det(\bSigma)\}^{-1/2}
+\exp \{ - \frac{1}{2} (\bx - \bmu)^\tau \bSigma^{-1} (\bx - \bmu) \}
+\]
+where $\det(\cdot)$ is the determinant of a matrix.
+We use $\Phi(\bx; \bmu, \bSigma)$ for the multivariate
+\cdf.
+
+\vs
+\noindent
+{\bf Partition of $\bX$}.
+Assume that a multivariate normal random vector is partitioned
+into two parts: $\bX^\tau = (\bX_1^\tau, \bX_2^\tau)$. 
+The mean vector, covariance matrix can be partitioned accordingly.
+In particular, we denote the partition of the mean vector
+as $\bmu^\tau = (\bmu_1^\tau, \bmu_2^\tau)$
+and the covariance matrix as
+\[
+\bSigma =
+\left (
+\begin{array}{cc}
+\bSigma_{11} & \bSigma_{12} \\
+\bSigma_{21} & \bSigma_{22}
+\end{array}
+\right ).
+\]
+
+\begin{theorem}
+Suppose
+$\bX^\tau = (\bX_1^\tau, \bX_2^\tau)$ is multivariate normal,
+$N(\bmu, \bSigma)$.
+Then
+
+(1) $\bX_1$ is multivariate $N(\bmu_1, \bSigma_{11})$.
+
+(2) $\bX_1$ and $\bX_2$ are independent if and only if $\bSigma_{12} = 0$.
+
+(3) Assume $\bSigma_{22}$ has full rank.
+Then the conditional distribution of $\bX_1 | \bX_2$ is normal with conditional mean
+$\bmu_1 + \bSigma_{12} \bSigma_{22}^{-1}(\bX_2 - \bmu_2)$
+and variance matrix
+$\bSigma_{11} - \bSigma_{12}\bSigma_{22}^{-1}\bSigma_{21}$.
+
+\end{theorem}
+
+That is, for multivariate normal random variables, 
+zero-correlation is equivalent to independence.
+The above result for conditional distribution is given
+when $\bSigma_{22}$ has full rank. 
+The situation where $\bSigma_{22}$ does not have full rank 
+can be worked out by removing the redundancy in $\bX_2$
+before applying the above result.
+
+\section{Standard Chi-square distribution}
+
+We first fix the idea with a definition.
+
+\begin{defi}
+Let $Z_1, Z_2, \ldots, Z_d$ be a set of \iid\ standard normally
+distributed random variables. The sum of squares
+\[
+T = Z_1^2 + Z_2^2 + \cdots + Z_d^2
+\]
+is said to have chi-square distribution with $d$ degrees of
+freedom.
+\end{defi}
+
+For convenience of future discussion, we first put down
+a simple result without a proof here.
+
+\begin{theorem}
+Let $Z_1, Z_2, \ldots, Z_d$ be a set of \iid\ standard normally
+distributed random variables. The sum of squares
+\[
+T = a_1 Z_1^2 + a_2 Z_2^2 + \cdots + a_d Z_d^2
+\]
+has chi-square distribution if and only if $a_1, \ldots, a_d$
+are either 0 or 1.
+\end{theorem}
+
+We use notation $\chi_d^2$ as a symbol of the chi-square
+distribution with $d$ degrees of freedom.
+The above definition is how we understand the chi-square distribution.
+Yet without seeing its probability density function and so on,
+we may only have superficial understanding
+
+To obtain the density function of $T$, we may work on the
+density function of $Z_1^2$ first. It is seen that
+\[
+P( Z_1^2 \leq x) = P( -\sqrt{x} \leq Z_1 \leq \sqrt{x} ).
+= \int_{-\sqrt{x}}^{\sqrt{x}} \phi(t) dt
+\]
+Hence, by taking derivative with respect to $x$, we
+get its pdf as
+\[
+f_{Z^2_1} (x) 
+= 
+\frac{1}{2\sqrt{\pi}} \left ( \frac{x}{2}\right )^{1/2 - 1} \exp( - \frac{x}{2} ).
+\]
+This is the density function of
+a specific Gamma distribution with $1/2$ degrees of
+freedom and scale parameter $2$.
+Because of this and from the property of Gamma distribution,
+we conclude that $T$ has Gamma distribution with $d/2$ degrees of
+freedom, and scale parameter $2$.
+Its \pdf\ is given by
+\[
+f_{T} (x) 
+= 
+\frac{1}{2\Gamma(d/2)} 
+\left ( \frac{x}{2}\right )^{d/2 - 1} \exp( - \frac{x}{2} ).
+\]
+Its moment generating function can also be obtained
+easily:
+\[
+M_T(t)
+=
+\left (\frac{ 1}{ 1 - 2t}\right )^{d/2}.
+\]
+Note that this function is defined only for $t < 1/2$.
+The mean of $T$ is $d$, and its variance is $2d$.
+
+Clearly, if $\bX$ is $N(\bmu, \bSigma)$ of length $d$ and that $\bSigma$
+has full rank, then $\bW = (\bX - \bmu)^\tau \bSigma^{-1} (\bX - \bmu)$ 
+has chi-square distribution with $d$ degrees of freedom.
+The cumulative distribution function of standard chi-square distribution
+with (virtually) any degrees of freedom has been well investigated.
+There used to be detailed numerical tables for their quantiles and so on.
+We have easy-to-use R functions these days. Hence, whenever
+a statistic is found to have a chi-square distribution, we consider
+its distribution is {\bf known}.
+
+
+If $\bA$ is a symmetric matrix such that $\bA\bA = \bA$,
+we say that it is idempotent. 
+In this case, the distribution of $\bZ^\tau\bA\bZ$ is
+chisquare distribution with
+degrees of freedom equaling the trace of $\bA$
+when $\bZ$ is $N(0, \bbI)$.
+
+\section{Non-central chi-square distribution}
+We again first fix the idea with a definition.
+
+\begin{defi}
+Let $Z_1, Z_2, \ldots, Z_d$ be a set of \iid\ standard normally
+distributed random variables. The sum of squares
+\[
+T = (Z_1 + \gamma)^2 + Z_2^2 + \cdots + Z_d^2
+\]
+is said to have non-central chi-square distribution with $d$ degrees of
+freedom and non-centrality parameter $\gamma^2$.
+\end{defi}
+
+Let
+\[
+T' = (Z_1 - \gamma)^2 + Z_2^2 + \cdots + Z_d^2
+\]
+with the same $\gamma$ as in the definition. The distribution
+of $T'$ is the same as the distribution of $T$.
+This can be proved as follows. Let $W_1 = - Z_1$ and $W_j = Z_j$
+for $j=2, \ldots, d$. Clearly, 
+\[
+T' = (W_1 + \gamma)^2 + W_2^2 + \cdots + W_d^2
+\]
+and $W_1, W_2, \ldots, W_d$ remain \iid standard normally
+distributed. Hence, $T$ and $T'$ must have the
+same distribution. However, $T \neq T'$ when they
+are regarded as random variables on the same probability
+space.
+
+The second remark is about the stochastic order of two distributions.
+Without loss of generality, $\gamma > 0$.
+When $d=1$, and for any $x > 0$, we find
+\[
+P\{ (Z_1 + \gamma)^2 \geq x^2 \}
+= 1 - \Phi( x - \gamma) + \Phi(- x - \gamma).
+\]
+Taking derivative with respect to $\gamma$, we get
+\[
+\phi(x - \gamma) - \phi(- x - \gamma) 
+=
+\phi(x - \gamma) - \phi( x + \gamma) 
+> 0.
+\]
+That is, the above probability increases with $\gamma$
+over the range of $\gamma > 0$.
+That is, $(Z_1 + \gamma)^2$ is always more likely to
+take larger values than $Z_1^2$ does.
+
+For convenience, let $\chi_d^2$ and $\chi_d^2(\gamma^2)$
+be two random variables with respectively central and non-central
+chi-square distributions with the same degrees of freedom $d$.
+We can show that for any $x$,
+\[
+P\{ \chi_d^2(\gamma^2) \geq x^2\}
+\geq
+P\{ \chi_d^2 \geq x^2\}.
+\]
+This proof of this result will be left as an exercise.
+
+In data analysis, a statistic or random quantity $T$ often has
+central chisquare distribution under one model assumption, say $A$, 
+but non-central chisquare distribution under another model assumption,
+say $B$.
+Which model assumption is better supported by the data?
+Due to the above result, a large observed value of $T$
+is supportive of $B$ while a small observed value of $T$ is supportive
+of $A$. This provides a basis for hypothesis test.
+We set up a threshold value for $T$ so that we
+accept $B$ when the observed value of $T$ exceeds
+this value. 
+
+Let $\bX$ be multivariate normal $N(\bmu, \bbI_d)$. Then
+$\bX^\tau \bX$ has non-central chisquare distribution
+with non-centrality parameter $\bmu^\tau \bmu$.
+This can be proved as follow. Without loss of generality,
+assume $\bmu \neq 0$. Let $\bA$ be an orthogonal
+matrix so that its first row equals $\bmu/\|\bmu\|$.
+Let
+\[
+\bY = \bA \bX.
+\]
+Write $\bY^\tau = (Y_1, Y_2, \ldots, Y_d)$. Then
+$Y_1'=Y_1 - \|\bmu\|, Y_2, \ldots, Y_d$ are \iid standard normal random
+variables. Hence,
+\[
+\bX^\tau \bX = \bY^\tau \bY
+=
+(Y'_1+\|\bmu\|)^2 + Y_2^2 + \cdots + Y_d^2
+\]
+has non-central chi-square distribution with
+non-centrality parameter $\bmu^\tau \bmu$.
+
+As an exercise, please show that
+if $\bX$ is multivariate normal $N(\bmu, \bSigma)$,
+then
+\[
+\bQ = \bX \bSigma^{-1} \bX
+\]
+has non-central chi-square distribution with
+non-centrality parameter $\gamma^2 = \bmu^\tau \bSigma^{-1} \bmu$.
+
+It can be verified that
+\[
+\bbE (\bQ) = d + \gamma^2; ~~ \var(\bQ) = 2(d + 2 \gamma^2).
+\]
+
+When $\Sigma = \sigma^2 \bbI_d$, then
+$\bX^\tau \bX$ has non-central chi-square distribution
+with $d$ degrees of freedom and non-centrality parameter
+$\gamma^2 = \|\bmu\|^2$.
+
+Suppose $\bW_1$ and $\bW_2$ are two independent
+non-central chi-square distributed random variables
+with $d_1$ and $d_2$ degrees of freedome,
+and non-centrality parameters $\gamma_1^2$ and $\gamma_2^2$.
+Then $\bW_1 + \bW_2$ is also non-central chi-square distributed
+and its degree of freedom is $d_1 + d_2$ and
+non-centrality parameters $\gamma_1^2+\gamma_2^2$.
+
+\section{Cochran Theorem}
+
+We first look into a simple case.
+
+\begin{theorem}
+Suppose $\bX$ is $N(0, \bbI_d)$ and that
+\[
+\bX^\tau \bX = \bX^\tau \bA \bX + \bX^\tau \bB \bX
+= \bQ_A + \bQ_B
+\]
+such that both $\bA$ and $\bB$ are symmetric with
+ranks $a$ and $b$ respectively.
+
+If $a+b = d$, then $\bQ_A$ and $\bQ_B$ are independent
+and have $\chi_a^2$ and $\chi_b^2$ distributions.
+\end{theorem}
+
+\vs\no
+{\bf Proof:}
+By standard linear algebra result, there exists an orthogonal
+matrix $\bR$ and diagonal matrix $\bLambda$ such that
+\[
+\bA = \bR^\tau \bLambda \bR.
+\]
+This implies
+\[
+\bB = \bbI_d - \bA = \bR^\tau (\bbI_d - \bLambda) \bR
+\]
+in which $(\bbI_d - \bLambda)$ is also diagonal.
+
+The rank of $\bA$ equals the number of non-zero entries of
+$\bLambda$ and that of $\bB$ is the number of entries
+of $\bLambda$ not equalling 1. Since $a+b = d$, this 
+necessitates all entries of $\bLambda$ are either 0
+or 1. Without loss of generality, $\bLambda = \diag (1, \cdots, 1, 0, \ldots, 0)$.
+
+Note that orthogonal transformation $\bY = \bR \bX$ 
+makes entries of $\bY$ \iid standard normal. Therefore,
+\[
+\bQ_A = \bY^\tau \bLambda \bY = Y_1^2 + \cdots + Y_a^2
+\]
+which has $\chi_a^2$ distribution. Similarly,
+\[
+\bQ_B = \bY^\tau (\bbI_d - \bLambda) \bY = Y_{a+1}^2 + \cdots + Y_d^2
+\]
+which has $\chi_b^2$ distribution.
+In addition, they are quadratic forms of different segments of
+$\bY$. Therefore, they are independent.
+\qed
+\vs
+
+{\bf Remark}: 
+Since $\bX^\tau \bA \bX = \bX^\tau \bA^\tau \bX$, we have
+$\bQ_A = \bX^\tau \{(\bA+ \bA^\tau)/2\} \bX$ in which
+$\{(\bA+ \bA^\tau)/2\} $ is symmetric. Hence, we do not
+loss much generality by assuming both $\bA$ and $\bB$
+are symmetric. The result does not hold without symmetry
+assumption though I cannot find references: Try
+\[
+\bA = 
+\left [
+\begin{array}{cc}
+1 & -1\\
+0 & 0 
+\end{array}
+\right ], ~~~
+\bB = 
+\left [
+\begin{array}{cc}
+0 & 1\\
+0 & 1 
+\end{array}
+\right ].
+\]
+
+\vs
+Under symmetry assumption, take it as a simple exercise to show that if
+\[
+\bX^\tau \bX 
+= \bX^\tau \bA_1 \bX +  \cdots + \bX^\tau \bB_p \bX
+= \sum_{j=1}^p \bQ_j
+\]
+such that
+\[
+\mbox{rank}(\bA_1) + \cdots + \mbox{rank}(\bA_p) =d
+\]
+then $\bQ_j$'s are independent,
+each has chisquare distribution
+of degrees rank($\bA_j$).
+
+
+
+
+\section{F- and t-distributions}
+
+If $X$ and $Y$ have chisquare distributions with
+degrees of freedom $m$ and $n$ respectively, then
+the distribution of
+\[
+F = \frac{X/m}{Y/n}
+\]
+is called $F$ with $m$ and $n$ degrees of freedom.
+Note that
+\[
+X/(X+Y)= (1+ Y/X)^{-1}
+\]
+has Beta distribution. Thus, there is a very
+simple relationship between the $F$-distribution
+and the Beta distribution.
+
+\vs
+\noindent
+{\bf t-distribution.}
+If $X$ has standard normal distribution, and
+$S^2$ has chisquare distribution with $n$
+degrees of freedom. Further, when $X$
+and $S^2$ are independent,
+\[
+t = \frac{X}{\sqrt{S^2/n}}
+\]
+has $t$-distribution with $n$ degrees of freedom.
+
+When $n=1$, this distribution reduces to the famous
+Cauchy distribution, none of its moments exist.
+
+When $n$ is large, $S^2/n$ converges to 1. Thus,
+the $t$-distribution is not very different from the
+standard normal distribution. A general consensus
+is that when $n \geq 20$, it is good enough to
+regard $t$-distribution with $n$ degrees of freedom
+as the standard normal in statistical inferences.
+
+\section{Examples}
+
+In this section, we give a few commonly used
+distributional results in mathematical statistics.
+Two examples are generally referred to as one-sample
+and two-sample problems.
+
+\begin{example}
+Consider the normal location-scale model in which
+for $i=1, \ldots, n$, we have
+\[
+Y_i = \mu + \sigma \epsilon_i
+\]
+such that $\epsilon_1, \ldots, \epsilon_n$ are \iid N(0, 1).
+Let $\bY$ be the corresponding $Y$ vector which is multivariate
+normal with mean
+\[
+\bmu^\tau = (1, 1, \ldots, 1) = \mu \one^\tau
+\]
+and identity covariance matrix $\bbI$.
+Similarly, we use $\bepsilon$ for the vector of $\epsilon$.
+
+The sample variance can be written as
+\bea
+s_n^2 
+&=& (n-1)^{-1} \bY^\tau ( \bbI - n^{-1} \one \one^\tau) \bY^\tau\\
+&=& (n-1)^{-1} \sigma^2 \bepsilon^\tau  ( \bbI - n^{-1} \one \one^\tau) \bepsilon.
+\eea
+The key matrix $( \bbI - n^{-1} \one \one^\tau)$ is idempotent.
+Hence, other than factor $(n-1)^{-1} \sigma^2$,
+the sample variance has chisquare distribution with $n-1$ degrees
+of freedom.
+
+In addition, the sample mean $\bar Y_n = n^{-1} \one^\tau \bY$
+is uncorrelated to $ ( \bbI - n^{-1} \one \one^\tau) \bY^\tau$.
+Hence, they are independent. This further implies that
+the sample mean and sample variance are independent.
+\end{example}
+
+\begin{example}
+Consider the classical two-sample problem in which we
+have two \iid samples from normal distribution:
+\(
+\bX^\tau = (X_1, X_2, \ldots, X_m)
+\) are \iid $N(\mu_1, \sigma^2)$
+and
+\(
+\bY^\tau = (Y_1, Y_2, \ldots, Y_n)
+\) are \iid $N(\mu_2, \sigma^2)$.
+We are often interested in examining the possibility 
+whether $\mu_1 = \mu_2$.
+
+Let $\bar X_m$ and $\bar Y_n$ be two sample means.
+It is seen that
+\[
+\mbox{RSS}_0 = \frac{mn}{m+n} \{ \bar X_m - \bar Y_n\}^2
+\]
+is a quadratic form that represents the variation
+between two samples.
+At the same time,
+\[
+\mbox{RSS}_1 
+= \sum_{i=1}^m \{X_i - \bar X_m\}^2
++
+\sum_{j=1}^n \{Y_j - \bar Y_n\}^2
+\]
+is a quadratic form that represents the internal
+variations within two populations.
+It is natural to compare the relative size of RSS$_0$
+against RRS$_1$ to decide whether two means are
+significantly different. For this purpose,
+it is useful to know their sample distributions
+and independence relationship.
+
+It is easy to directly verify that RSS$_0$
+and RRS$_1$ are independent and both have
+chisquare distributions. 
+We may also find
+\[
+\bX^\tau \bX + \bY^\tau \bY
+=
+\mbox{RSS}_0  + \mbox{RSS}_1
++ (m+n)^{-1} (\bX^\tau \one_m + \bY^\tau \one_n) (\one_m^\tau \bX+ \one_n^\tau \bY)
+\]
+The ranks of three quadratic forms on the right hand side
+are $1$, $m + n - 2$ and $1$
+which sum to $n$. The decomposition remains the same
+when we replace $\bX$ by $(\bX - \mu)/\sigma$ and $\bY$ by $(\bY - \mu)/\sigma$.
+Hence when $\mu_1 = \mu_2 = \mu$ and $\sigma = 1$,
+RSS$_0$ and RRS$_1$ independent and chisquare distributed
+by Cochran Theorem (after scaled by $\sigma^2$).
+
+This further implies that
+\[
+F = \frac{\mbox{RSS}_0 }{\mbox{RSS}_1/(m+n-2)}
+\]
+has F-distribution with degrees of freedom $1$ and $m+n-2$.
+
+The F-distribution conclusion is the basis for the analysis of variance, two-sample t-test
+and so on.
+\end{example}
+
+
+%
+%{\bf Solution}: To prove the statement, we need to prove in both directions. 
+%
+%\begin{enumerate}[(a)]  
+%
+%\item Suppose $ \bA^{2} = \bA $, prove that $ \bZ^{ \tau } \bA \bZ $ has central Chi-Square distribution. 
+%
+%Since the matrix $ \bA $ are symmetric and idempotent ($ \bA^{2} = \bA $), 
+%all the eigenvalues of $ \bA $ are either 0 or 1, and hence the rank of $ \bA $ 
+%equals to the number of eigenvalues that are 1. \\ 
+%
+%By the Spectral Theorem, there exists an orthogonal matrix $ \bR $ 
+%and diagonal matrix $ \bLambda = diag ( \lambda_{1}, \lambda_{2}, \ldots, \lambda_{d} ) $ such that 
+%\[ 
+%\bA = \bR^{ \tau } \bLambda \bR, \\ 
+%\]
+%where $ \bR^{ \tau } \bR = \bR \bR^{ \tau } = \bbI_d $, and the diagonal entries in $ \bLambda $ are the eigenvalues of $ \bA $. 
+%
+%Let $ \bZ = \bR \bZ $, which has the distribution $ N ( 0, \bbI_d ) $, and we have 
+%\[ 
+%\bZ^{ \tau } \bA \bZ = \bZ^{ \tau } \bLambda \bZ = \sum_{i = 1}^{d} \lambda_{i} Z_{i}^{2}. \\  
+%\] 
+%
+%Then, since $ \lambda_{i} = 0 \text { or } 1 $ for 
+%all $ i = 1, 2, \ldots , d $, so $ \bZ^{ \tau } \bLambda \bZ $ 
+%is the sum of squares of standard normal random variables, 
+%which has the central Chi-Square distribution. 
+%
+%Therefore,  $ \bZ^{ \tau } \bA \bZ $ has central Chi-Square distribution,
+%whose degrees of freedom equals to the rank of $ \bA $. 
+%
+%
+%\item 
+%Suppose that $ \bZ^{ \tau } \bA \bZ $ has central Chi-Square distribution, 
+%prove that $ \bA^{2} = \bA $. 
+%
+%Since that $ \bA $ is a symmetric matrix, it is equivalent to show that all the eigenvalues of $ \bA $ is either 0 or 1. 
+%
+%By the Spectral Theorem, there exists an orthogonal matrix $ \bR $ and diagonal matrix $ \bLambda = diag ( \lambda_{1}, \lambda_{2}, \ldots, \lambda_{d} ) $ such that 
+%\[ 
+%\bA = \bR^{ \tau } \bLambda \bR, \\ 
+%\]
+%where $ \bR^{ \tau } \bR = \bR \bR^{ \tau } = \bbI_d $, and the diagonal entries in $ \bLambda $ are the eigenvalues of $ \bA $. 
+%
+%Let $ \bZ = \bR \bZ \sim N ( 0, \bbI_d ) $, and we have 
+%\[ 
+%\bZ^{ \tau } \bA \bZ = \bZ^{ \tau } \bLambda \bZ = \sum_{i = 1}^{d} \lambda_{i} Z_{i}^{2}. \\  
+%\] 
+%
+%Since we are given that $ \bZ^{ \tau } \bLambda \bZ $ has central Chi-Square distribution, the only way for this being true is that all the entries of $ \bLambda $ is either 0 or 1. This claim can be verified by checking the MGF of $ \bZ^{ \tau } \bLambda \bZ $. 
+%
+%Therefore, we have proven that $ \bA^{2} = \bA $. 
+%
+%
+
+\end{enumerate}

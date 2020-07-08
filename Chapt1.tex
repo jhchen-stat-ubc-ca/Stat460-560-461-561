@@ -1,0 +1,504 @@
+\chapter{Some basics}
+
+\section{Discipline of Statistics}
+%% {\bf What is science}
+Statistics is a discipline that serves
+other scientific disciplines. Statistics is itself
+may not considered by many as a branch of science. 
+A scientific discipline constantly develops theories to
+describe how the nature works. 
+These theories are falsified whenever their
+prediction contradicts the observations.
+Based on these theories and hypotheses, 
+scientists form a model for the natural
+world and the model is then utilized to predict what
+happens to the nature under new circumstances.
+Scientific experiments are constantly designed to
+find evidences that may contradict the
+prediction of the proposed model
+and aims at DISPROVING hypotheses behind the model/theory.
+If a theory is able to make useful predictions
+and we fail to find contradicting evidences,
+it gains broad acceptance.
+We may then temporarily consider it as ``the truth''.
+Even if a model/theory does not give a perfect prediction,
+but a prediction precise enough for practical purposes
+and it is much simpler than a more precise model/theory,
+we tend to retain it as a working model.
+I regard, for example, Newton's laws as such an example
+as compared to more elaborating Einstein's relativity.
+
+If a theory does not provide any prediction that can potentially be
+disproved by some experiments, then it is not a scientific theory.
+Religious theories form a rich group of such examples.
+
+%%{\bf Statistics is not science from one angle}
+Statistics in a way is a branch of mathematics. It does not
+model our nature. For example, it does not claim that when
+a fair die is rolled, the probability of observing 1 is 1/6.
+Rather, for example, it claims that if the probability of observing 1
+is 1/6, and if the outcomes of two dice are independent,
+then the probability of observing $(1, 1)$ is 1/36,
+and the probability of observing either $(1, 2)$ and $(2, 1)$ is 2/36.
+If one applies a similar model to the spacial distribution of two electrons,
+the experimental outcomes may contradict the prediction
+of this probability model, yet the contradiction does not imply that the
+statistic theory is wrong. Rather, it implies that the statistical model
+does not apply to the distribution of the electrons.
+The moral of this example is, a statistical theory cannot be 
+disproved by physical experiments. 
+Its theories are of logical truth, and this makes it unqualified
+as a scientific discipline in the sense we mentioned earlier.
+
+We should make a distinction of the inconsistency between
+a probability model and the real world, and the inconsistency
+within our logical derivations. If we err at proving a proposition,
+that proposition is very likely false within our logical system.
+It does not disprove the logical system. We call logically
+proved propositions as theorems. In comparison, the
+propositions regarded as temporary truth in science are named
+as laws. Of course, we sometimes abuse these terminologies
+such as the ``Law of Large Numbers''.
+
+%%{\bf Regression model}
+In a scientific investigation, one may not always be able to find clear-cut
+evidence against a hypothesis. For instance, genetic theory
+indicates that tall fathers have tall sons in general. Yet there are
+many factors behind the height of the son. 
+Suppose we collect
+1000 father-son pairs randomly from a human population. Let
+us measure their heights as $(x_i, y_i)$, $i=1, 2, \ldots, 1000$.
+A regression model in the form of
+\[
+y_i = a + b x_i + \epsilon_i
+\]
+with some regression coefficient $(a, b)$ and
+random error $\epsilon$, can be a useful summary of the
+data.
+
+If the statistical analysis of the data supports the model with 
+some $b > 0$, then the genetic theory survives the attack. 
+If we have a strong evidence to suggest $b$ is not very
+different from 0, or it may even be negative, then the
+genetic theory has to be abandoned. In this case,
+the genetic theory is not disproved by statistics, but by
+physical experiments (data collected on father-son heights)
+assisted by the statistical analysis.
+Whatever the outcome of the statistical analysis is, the statistic theory is
+not falsified. It is the genetic theory that is being tortured.
+
+\section{Probability and Statistics models}
+%% {\bf Randomness is always there}
+In scientific investigations, we often quantify the outcomes of an
+experiment in order to develop a useful model for the real world. 
+An existing scientific theory can often give a precise prediction:
+the water boils at 100 degrees Celsius at the sea level on the Earth. 
+In other cases, precise prediction is nearly impossible.
+For example, scientists still cannot predict when and where the next serious
+earthquake will be.
+There used to be beliefs that a yet to be discovered perfect scientific model exists
+which can explain away all randomness. 
+In terms of earthquakes, it might be possible to
+have a precise prediction if we know the exact tensions between the geographic
+structures all around the world, the amount of heat being generated at the
+core of the earth, the positions  of all heavenly bodies and a lot more.
+
+In other words, the claim is that we study randomness
+only because we are incompetent in science or 
+because a perfect model is too complicated to be practically useful.
+This is now believed not the case.
+The uncertainty principle in quantum theory indicates that the randomness
+might be more fundamental than many of us are willing to accept.
+It strongly justifies the study of statistics as an ``academic discipline''.
+
+%% {\bf Come with Mathematics foundation}
+A probability space is generally denoted as ($\Omega, \bbB, P$).
+We call $\Omega$ the sample space, which is linked to all possible
+outcomes of an experiment under consideration. The notion of
+experiment becomes rough when the real world problem becomes
+complex. It is better off to take the mathematical convention to
+simply assume its existence. $\bbB$ is a $\sigma$-algebra.
+Mathematically, it stands for a collection of subsets of $\Omega$
+with some desirable properties. We require that it is possible
+to assign a probability to each subset of $\Omega$ that is a member
+of $\bbB$ without violating some desired rules. 
+How large a probability is assigned to a particular
+member of $\bbB$ is a rule denoted by $P$.
+
+%% {\bf Random variable}
+A random variable (vector) $X$ is a measurable function on $\Omega$.
+It takes values on ${\cal R}^n$ if $X$ has length $n$. It induces
+a probability space $({\cal R}^n, \bbB, F)$ where $F$ is its distribution.
+In statistics, we consider problems of inferring about $F$ within
+a set of distributions pre-specified.
+This set of distributions is called {\bf statistical model},
+and it is presented as a probability distribution family
+$\cF$ sometime with additional structures. 
+If vector $X$ has $n$ components and they are
+independent and identically distributed (\iid), we use $\cF$
+for individual distribution, not for the joint distribution.
+This convention will be clear when we work with specific problems.
+In this case, we call it {\it population} $F$ defined on $({\cal R}, \bbB)$. 
+Components of $X$ are samples from population $F$. 
+
+When the individual probability distributions in $\cF$ is
+conveniently labelled by a subset of $R^d$, the Euclid space of
+dimension $d$, we say that $\cF$ is a parametric distribution family.
+The label is often denoted as $\theta$, and its all possible values
+$\Theta$ is called parameter space. In applications, we usually
+only consider parametric models whose probability distributions
+have a density function with respect to a common $\sigma$-finite
+measure. In such situations, we write
+\[
+\cF = \{ f(x; \theta): \theta \in \Theta \}.
+\]
+The $\sigma$-finite measure is usually the Lebesgue which
+makes $f(x; \theta)$ the commonly referred density functions.
+When the $\sigma$-finite measure is the counting measure,
+the density functions are known as probability mass function.
+
+If $\cF$ is not parameterized, we have a non-parametric model.
+
+\vs\no
+{\bf Probability theory and statistics}
+Probability theory studies the properties of stochastic systems.
+For instance, the convergence property of the empirical distribution
+based on an \iid\ sample. Statistical theory aims at inferring about the
+stochastic system based on (often) an \iid\ sample from this system.
+For instance, does the system (population) appear to be a mixture of two
+more homogeneous subpopulations?
+Probability theory is the foundation of statistical inference.
+
+Given an inference goal, statisticians may propose many possible
+approaches. Some approaches may deem inferior and dismissed
+over the time. Most approaches have merits that are not completely
+shadowed by other approaches.
+Some statistical techniques used as standard
+methods in other disciplines yet most statisticians never heard of.
+As a statistician, I can only hope to have the knowledge to understand
+these approaches, not to have the knowledge of all statistical
+approaches ever proposed in the literature. 
+
+\section{Statistical inference}
+Let $X = (X_1, X_2, \ldots, X_n)$ be a random sample from a statistical
+model $\cF$. That is, we assume that they are independent and
+identically distributed with a distribution known to be a member of $\cF$. 
+Let their realized values be $x = (x_1, x_2, \ldots, x_n)$. 
+A statistical inference is to infer about the specific member $F$ of $\cF$
+based on the realized value $x$. If we take a single guess of $F$, the result
+is a point estimate; If we provide a collection of possible $F$, the result is
+an interval estimate (usually); If we make a judgement on whether
+a single or a subset of $\cF$ contains the ``true'' distribution, the
+procedure is called hypothesis test. In general, in the last case, we
+are required to quantify the strength of the evidence based on which
+the judgement is made. If we partition the space of $\cF$ into several
+submodels and infer which submodel $F$ belongs, the procedure is called model selection.
+In general, for model selection, we do not quantify the evidence favouring the specific submodel.
+This is the difference between ``hypothesis test'' and ``model selection''.
+
+Another general category of statistical inference is based on Bayesian
+paradigm. The Baysian approach does not identify any $F$ or any set of $F$.
+Instead, it provides a probabilistic judgement on every member of subset
+of $\cF$. The probabilistic judgement is obtained via conditional distribution
+by placing a prior distribution on $\cF$ and conditional on observations
+in the form of $X = x$. We call it posterior distribution.
+The final decision will be made based on considerations such as minimizing
+an expected lost.
+
+We now introduce several standard terminologies used in the mathematical
+statistics. 
+
+\begin{defi}
+A statistic is a measurable function of data which does not depend on any unknown
+parameters.
+\end{defi}
+
+More concretely, the value of a statistic can be evaluated without
+knowing the value of the unknown parameters in the model.
+The sample mean $\bar x_n = n^{-1} (x_1 + x_2 + \cdots + x_n)$ is a statistic.
+However, $\bar x_n - \bbE(X_1)$ is in general not a statistic because it is a function
+of both data, $\bar x_n$, and the usually unknown value, $\bbE(X_1)$.
+The value of $\bbE(X_1)$ often depends
+on parameter $\theta$ behind $\cF$. 
+
+Let $T(x)$ be a statistic. We may also regard $T(x)$ as the realized value
+of $T$ when the realized value of $X$ is $x$. We may regard
+$T = T(X)$ as a quantity to be ``realized'', to be ``observed''
+or to be ``obtained'' via experiment. 
+Since $X$ is random, the outcome of $T$ is also random.
+The distribution of $T(X)$ is called its sample distribution. 
+Unfortunately, it is often
+hard to be completely consistent when we deal with $T(X)$ and $T(x)$.
+We may have to read between lines to tell which one of the
+two is under discussion. Since the distribution of $X$ is usually only known
+up to being a member of $\cF$ which is often labeled by a parameter $\theta$,
+the (sample) distribution of $T$ is also only known up to the 
+unknown parameter $\theta$. In other cases, we may know its distribution
+look like the convolution of a normal distribution and a double exponential.
+Yet we do not have a commonly agreed name for such a distribution. 
+
+We are ready for another definition.
+
+\begin{defi}
+Let $T(x)$ be a statistic. If the conditional distribution of $X$ given $T$
+does not depend on unknown parameter values, we say $T$ is a sufficient
+statistics.
+\end{defi}
+
+When $T$ is sufficient, all information contained in $X$ about $\theta$ is 
+contained in $T$.  In this case, one may choose
+to ignore $X$ but work only on $T$ without loss of any efficiency
+for statistical inference about $\theta$.
+Such a simplification is most helpful if $T$ is much simpler than $X$ or it is a
+substantial reduction of $X$.
+Note that $X$ here may represent a set of random variables
+and $f(x; \theta)$ is their joint density function.
+
+Directly verifying the sufficiency of a statistic is often difficult. 
+That is, verifying the sufficiency by definition can be a hard tack.
+A factorization theorem is very useful to simplify this task.
+If the density function of $X$ can be written as
+\[
+f(x; \theta) = h(x) g(T(x); \theta)
+\]
+for some function $h(\cdot)$ and $g(\cdot; \cdot)$, then $T(x)$ is sufficient
+for $\theta$.
+%%% add this theorem in the future.
+
+There are also examples where the direct verification is not very complex. 
+For example, 
+if $X_1, X_2$ are independent Poisson distributed with mean parameter
+$\theta$. Then the conditional distribution of $X_1, X_2$ given $T=X_1 + X_2$
+are binomial ($T$, 1/2) which is free from the unknown parameter $\theta$.
+Hence, $T$ is sufficient for $\theta$.
+
+
+\begin{defi}
+Sufficient statistic $T(x)$ 
+is minimum sufficient if $T$ is the function of every other sufficient statistic.
+\end{defi}
+
+A minimum sufficient statistic may still contain some redundancy. If a statistic has
+the property that none of its non-zero function can have identically 0 expectation,
+this statistic is called complete. When the requirement is reduced to include
+only ``bounded functions'', then $T$ is called bounded-complete. 
+%We did not discuss this notion in Stat 460/560. 
+We have a few more such notions.
+
+\begin{defi}
+Sufficient statistic $T(x)$ 
+is complete if $\bbE(g(T)) = 0$ under every $F \in \cF$ implies $g(\cdot) \equiv 0$
+almost surely.
+\end{defi}
+
+In contrast, if the distribution of $T$ does not depend on $\theta$ or equivalently
+on the specific distribution of $X$, we say that $T$ is an ancillary statistic. 
+
+\begin{defi}
+If the distribution of the statistic $T(x)$ 
+does not depend on any parameter values, it is an ancillary statistic.
+\end{defi}
+
+The model assumption specifies the distribution family the distribution
+of $X$ belongs. The data $X$ is usually useful to help us to identify
+which one in the family is the true distribution of $X$.
+If a statistics is ancillary, then this aspect of the data does not contain 
+any information about the identity of the distribution of $X.
+However, it may contain the information on whether or not
+the distribution of $X$ is a member of the assumed distribution family.
+
+\noindent
+{\bf Example}: Suppose $X = (X_1, \ldots, X_n)$ is a random sample from
+$N(\theta, 1)$ with $\theta \in R$. Recall that $T = \bar X$ is a complete
+and sufficient statistic of $\theta$. At the same time,
+$X - T = (X_1 -  \bar X, \ldots, X_n - \bar X)$ is an ancillary statistic.
+It does not contain any information about the value of $\theta$.
+However, it is not completely useless. Under the normality assumption,
+$X-T$ is multivariate normal. We can study the realized value of $X-T$ to
+see whether it looks like a realized value from a multivariate normal.
+If the conclusion is negative, the normality assumption is in serious question.
+If the validity of a statistical inference heavily depends on normality,
+such a diagnostic procedure is very important.
+
+Remark: In this example the probability model $\cF$ is all normal
+distributions with mean $\theta$ and known variance $\sigma^2 = 1$.
+Notationally, $\cF = \{ N(\theta, 1): \theta \in {\cal R}\}$.
+
+\begin{defi}
+If $T$ is a function of both data $X$ and the parameter $\theta$, but its
+distribution is not a function of $\theta$, we call $T$ a pivotal quantity.
+\end{defi}
+
+In the last example, $S = \bar X - \theta$ is a pivotal quantity.
+Note that this claim is made under the assumption that $\theta$ is
+the ``true'' parameter value of the distribution of $X$, it is not a dummy
+variable. This is another common practice in statistical literature:
+if not declared, notation $\theta$ is used both as a dummy variable
+and the ``true'' value of the distribution of the random sample $X$.
+This notion also applies to Bayes methods, $\theta$ is often regarded
+as a realized value from its prior distribution, and $X$ is then a sample
+from the distribution labeled by this ``true'' value of $\theta$.
+
+Note that the parameter $\theta$ is a label of $F$ that belongs to $\cF$
+in parametric models. It may as well be regarded as a function of $F$,
+call it {\bf functional} if you please. Any function of $F$ can be regarded
+as a parameter by the same token. For example, the median of $F$ is
+a parameter. This works even if $\cF$ is a popularly used parametric
+distribution family such as Poisson. 
+
+\section{Assignment problems}
+
+\begin{enumerate}
+\item
+Let $X_1, X_2, \ldots, X_n$ be a random sample (\iid)
+from a continuous distribution $f(x)$. Namely, the
+distribution family $\cF$ contains all univariate
+continuous distributions.
+
+Let $R_1, R_2, \ldots, R_n$ be the rank statistic.
+That is, $R_1 = $ the rank of $X_1$ among $n$
+random variables. 
+
+(a) Show that the vector $R = (R_1, R_2, \ldots, R_n)^\tau$ is an 
+ancillary statistic and find its distribution.
+
+(b) What information contained in $R$ that might be
+useful for statistical inference?   
+
+%
+%\noindent
+%{\bf Solution}: 
+%
+%\begin{enumerate}[(a)]  
+%
+%\item
+%Let $ R ( X ) = ( j_{1}, j_{2}, \ldots , j_{n} ) $ be an observed rank statistic, 
+%which is a permutation of $ \{1, 2, \ldots , n\} $. 
+%
+%Suppose $ X_{ i_{1} } < X_{ i_{2} } < \cdots < X_{ i_{n} } $ 
+%for $ 1 \leq i_{1}, i_{2}, \ldots , i_{n} \leq n $, 
+%then we must have $ j_{k} = m \text { when } i_{m} = k, $ for any pair of integers $ m, k $.  
+%
+%Due to the \iid\ assumption and the continuity (which implies that the probability 
+%of any pair to be equal is 0), and the fact that the number of all possible
+%permutations is $(n!)$, we find
+%\[ 
+%P ( X_{ i_{1} } < X_{ i_{2} } < \cdots < X_{ i_{n} } ) 
+%=
+%( n ! )^{ - 1 },
+%\] 
+%for any permutation $ ( i_{1}, i_{2}, \ldots , i_{n} ) $. 
+%
+%Because there is a one-to-one correspondence between 
+%$ ( i_{1}, i_{2}, \ldots , i_{n} ) $ and $ ( j_{1}, j_{2}, \ldots , j_{n} ) $, we have 
+%\[ 
+%P ( R = ( j_{1}, j_{2}, \ldots , j_{n} ) ) = P ( X_{ i_{1} } < X_{ i_{2} } < \cdots < X_{ i_{n} } ) = ( n ! )^{ - 1 }, \\ 
+%\] 
+%for any permutation $ ( j_{1}, j_{2}, \ldots , j_{n} ) $. 
+%
+%Since this probability does not depend on the distribution 
+%$ f ( x ) $, the rank statistic $ R $ is an ancillary statistic. 
+%
+%
+%\item 
+%In general, 
+%the ancillary statistic may contain information about the validity of the model assumption. 
+%
+%In this case, if the observed rank statistic $ R = ( j_{1}, j_{2}, \ldots , j_{n} ) $ 
+%has certain pattern such as in increasing or decreasing order, 
+%then validity of the \iid\ assumption is questionable. 
+%For example, the observed outcome of $ R = (1, 2, 3, \ldots, n) $
+%is unusual and extreme when $ X_{1}, X_{2}, \ldots , X_{n} $ are truly \iid.  
+%
+%\end{enumerate} 
+%
+
+\item
+Let $X_1, X_2, \ldots, X_n$ be a random sample (\iid)
+from $N(\theta, \sigma^2)$.
+Let $\bar X_n$ and $s_n^2$ be the sample mean and variance.
+
+(a) Verify that $(X_1 - \bar X_n, \ldots, X_n - \bar X_n)/s_n$ is
+an ancillary statistic.
+
+(b) Verify by factorization theorem that $\bar X_n, s_n^2$ are jointly
+sufficient.  
+
+(c) Suppose $\sigma = 1$ is known. Show that $\bar X_n$
+is complete for $\theta$ by definition. 
+
+%
+%{\bf Solution}: 
+%
+%\begin{enumerate}[(a)]  
+%
+%\item 
+%For $i=1, 2, \ldots, n$, define 
+%\[
+%Z_i =  \frac { X_{i} - \theta } { \sigma }.
+%\]
+%We observe that $Z_1, \ldots, Z_n$ are \iid\ N(0, 1). Hence, their joint distribution
+%does not depend on parameters.
+%
+%We further note that
+%\[ 
+%\frac{( X_{1} - \bar X_{n}, \ldots , X_{n} - \bar X_{n} )}{s_x}
+%=
+%\frac{( Z_{1} - \bar Z_{n}, \ldots , Z_{n} - \bar Z_{n} )}{s_z}
+%\] 
+%where $s_x^2$ and $s_z^2$ are sample variances based on $X$ and $Z$
+%respectively.
+%
+%Since the random vector on the RHS has a distribution free from parameters,
+%the same must be true for the random vector on the LHS. This completes
+%the proof.
+%
+%
+%\item 
+%Notice that, the joint density function of $ X_{1}, X_{2}, \ldots , X_{n} $ can be written as 
+%\begin{align*} 
+%f_{ X_{1}, \ldots , X_{n} } 
+%& ( x_{1}, \ldots , x_{n}; \theta, \sigma^2 ) \\ 
+%& = 
+%( 2 \pi \sigma^2 )^{ - n/2 } \exp \left ( - \sum_{i = 1}^{n} \frac { ( x_{i} - \theta )^2 } { 2 \sigma^2 } \right ) \\ 
+%& = 
+%( 2 \pi \sigma^2 )^{ - n/2 } \exp \left ( - \frac { 1 } { 2 \sigma^2 }  \sum_{i = 1}^{n} ( x_{i} - \bar x_{n} + \bar x_{n} - \theta )^2 \right ) \\ 
+%& = 
+%( 2 \pi \sigma^2 )^{ - n/2 } \exp \left ( - \frac { 1 } { 2 \sigma^2 }  \sum_{i = 1}^{n} ( x_{i} - \bar x_{n} )^2 \right ) \exp \left ( - \frac { 1 } { 2 \sigma^2 }  \sum_{i = 1}^{n} ( \bar x_{n} - \theta )^2 \right ) \\ 
+%& = ( 2 \pi \sigma^2 )^{ - n/2 } \exp \left ( - \frac { 1 } { 2 \sigma^2 }  s_{n}^2 \right ) \exp \left ( - \frac { 1 } { 2 \sigma^2 }  n ( \bar x_{n} - \theta )^2 \right ) 
+%\end{align*} 
+%
+%It is clear now that the joint density function is itself a function of only
+%$ \bar X_{n} \text { and } S_{n}^2 $, and therefore the joint sufficiency is 
+%straightforwardly implies by the Factorization Theorem.  
+%
+%
+%
+%\item 
+%Without loss of generality, we may simplify it by working on the case where $ n = 1 $. 
+%If a function $ g ( X ) $ has zero expectation for all$ \theta $, we must have 
+%\[ 
+%\int_{ - \infty }^{ \infty } g ( x ) \exp \{ \theta x - (x^{2} + \theta^2)/2 \} dx = 0, \\  
+%\] 
+%for every $ \theta \in \mathbb { R } $. 
+%
+%This is the same as 
+%\[ 
+%\int_{ - \infty }^{ \infty } \{ g ( x ) \exp ( -x^{2}/2 ) \} \exp ( \theta x ) dx = 0. \\ 
+%\] 
+%
+%By a result on Laplace transform, we must have 
+%\[ 
+%g ( x ) \exp ( - x^{2}/2 ) \equiv 0, \\ 
+%\] 
+%which implies that $ g ( x ) \equiv 0 $. 
+%That is, any zero-expectation function of $ X $ is a zero-function. 
+%
+%Hence, $ X $ must be complete for $ \theta $. 
+%
+%
+%\end{enumerate} 
+%
+
+\end{enumerate}
+ 
