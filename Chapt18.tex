@@ -1,0 +1,389 @@
+
+\chapter{Wald and Score tests}
+
+We discuss two types of tests that are closely related to
+the likelihood ratio test in this chapter.
+
+\section{Wald test}
+We still consider the situation where $n$ \iid observations from
+a model $\{f(x; \theta): \theta \in \Theta\}$ is provided.
+Under regularity conditions, we have shown that the MLE of $\theta$ is
+asymptotically normal. That is,
+\[
+\sqrt{n} (\hat \theta_n - \theta) \cd N(0, \bbI^{-1}( \theta))
+\]
+as the sample size $n \to \infty$.
+Note that this claim is made implicitly assuming the true parameter
+value is given by the same $\theta$ as the $\theta$ in these expressions.
+
+Because if the above generically applicable asymptotic normality, 
+to test for the simple null hypothesis of
+$H_0: \theta = \theta_0$ against $H_1: \theta \neq \theta_0$,  
+we may define
+\[
+W_n(\theta_0) 
+= n  (\hat \theta_n - \theta_0)^\tau \bbI(\theta_0)  (\hat \theta_n - \theta_0)
+\]
+which has approximately two desired properties for a test statistic.
+We reject $H_0$ when $W_n(\theta_0) \geq \chi_d^2(1 - \alpha)$
+in favour of the generic alternative $H_1: \theta \neq \theta_0$.
+
+One may notice that the most crucial factor for the validity of this test is
+\[
+\sqrt{n} (\hat \theta_n - \theta) \cd N(0, \bbI^{-1}( \theta))
+\]
+as the sample size $n \to \infty$.
+It is not crucial for $\hat \theta_n$ to be the MLE nor
+for matrix $\bbI$ to be the Fisher information.
+Hence, the Wald test is more generally applicable.
+
+\subsection{Variations of Wald test in the aspect of Fisher information}
+Because replacing $\bbI(\theta_0)$ with any of its consistent estimator
+does not change the limiting distribution of $W_n$, 
+such manipulations lead to many versions of the Wald test.
+
+\begin{enumerate}
+\item
+We may replace $\bbI(\theta_0)$ in $W_n$ by
+\[
+\hat{\bbI}_n(\theta_0)
+=
+- \left .
+\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(x_i; \theta)}{\partial \theta^2} 
+\right |_{\theta = \theta_0}.
+\]
+This expression may be called an observed Fisher information at $\theta_0$.
+This change simplifies the test when it is too complex to
+find the analytical form of the Fisher information matrix.
+
+\item
+We may replace $\bbI(\theta_0)$ in $W_n$ by
+\[
+\hat{\bbI}_n(\hat \theta)
+- \left .
+\frac{1}{n} \sum_{i=1}^n \frac{\partial^2 \log f(x_i; \theta)}{\partial \theta^2} 
+\right |_{\theta = \hat \theta}
+\]
+where $\hat \theta$ is the MLE of $\theta$. Note that we ignore
+the given value $\theta_0$ in favour of an estimated value.
+This quantity is often computed when the MLE is obtained by
+iterative methods such as Newton-Raphson.
+
+\item
+We may replace $\bbI(\theta_0)$ in $W_n$ by $\bbI(\hat \theta)$ where 
+$\hat \theta$ is the MLE of $\theta$. Note that we again ignore
+the given value $\theta_0$ in favour of an estimated value.
+
+\item
+When the regularity conditions are satisfied, 
+we may replace $\bbI(\theta_0)$ by
+ \[
+\left .
+\frac{1}{n} \sum_{i=1}^n 
+\left \{ \frac{\partial\log f(x_i; \theta)}{\partial \theta} \right \}
+\left \{ \frac{\partial\log f(x_i; \theta)}{\partial \theta} \right \}^\tau
+\right |_{\theta = \theta_0}.
+\]
+Unlike the earlier choices, this quantity is 
+always positive (or at least non-negative) definite.
+\end{enumerate}
+
+\subsection{Variations of Wald test in the aspect of $H_0$}
+The Wald test we introduced works for simple null hypothesis.
+Suppose the vector parameter $\theta$ can be written as 
+$\theta^\tau = (\theta_1^\tau, \theta_2^\tau)$.
+To fix the idea, we denote the dimension of $\theta$ as 
+$d+k$ and the dimensions of
+$\theta_1$ and $\theta_2$ are $d$ and $k$.
+Consider the problem of testing
+$H_0: \theta_1 = \theta_{10}$ against 
+$H_1: \theta_1 \neq \theta_{10}$.
+Assume the regularity conditions are satisfied by this
+model and the hypotheses. In this case, the null hypothesis
+is composite, as opposed to be simple in the last section.
+
+Let $\hat \theta_n$ be the MLE over the whole parameter space $\Theta$ and
+$\hat \theta_n^\tau = (\hat \theta_{1n}^\tau, \hat \theta_{2n}^\tau)$ 
+be the corresponding partition. 
+Because $\hat \theta_n$ is asymptotically normal, so is any
+of its sub-vector (or linear combination). This implies
+\[
+\sqrt{n} (\hat \theta_{1n} - \theta_{10}) \cd N(0, \bbI^{11}( \theta_0))
+\]
+where $\bbI^{11}$ is upper-left corner block sub matrix of $\bbI^{-1}$ corresponding
+to $\theta_1$. This leads to a sensible test statistic
+\be
+W_n(\theta_{10}) 
+=
+n (\hat \theta_{1n} - \theta_{10})^\tau \{ \bbI^{11}(\hat \theta) \}^{-1} (\hat \theta_{1n} - \theta_{10}).
+\label{eq18.1}
+\ee
+Clearly, we have
+\[
+W_n(\theta_{10})  \to \chi_d^2
+\]
+with $d$ being the dimension of $\theta_1$. 
+A test of approximate size $\alpha$ is therefore given by
+\[
+\phi(X) = 
+\left \{
+\begin{array} {ll}
+1 & \mbox{when  } W_n(\theta_{10} )\geq \chi_d^2(1 - \alpha) \\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\]
+
+Rather than defining $W_n(\theta_{10})$ as in \eqref{eq18.1}, one
+may try to use
+\[
+n (\hat \theta_{1n} - \theta_{10})^\tau \{ \bbI^{11}(\theta_0) \}^{-1} (\hat \theta_{1n} - \theta_{10}).
+\]
+The above quantity is in fact not a statistic because
+we do not know the value of $\theta_0$ even when $H_0$ is true.
+The null hypothesis $H_0$ here is a composite one.
+
+There are, however, many well justified choices in the place of  $\bbI^{11}(\hat \theta)$. 
+For instance, one may require $\hat \theta_{10} =  \theta_{10}$
+to obtain restricted MLE $ \hat \theta_{20}$. That is,
+\[
+\hat \theta_{20} = \arg\max_{\theta_2} \ell_n(\theta_{10}, \theta_2).
+\]
+After which we replace
+$\bbI^{11}(\hat \theta)$ in by
+$\bbI^{11}(\theta_{10}, \hat \theta_{20})$ in \eqref{eq18.1}. 
+
+Just like what we discussed in the last section, there can be
+many other statistics that can be used in place of
+$\bbI^{11}(\hat \theta)$ without changing the asymptotic
+conclusion.
+We do not have a rule to decide which one
+is the ``optimal'' choice in the place of $\bbI^{11}(\hat \theta)$.
+More accurately speaking, we do not aware of any commonly
+accepted rules.
+
+\subsection{Variations of Wald test in the aspect of $H_0$}
+We work under the same title but slightly different situation
+here.
+
+Suppose the null hypothesis is specified in the form of
+\[
+H_0: ~~\varphi(\theta) = 0
+\]
+where $\varphi(\cdot)$ takes vector values of dimension $d$.
+The dimension of $\theta$ is $d+k$, the same as before.
+Note that when $\varphi(\theta) = \theta_1 - \theta_{10}$ with some known
+value $\theta_{10}$, this $H_0$ reduces to the
+last case. 
+
+Naturally, the alternative hypothesis is $H_1: \varphi(\theta) \neq 0$.
+Assume both $\varphi(\cdot)$ and $\varphi'(\cdot)$ are smooth and
+the rank of $\varphi'(\theta)$
+is $d$ for $\theta$ in a neighbourhood of the true parameter value.
+
+If one regards $\phi(\theta)$ as a parameter itself, and $\phi(\hat \theta)$
+is its asymptotically normal estimator, then applying the principle
+behind the Wald test, we would define
+\[
+W_n =
+n \varphi^\tau (\hat \theta) 
+\{\varphi'(\hat \theta) \bbI^{-1}(\hat \theta)\varphi'(\hat \theta)^\tau \}^{-1}
+\varphi(\hat \theta)
+\]
+as a test statistic.
+It can be shown that we still have, under $H_0$,
+\[
+W_n \to \chi_d^2.
+\]
+Clearly, an approximate size $\alpha$ test can be similarly
+constructed based on this $W_n$.
+
+\section{Score Test}
+We have seen that under regularity conditions,
+\[
+\bbE \big \{ \frac{\partial \log f(X; \theta) }{ \partial \theta } \big \} = 0
+\]
+where the expectation is taken under the assumption that
+the distribution of $X$ is given by $f(x; \theta)$.
+
+Thus, when we test for $H_0: \theta = \theta_0$, 
+the value of the score function
+\[
+S_n(\theta_0) 
+= 
+\sum_{i=1}^n \big \{ \frac{\partial \log f(X_i; \theta_0) }{ \partial \theta} \big \}
+\]
+is indicative of the validity of $H_0$.
+
+Recall that $n^{-1/2} S_n(\theta_0)$ is asymptotically multivariate normal
+with asymptotic variance $\bbI(\theta_0)$.
+Let us define a test statistic to be
+\[
+T_n = S_n^\tau (\theta_0) \{n \bbI(\theta_0)\}^{-1} S_n(\theta_0).
+\]
+The limiting distribution of $T_n$ is chisquare with $d$ degrees
+of freedom where $d$ is the dimension of $\theta$.
+
+Based on this result, a score test of approximate size $\alpha$
+is given by
+\[
+\phi(X) = 
+\left \{
+\begin{array} {ll}
+1 & \mbox{when  } T_n \geq \chi_d^2(1 - \alpha) \\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\]
+
+Unlike the likelihood ratio test or Wald test, 
+this statistic does not ask us to compute the MLE
+of $\theta$. We do need to compute
+the Fisher information matrix and its inversion.
+
+Similar to Wald test, let us now consider the more complex situation
+where the null hypothesis $H_0: \theta_1 = \theta_{10}$, but
+the dimension of $\theta$ is $d+k$.
+This means the second part of $\theta$ vector is unspecified
+under $H_0$. Let $\hat \theta_0$ be the MLE under $H_0$.
+Let
+\[
+S_{n1}(\theta) = \frac{ \partial \ell_n(\theta)}{\partial \theta_1}
+\]
+which was defined earlier too. 
+This is a column vector of length $d$. 
+If the same asymptotic techniques are used here, we will find that
+\[
+n^{-1/2} S_{n1}(\hat \theta_0)
+\]
+is asymptotically multivariate normal with mean 0 and variance matrix
+$\bbI_{11,2}(\theta^*)$ under the null hypothesis.
+This $\theta^*$ stands for the true parameter value and
+$\bbI_{11,2} = \bbI_{11} - \bbI_{12} \bbI_{22}^{-1} \bbI_{21}$ was also defined before.
+
+Apparently, these notes on asymptotic results lead to the conclusion
+\[
+T_n 
+= S^\tau_{n1}(\hat \theta_0)\{n \bbI_{11,2}(\hat \theta_0)\}^{-1} S_{n1}(\hat \theta_0)
+\to \chi_d^2
+\]
+as $n \to \infty$. This time, $d$ is the dimension of $\theta_1$.
+A test can be constructed the same way as earlier.
+
+Finally, consider the null hypothesis specified by $H_0: \varphi(\theta) = 0$
+where $\varphi$ is a smooth function.
+Under regularity conditions, and in most applied problems, we
+may equivalently write $H_0$ as $\theta = g(\lambda)$
+for some smooth function $g$ with new parameter setting $\lambda$.
+
+In this case, we may obtain the MLE of $\lambda$ as the
+maximum point of $\ell(g(\lambda))$. Denote it as $\hat \lambda$.
+Next, we redefine the score statistic to be
+\[
+T_n = S_n^T(g(\hat \lambda)) \{n \bbI(g(\hat \lambda))\}^{-1} S_n(g(\hat \lambda)).
+\]
+Under regularity conditions, we still have
+\[
+R_n \to \chi^2_d.
+\]
+This $d$ is the dimension of $\theta$ minus the dimension of $\lambda$.
+%%% need verification. Shao pp386.
+
+Like the discussion for the Wald test, we can use variations
+of $\bbI(g(\hat \lambda))$ to construct the score test.
+I do not aware definitive statements on which of them work the
+best.
+
+\section{Power and consistency}
+
+Three tests, likelihood ratio, Wald and Score,
+are asymptotically equivalent. 
+By this statement, we mean that if the true parameter value
+is at $n^{-1/2}$-distance from the null model space, then the powers of
+these tests are asymptotically equal and the value is not $1$.
+
+Most tests recommended in mathematical statistics are consistent:
+the power of the test at any specific alternative distribution (a distribution in
+$H_1$) goes to 1 when the sample size $n \to \infty$
+under the \iid setting.
+
+There are generally no discussions on whether these tests are
+unbiased. Admittedly, there is a discrepancy between optimality
+theories for hypothesis test, and the properties of generally recommended
+tests. The optimality theory provides a high ground based on which we discuss
+the pros and cons of test procedures. We do not insist on using
+only tests with confirmed optimality properties in applications.
+The recommended tests are often designed to mimic or follow
+the principles of optimal tests after some tolerated compromises
+for the sake of convenience or feasilibity in implementation.
+
+We often use simulation study to compare the
+performances of various tests, one is advocated by the user and
+the others are the existing ones in specific applications. 
+It is not unusual
+for a student to claim that the ``new method'' is better because
+it rejects more null hypotheses without further qualifications.
+This practice is not right.
+One may reject all null hypotheses to achieve the highest power
+of 100\% in any applications. Clearly, such a test ignores the
+need of controlling type I error, or the desire of having a test
+unbiased.
+The comparison should only be made after the tests are designed
+so that their sizes are practically equal. 
+
+\section{Assignment problems}
+\begin{enumerate}
+\item
+Suppose that $X = (X_1, \ldots, X_k)^\tau$
+has multinomial distribution with the parameter
+$P = (p_1, \ldots, p_k)^\tau$. It is known that $ \sum x_j = n $ and $ n $ is not random. 
+Consider the problem of testing $P = P_0$ where
+$P_0$ is a probability vector with all entries positive. 
+
+(i) derive the quadratic form of the Wald test statistic; 
+
+(ii) derive the quadratic form of the Score test statistic; 
+
+(iii) (challeng) prove (or disprove) that these two statistics are identical.
+
+%Remark: you need to work out the entries of various covariance matrices, say $ \Sigma $. 
+%Then use $ \Sigma^{-1} $ for the expressions of the test statistics.  \\
+
+\item
+Consider the hypothesis test for $H_0: \varphi(\theta) = 0$
+against the alternative $H_1: \varphi(\theta) \neq 0$.
+Assume its derivative $\varphi'(\hat \theta)$ 
+is continuous and has full rank $d$ while
+the dimension of $\btheta$ is $d+k$ for some $k$.
+The test problem satisfy the regularity conditions, and
+we have \iid observations of size $n$ for this test.
+Prove that the Wald test statistic
+\[
+W_n =
+n \varphi^\tau (\hat \theta) 
+\{\varphi'(\hat \theta) \bbI^{-1}(\hat \theta)\varphi'(\hat \theta)^\tau \}^{-1}
+\varphi(\hat \theta)
+\]
+satisfies, under $H_0$, and as $n \to \infty$,
+\[
+W_n \cd \chi_d^2.
+\]
+
+\item
+Consider the null hypothesis $H_0: \btheta_1 = \btheta_{10}$
+where the dimension of $\btheta^\tau = (\btheta_1^\tau, \btheta_2^\tau)$ is $d+k$
+and the dimension of $\btheta_1$ is $d$.
+Assume the regularity conditions are satisfied for the corresponding model and
+we have \iid observations of size $n$ for this test.
+Let $\hat \theta_0$ be the MLE under $H_0$ and
+\[
+S_{n1}(\theta) = \frac{ \partial \ell_n(\theta)}{\partial \theta_1}.
+\]
+Prove that the score test statistic
+\[
+T_n 
+= S^\tau_{n1}(\hat \theta_0)\{n \bbI_{11,2}(\hat \theta_0)\}^{-1} S_{n1}(\hat \theta_0)
+\to \chi_d^2
+\]
+in distribution as $n \to \infty$.
+\end{enumerate}

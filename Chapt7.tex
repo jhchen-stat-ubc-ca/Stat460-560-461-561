@@ -1,0 +1,609 @@
+\chapter{Properties of MLE}
+
+Consider the situation we have have a data set $x$ whose
+joint density function is a member of distribution family
+specified by density functions $\{f(x; \theta): \theta \in \Theta\}$.
+
+Suppose $\eta = g(\theta)$ is an invertible parameter transformation
+and denote the inverse transformation by $\theta = h(\eta)$ and the
+parameter space of $\eta$ be $\Upsilon$. Clearly,
+for each $\theta$, there is an $\eta$ such that
+\[
+f(x; \theta) = f(x; h(\eta)) = \tilde f(x; \eta)
+\]
+where we have introduced $\tilde f(x; \eta)$ for the function
+under the new parameterization.
+In other words,
+\[
+\{f(x; \theta): \theta \in \Theta\} = \{ \tilde f (x; \eta): \eta \in \Upsilon\}.
+\]
+The likelihood functions in these two systems are related by
+\[
+\ell(\theta) = \tilde \ell( \eta)
+\]
+for $\eta = g(\theta)$.
+If $\hat \theta$ is a value such that
+\[
+\ell(\hat \theta) = \sup_{\theta \in \Theta} \ell(\theta)\},
+\]
+we must also have 
+\[
+\tilde \ell(g(\hat \theta)) =  \ell(\hat \theta) 
+= \sup_{\theta \in \Theta} \ell(\theta)
+= \sup_{\eta \in \Upsilon} \tilde \ell(\eta).
+\]
+Hence, $h(\hat \theta)$ is the MLE of $\eta = h(\theta)$.
+
+In conclusion, the MLE as a general method for point estimation,
+is equi-variant. If we estimate $\mu$ by $\bar x$, then we
+estimate $\mu^2$ by $\bar x^2$ in common notation.
+
+Next, we give results to motivate the use of MLE.
+The following inequality plays an important role.
+
+\vs\no
+{\bf Jensen's inequality.}
+Let $X$ be a random variable with finite mean and $g$ be a convex function.
+Then
+\[
+\bbE[ g(X)] \geq g[\bbE(X)].
+\]
+
+\no
+\noindent
+{\bf Proof}: We give a heuristic proof.
+Function $g$ is convex if and only if for every set of
+$x_1, x_2, \ldots, x_n$ and positive numbers
+$p_1, p_2, \ldots, p_n$ such that $\sum_{i=1}^n p_i = 1$,
+we have
+\[
+\sum_{i=1}^n p_i g(x_i) \geq g ( \sum_{i=1}^n p_i x_i).
+\]
+This essentially proves the inequality when $X$ is a discrete
+random variable of finite number of possible values.
+Since every random variable can be approximated by such
+random variables, we can take a limit to get the general
+case. This is always possible when $X$ has finite first moment.
+\qed
+
+\vs\no
+{\bf Kulback-Leibler divergence.}
+Suppose $f(x)$ and $g(x)$ are two density functions with respect to
+some $\sigma$-finite measure. The Kulback-Leibler divergence
+between $f$ and $g$ is defined to be
+\[
+K(f, g) = \bbE\{ \log [f(X)/g(X)] ; f \}
+\]
+where the expectation is computed when $X$ has distribution $f$.
+
+Let $Y = g(X)/f(X)$ and $h(y) = - \log (y)$. It is seen that
+$h(y)$ is a convex function. It is easily seen that
+\[
+\bbE\{Y\} \leq 1
+\]
+where the inequality can occur if the support of $f(x)$ is
+a true subset of that of $g(x)$. 
+In any case, by Jensen's inequality, we have
+\[
+\bbE \{h(Y)\} \geq h(\bbE\{Y\}) \geq 0.
+\]
+This implies that
+\[
+K(f, g) \geq 0
+\]
+for any $f$ and $g$.
+Clearly, $K(f, f) = 0$.
+
+Because $K(f, g)$ is positive unless $f=g$, it serves as a metric
+to measure how different $g$ is from $f$. At the same time, the KL
+divergence is not a distance in mathematical sense because
+$K(f, g) \neq K(g, f)$ in general.
+
+Let $\cF$ be a parametric distribution family possessing densities
+$f(x; \theta)$ and parameter space $\Theta$. Let $f(x)$ be simply a
+density function may or may not be a member of $\cF$.
+If we wish to find a density in $\cF$ that is the best approximation
+to $f(x)$ in KL-divergence sense, a sensible choice is
+$f(x; \hat \theta)$ such that
+\[
+\hat \theta = \arg\min_{\theta \in \Theta} K(f(x), f(x; \theta)).
+\]
+
+In most applications, $f(x)$ is not known but we have an \iid
+sample $X_1, \ldots, X_n$ from it. In this case, we 
+may approximate $K(f(x), f(x; \theta))$ as follows:
+\bea
+K(f(x), f(x; \theta)) 
+&=& 
+\int \log\{f(x)/ f(x; \theta)\} f(x) dx \\
+&\approx & 
+n^{-1} \sumin  \log\{f(x_i)/ f(x_i; \theta)\} \\
+&=& 
+n^{-1} \sumin  \log\{f(x_i)\} - n^{-1} \ell_n(\theta)
+\eea
+where the second term is the usual log likelihood function.
+Hence, minimizing KL-divergence is approximately the
+same as maximizing the likelihood function.
+The analog goes further to situations where non-\iid\ observations
+are available.
+
+Unlike UMVUE or other estimators, MLE does not aim at
+most precisely determining the best possible value of ``true''
+$\theta$. One may wonder if it measures up if it is critically
+examined from different angles.
+This will be the topic of the next section.
+
+\section{Trivial consistency}
+Under very general conditions, the MLE is strongly consistent. 
+We work out a simple case her. Consider the situation where 
+$\Theta = \{\theta_j: j=1, \ldots, k\}$ for some finite $k$.
+Assume that
+\[
+F(x; \theta_j) \neq F(x; \theta_l)
+\]
+for at least one $x$ value when $j \neq l$, 
+where $F(x; \theta)$ is the cumulative distribution function of $f(x; \theta)$. 
+The condition means that the model is identifiable by its parameters. 
+We assume an \iid sample from $F(x; \theta_0)$ has been obtained
+but pretend that we do not know $\theta_0$. Instead, we want to
+estimate it by the MLE.
+
+Let $\ell_n(\theta)$ be the likelihood function based on the
+\iid\ sample of size $n$.
+By the strong law of large numbers, we have
+\[
+n^{-1} \{ \ell_n(\theta) - \ell_n(\theta_0) \}
+\to - K(f(x; \theta_0), f(x; \theta))
+\]
+almost surely for any $\theta \in \Theta$.
+The identifiability condition implies that
+\[
+K(f(x; \theta_0), f(x; \theta)) > 0
+\]
+for any $\theta \neq \theta_0$.
+Therefore, we have
+\[
+\ell_n(\theta) < \ell_n(\theta_0)
+\]
+almost surely as $n \to \infty$. 
+When there are only finite many choices of $\theta$ in
+$\Theta$, we must have
+\[
+\max \{ \ell_n (\theta): \theta \neq \theta_0 \} < \ell_n(\theta_0)
+\]
+almost surely. 
+Hence, the MLE $\hat \theta_n = \theta_0$ almost surely.
+
+Let us summarize the result as follows.
+
+\begin{theorem}
+Let  $X_1, \ldots, X_n$ be a set of iid sample from the distribution family
+ $\{ f(x; \theta): \theta \in \Theta\}$
+and the true value of the parameter is $\theta = \theta_0$.
+
+Assume the identifiability condition that
+\be
+F(x; \theta^{'}) \neq F(x; \theta^{''})
+\label{identi}
+\ee
+for at least one $x$ whenever $\theta^{'} \neq \theta^{''}$.
+
+Assume also that
+\be
+\bbE |\log f(X; \theta)| < \infty
+\label{finite}
+\ee
+for any $\theta \in \Theta$, where the expectation is computed under $\theta_0$.
+
+Then, the MLE $\hat \theta \to \theta_0$ almost surely when 
+$\Theta = \{\theta_j: j=0, 1, \ldots, k\}$ for some
+finite $K$.
+\end{theorem}
+
+Although the above proof is very simple. The idea behind it can be applied to prove the general result. 
+For any subset $B$ of $\Theta$, define
+\[
+f(x; B) = \sup_{\theta \in B} f(x; \theta).
+\]
+We assume that $f(x; B)$ is a measurable function of $x$ for all $B$ under consideration.
+We can generalize the above theorem as follows.
+
+\begin{theorem}
+Let  $X_1, \ldots, X_n$ be a set of \iid\ sample from the distribution family 
+$\{ f(x; \theta): \theta \in \Theta\}$ and that $\Theta = \cup_{j=0}^k B_j$ for some finite $k$. 
+Assume that the true value of the parameter is $\theta = \theta_0 \in B_0$ and that
+\be
+\bbE |\log f(X; B_j)| < \bbE[ \log f(X; \theta_0)]
+\label{BB}
+\ee
+for $j=1, 2, \ldots, k$.
+Then, the MLE $\hat \theta \in B_0$ almost surely.
+\end{theorem}
+
+\section{Trivial consistency for one-dimensional $\theta$}
+Consider the situation where we have a set of \iid observations
+from a one-dimensional parametric family 
+$\{f(x; \theta): \theta \in \Theta \subset R\}$.
+The log likelihood function remains the same as
+\[
+\ell_n(\theta) = \sum_{i=1}^n \log f(x_i; \theta).
+\]
+We likely have defined score function earlier, which is, given \iid observations
+\[
+S_n(\theta; x) = \sum_{i=1}^n \frac{\partial \{ \log f(x_i; \theta)\}}{\partial \theta}.
+\]
+We will use plain $S(\theta; x)$ if when $x$ is regarded as a single
+observation. We can be sloppy by using notation $\bbE\{S(\theta)\}$
+in which $x$ has to be interpreted as the random variable $X$ whose
+distribution is $f(x; \theta)$, with the same $\theta$ in $S$ and $f$.
+
+Let us put done a few regularity conditions. They are not 
+most general but suffice in the current situation.
+
+\begin{itemize}
+\item[R0] 
+The parameter space of $\theta$ is an open set of $\mathbb{R}$.
+
+\item[R1]  
+$f(x; \theta)$ is differentiable to order three with respect to $\theta$
+at all $x$.
+
+\item[R2]  
+For each $\theta_0 \in \Theta$, there exist functions
+$g(x)$, $H(x)$ such that for all $\theta$ in a neighborhood $N(\theta_0)$,
+\ba
+&(i) &\left | \frac{\partial f(x; \theta)}{\partial \theta} \right | \leq g(x);\\
+&(ii) & \left | \frac{\partial^2 f(x; \theta)}{\partial \theta^2} \right | \leq g(x);\\
+&(iii) & 
+\left | \frac{\partial^3 \log f(x; \theta)}{\partial \theta^3} \right | \leq H(x)
+\ea
+hold for all $x$, and
+\[
+\int g(x) dx < \infty; ~~\bbE_0 \{ H(X)\} < \infty.
+\]
+
+\item[R3] 
+For each $\theta \in \Theta$,
+\[
+0 < \bbE_\theta \left \{ \frac{\partial \log f(x; \theta)}{\partial \theta}  \right \}^2 < \infty.
+\]
+\end{itemize}
+
+Although the integration is stated as with respect to $dx$, 
+the results we are going to state remain valid if it is replace by some
+$\sigma$-finite measure. For instance, the result is applicable to
+MLE under Poisson model where $dx$ must be replaced by
+summation over non-negative integers.
+All conditions are stated as they are required for all $x$. 
+An exception over a 0-measure set of $x$ is allowed, as long as 
+this 0-measure set is the same for all $\theta \in \Theta$.
+
+\begin{lemma}
+(1) Under regularity conditions, we have
+\[
+\bbE \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta}; \theta \right \} = 0.
+\]
+(2)  Under regularity conditions, we have
+\[
+\bbE \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \}^2
+=
+-
+\bbE \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta^2} \right \}
+=
+\bbI(\theta).
+\]
+\end{lemma}
+
+\begin{proof}
+We first remark that the first result is the same as stating $\bbE\{S(\theta)\} = 0$.
+The proof of one is based on the fact that
+\[
+\int f(x; \theta) dx = 1.
+\]
+Taking derivative with respect to $\theta$ on both sizes, permitting the
+exchange of derivative and integration under regularity condition R2,
+and expressing the resultant properly, we get result (1).
+
+To prove (2), notice that
+\[
+\frac{\partial^2 \log f(X; \theta)}{\partial \theta^2}
+=
+\left\{ \frac{ f''(X; \theta)}{f(X; \theta)} \right \}
+- 
+\left\{ \frac{ f'(X; \theta)}{f(X; \theta)} \right \}^2.
+\]
+The result is obtained by taking expectation on both sizes
+and the fact
+\[
+\bbE\left\{ \frac{ f''(X; \theta)}{f(X; \theta)} \right \}
+=
+\int f''(x; \theta) dx  = 0.
+\]
+This completes the proof.
+\end{proof}
+ 
+We now give a simple consistency proof when $\theta$ is one-dimensional.
+ 
+\begin{theorem}
+Given an \iid sample of size $n$ from some one-parameter
+model $\{f(x; \theta): \theta \in \Theta \subset \cR\}$.
+Suppose $\theta^*$ is the true parameter value.
+Under Conditions R0-R3, there exists an $\hat \theta_n$ sequence
+such that
+
+(i) $S_n(\hat \theta_n) =0$ almost surely; 
+
+(ii) $\hat \theta_n \to \theta^*$ almost surely.
+\end{theorem}
+
+\begin{proof}
+(i) 
+As a function of $\theta$, $\bbE \{ S(\theta)\}$ has derivative
+equaling $-\bbI(\theta^*)$ at $\theta = \theta^*$. Hence, it is a
+decreasing function at $\theta^*$. This implies the existence of
+sufficiently small $\epsilon > 0$, such that
+\[
+ \bbE \{ S(\theta^* + \epsilon)\} < 0 <  \bbE \{ S(\theta^* - \epsilon)\}.
+\]
+By the law of large numbers, we have
+\[
+n^{-1} S_n(\theta^* \pm \epsilon)
+\as \bbE \{ S((\theta^* \pm \epsilon)\}.
+\]
+Hence, almost surely, we have
+\[
+ S_n(\theta^* + \epsilon) < 0 < S_n((\theta^* - \epsilon).
+\]
+By intermediate value theorem, there exists a 
+$\hat \theta \in (\theta^*-\epsilon, \theta^*+\epsilon)$
+such that
+\[
+S_n(\hat \theta) = 0.
+\]
+This proves (i).
+
+(ii) is a direct consequence of (i) as $\epsilon$ can be
+made arbitrarily small.
+\end{proof}
+
+
+\section{Asymptotic normality of MLE after the consistency is established}
+
+Under the assumption that $f(x; \theta)$ is smooth, and
+the MLE $\hat \theta$ is a consistent estimator of $\theta$, we must
+have
+\[
+S_n(\hat \theta) = 0.
+\]
+By the mean-value theorem in mathematical analysis, we have
+\[
+S_n( \theta^* ) 
+= 
+S_n(\hat \theta) + S'_n(\tilde \theta) (\theta^* - \hat \theta)
+\]
+where $\tilde \theta$ is a parameter value between $\theta^*$
+and $\hat \theta$.
+
+By the result in the last lemma, we have 
+\[
+n^{-1} S'_n(\tilde \theta) \to - \bbI(\theta^*),
+\]
+the Fisher information almost surely.
+In addition, the classical central limit theorem implies
+\[
+n^{-1/2} S_n( \theta^* ) \to N(0, \bbI(\theta^*)).
+\]
+Thus, by Slutzky's theorem, we find
+\[
+\sqrt{n} (\hat \theta - \theta^*) 
+= n^{-1/2} \bbI^{-1}(\theta^*) S_n( \theta^* ) + o_p(1)
+\to N(0, \bbI^{-1}(\theta^*))
+\]
+in distribution as $n \to \infty$.
+
+Many users including statisticians ignore the regularity conditions.
+Indeed, they are satisfied by most commonly used models. 
+If one does not bother with the full rigour,
+he or she should at least make sure that the parameter value in
+consideration is an interior point, the likelihood function is smooth
+enough. If the data set does not have \iid\ structure, one should
+make sure that some form of uniformity hold.
+
+\section{Asymptotic efficiency, super-efficient, one-step update scheme}
+
+By Cramer-Rao information inequality, for any estimator of $\theta$
+given \iid\ data and sufficiently regular model, we have
+\[
+\var(\hat \theta_n) \geq \bbI_n^{-1}(\theta^*)
+\]
+for any estimator $\hat \theta_n$
+assuming unbiasedness. The MLE under regularity conditions has
+asymptotic variance $\bbI(\theta^*)$ at rate $\sqrt{n}$. Loosely
+speaking, the above inequality becomes equality for MLE.
+Hence, the MLE is ``efficient'': no other estimators can achieve
+lower asymptotic variance.
+
+Let us point out the strict interpretation of asymptotic efficiency
+is not correct. Suppose we have a set of \iid\ observations from
+$N(\theta, 1)$. The MLE of $\theta$ is $\bar X_n$. 
+Clearly, if $\theta^*$ is the true value, we have
+\[
+\sqrt{n}(\bar X_n - \theta^*) \cd N(0, 1).
+\]
+
+Can we do better than the MLE? Let
+\[
+\tilde \theta_n =
+\left \{
+\begin{array}{ll}
+0 & \mbox{if } |\bar X_n| \leq n^{-1/4}\\
+\bar X_n & \mbox{otherwise.}
+\end{array}
+\right .
+\]
+When the true value $\theta^* = 0$, then
+\[
+\pr( |\bar X_n| \leq n^{-1/4}) \to 1
+\]
+as $n\to 0$. Hence,
+\[
+\sqrt{n}(\bar X_n - \theta^*) \cd N(0, 0)
+\]
+with asymptotic variance $0$ at rate $\sqrt{n}$.
+
+When the true value $\theta^* \neq 0$, then
+\[
+\pr( |\bar X_n| \leq n^{-1/4}) \to 0
+\]
+which implies
+\[
+\pr( \tilde \theta_n = \bar X_n) \to 1.
+\]
+Consequently, 
+\[
+\sqrt{n}(\tilde \theta_n - \theta^*) \cd N(0, 1).
+\]
+
+What have we seen? If $\theta^* \neq 0$, then $\tilde \theta_n$
+has the same limiting distribution as that of $\bar X_n$ at the
+same rate. So they have the same asymptotic efficiency.
+When $\theta^* = 0$, the asymptotic variance of $\tilde \theta_n$
+is $0$ which is smaller than that of $\bar X_n$ (at rate $\sqrt{n}$).
+It appears that the unattractive $\tilde \theta_n$ is superior than
+the MLE in this example.
+
+Is there any way to discredit $\tilde \theta_n$? Statisticians find
+that if $\theta^* = n^{-1/4}$, namely changes with $n$, then
+the variance of $\sqrt{n} \tilde \theta_n$ goes to infinity while that of
+$\sqrt{n} \bar X_n$ remains the same. It is a good exercise to
+compute its variance in this specific case.
+
+If some performance uniformity in $\theta$ is required, 
+the MLE is the one with the lowest asymptotic
+variance. Hence, the MLE is generally referred to as {\bf asymptotically
+efficient under regularity conditions}, or simply {\bf asymptotically optimal}.
+
+Estimators such as $\tilde \theta_n$ are called super-efficient
+estimators. Their existence makes us think harder. We do not
+recommend these estimators.
+
+If one estimator has asymptotic variance $\sigma_1^2$ and the
+other one has asymptotic variance $\sigma_2^2$ at the same
+rate and both asymptotically unbiased, then  the relative efficiency
+of $\hat \theta_1$ against $\hat \theta_2$
+is defined as $\sigma_2^2/\sigma_1^2$. A higher ratio implies
+higher relative efficiency. This definition is no longer emphasized
+in contemporary textbooks.
+
+Suppose $\tilde \theta$ is not asymptotically efficient. However, it is
+good enough such that for any $\epsilon > 0$, we have
+\[
+\pr \{ n^{1/4} |\tilde \theta - \theta| \geq \epsilon \} \to 0
+\]
+as $n \to \infty$. Let
+\[
+\hat \theta_n = \tilde \theta_n - \ell_n'(\tilde \theta_n )/\ell''_n( \tilde \theta_n )
+\]
+in apparent notation. Under regularity conditions, it can be shown that
+\[
+\sqrt{n} (\hat \theta - \theta^*)  \cd N(0, \bbI^{-1}(\theta^*)).
+\]
+Namely, the Newton-Raphson update formula can turn an
+ordinary estimator into an asymptotically efficient estimator easily.
+
+Suppose we have a set of \iid\ observations from Cauchy distribution
+with location parameter $\theta$. Under this setting, the score function
+has multiple solutions. It is not straightforward to obtain the MLE in
+applications. One way to avoid this problem is to estimate $\theta$ by
+the sample median which is not optimal. 
+The above updating formula can then be used
+to get an asymptotically efficient (optimal) estimator.
+Let us leave it as an exercise problem.
+
+\section{Assignment problems}
+\begin{enumerate}
+
+\item
+Let $ X_{1}, X_{2}, \ldots, X_{n} $ be a set of \iid random
+variables from 
+$ N( \theta, 1 ) $, and let $ \bar X_{n} $ be the sample mean. 
+Suppose $ \theta^{*} $ is the true value of the mean parameter $ \theta $. 
+
+Let 
+\[ 
+\tilde \theta_{n} = 
+\begin{cases} 
+0 & \text { if } | \bar X_{n} | \leq n^{ - 1/4 } \, ; \\ 
+\bar X_{n} & \text { otherwise }. 
+\end{cases} 
+\]  
+
+(a)
+For $ \theta^{*} = n^{ - 1/4 } $ which changes with $n$, show that
+\[
+P( \tilde \theta_n = 0 ) \to 0.5
+\]
+as $n \to \infty$.
+
+(b)
+Under the same condition as in (a), show that the MSE of $\tilde \theta_n$
+\[
+n \bbE\{ (\tilde \theta_n - \theta^*)^2 \}
+\to \infty.
+\]
+Hint: develop an inequality based on result (a).
+
+(c)
+Use computer to generate data of size $n=1600$ from $N(\theta^*= n^{-1/4}, 1)$,
+and compute the values of $\hat \theta = \bar X_n$ and $\tilde \theta_n$.
+Repeat it $N=1000$ times so that you have $N$ many pairs of these values. 
+Compare their simulated total MSE:
+\[
+\sum_{k=1}^N (\hat \theta - \theta^*)^2; ~~~
+\sum_{k=1}^N (\tilde \theta - \theta^*)^2.
+\]
+
+\item 
+Let $ X_{1}, X_{2}, ... , X_{2n+1} $ be an \iid random sample from
+Cauchy distribution 
+with location parameter $ \theta $, whose density function is given by 
+\[ 
+f (x; \theta) = \frac { 1 } { \pi \{ 1 + (x - \theta)^{2} \} }.  
+\] 
+The sample median is given by the order statistic $x_{(n+1)}$.
+
+(a) Show that the sample median satisfies
+\[ 
+P ( n^{ 1/4 } | x_{(n+1)} - \theta | \geq \epsilon ) \to 0
+\] 
+for any $\epsilon > 0$ as $ n \to \infty $. 
+
+{\bf Remark}: directly proving this result is challenging for inexperienced.
+Proving it by directly quoting an existing result is not satisfactory.
+
+(b) Derive the explicit expression of the Newton-Raphson iteration
+for Cauchy distribution. 
+
+(c) Simulation $N=1000$ times with $2n+1=201$, $\theta = 0$
+and obtain total MSEs in the same way as the last example. 
+Clearly present your results.
+
+(d) Plot the histogram of the 1000 $X_{(n+1)}$. Do the same for the
+one-step Newtwon-Raphson estimator. 
+
+(e) Do these histograms support our asymptotic results on
+MLE and on median?
+
+
+\item
+Derive the EM-iteration formulas for data from two component 
+Binomial mixture model:
+\[
+f(x; G) = {m \choose x} \{ \pi \theta_1^x (1-\theta_1)^{m-x} + (1-\pi) \theta_2^x (1-\theta_2)^{m-x}\}
+\]
+under the setting of $n$ \iid\ observations with $m \geq 3$.
+(Sizes $n$ and $m$ are not relevant in these formulas)
+
+Be sure to have E-step and M-step clearly presented together 
+with the corresponding $Q$ function.
+\end{enumerate}

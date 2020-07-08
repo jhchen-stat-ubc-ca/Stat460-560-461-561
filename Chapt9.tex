@@ -1,0 +1,440 @@
+\chapter{Bayes method}
+
+Most of the data analysis methods we have discussed so far are regarded as
+frequentist methods.
+More precisely, these methods are devised based on the conviction that the data
+are generated from a fixed system which is a member of a family of systems. 
+While the system is chosen by nature, the outcomes are 
+random. By analyzing the data obtained/generated/sampled from this system, 
+we infer the properties of {\bf THIS} system. 
+The methods devised subsequently are judged by
+their average performances if they are repeatedly applied to 
+all possible realized data from {\bf this system}. For instance, we regard sample
+mean as an optimal estimator for the population mean under normal model
+in some sense.
+Whichever $N(\theta, \sigma^2)$ is the truth, on average, $(\bar{x} -\theta)^2$
+has the lowest average among all $\hat \theta$ whose average equals $\theta$.
+A procedure is judged optimal only if this optimality holds at each and every
+possible $\theta, \sigma^2$ value.
+
+When considered from such a frequentist point of view, the statisticians do not
+play favours to any specific system against the rest of them in this family.
+Simplistically, each system in the family is regarded equal likely before
+hand. This view is subject to dispute.
+In some applications, we may actual have some preference between
+such systems. What is the chance that a patient entering a clinic with fever
+actually has a simple flu? If this occurs at a flu season, the doctor would immediately
+look for more signs of flu. If it is not a flu season, the doctor will
+cast a bigger net to the cause of the fever. The conclusion arrived
+by the doctor is not completely dependent on the evidence: having
+fever. This example shows that most of human being act on their prior belief.
+
+The famous Bayes theorem provides one way to formally utilize prior
+information. Let $A$ and $B$ be two events in the context of probability
+theory. It is seen that the conditional probability of $B$ given $A$
+\[
+\pr (B | A) = \frac{\pr(A|B) \pr(B)}{\pr(A|B) \pr(B) + \pr(A|B^c) \pr(B^c)}
+\]
+where $B^c$ is the complement of $B$, or the event that $B$ does not occur.
+This formula is useful to compute the conditional probability of $B$
+after $A$ is known to have occurred when all probabilities on the
+right hand side are known.
+The comparison between $\pr (B | A) $ and $\pr(B)$ reflects
+what we learn from event $A$ about the likeliness of event $B$.
+
+\section{An artificial example}
+Suppose one of two students is randomly selected to write a typical
+exam. Their historical averages are 70 and 80 percent. After we are
+told the mark of this exam is 85\%, which student has been selected
+in the first place? 
+
+Clearly, both are possible but most of us will bet on the one who has historical
+average of 80\%. It turns out that Bayes theorem gives us a quantitative
+way to justify our decision if we are willing to accept some model
+assumptions.
+
+Suppose the outcome of the exam results have distributions
+who densities are given by
+\bea
+f_a(x) &=& \frac{ x^{7-1}(1-x)^{3-1}}{\cB(7, 3)} \ind(0 < x < 1); \\
+f_b(x) &=& \frac{ x^{8-1}(1-x)^{2-1}}{\cB(8, 2)} \ind(0 < x < 1)
+\eea
+for students A and B with beta function defined to be
+\[
+\cB(a, b) = \int_0^1 x^{a-1}(1-x)^{b-1}dx
+\]
+for $a, b, > 0$. 
+The probability that they are selected
+to write the exam is
+\[
+\pr(A) = \pr(B) = 0.5
+\]
+which is our prior belief that reflects the random selection very well.
+Let $X$ denote the outcome of the exam.
+It is seen that
+\[
+\pr(A | X=x)
+=
+\frac{0.5 f_a(x)}{0.5 f_a(x)+ 0.5 f_b(x)}.
+\]
+If $X = 85\%$, we find
+\[
+\pr(A | X=85)
+= 0.3818.
+\]
+If $X=60\%$, we find
+\[
+\pr(A | X=60)
+= 0.7000.
+\]
+Based on these calculations, we seem to know what to do next.
+
+\begin{figure}
+\caption{Posterior probability as a function of $x$}
+\centerline{ \includegraphics[scale=0.6]{chapt9F1.pdf}}
+\label{chapt9F1}
+\end{figure}
+
+
+To use the frequentist approach discussed earlier, we re-state
+this experiment as follows. One observation $X$ has been obtained
+from a Beta distribution family with parameter space
+\[
+\Theta = \{(7, 3); (8, 2)\} {\mbox{ or }} \{A, B\}.
+\]
+If $X=0.85$, what is your estimate of $\theta$?
+
+The likelihood values at these two parameter points
+are given by
+\bea
+\ell( (7, 3)) = f_a (0.85) =  2.138;\\
+\ell( (8, 2)) = f_b (0.85) =  3.462.
+\eea
+Hence, the MLE is given by $\hat \theta = (8, 2)$ corresponding
+to student B.
+
+Based on frequentist approach which ignores the prior information,
+we are told it is more likely that student B wrote the exam.
+If the MLE has been chosen as the frequentist method to be
+used, then student B is our choice, even though we know it is
+not certain.
+
+Using Bayes analysis together with the prior information provided,
+we claim that there is a 82\% chance that student B wrote the exam.
+At this moment, we have yet to make a decision. The calculation
+of the posterior probability itself does not directly provide one. 
+Suppose wrongfully concluding it was written by student B may
+result in a loss of a million dollars, while wrongfully concluding
+it was student A may result in a loss of a single dollar, then we may still
+claim/act that it was student A who wrote the exam.
+
+\section{Classical issues related to Bayes analysis}
+
+We suggested that a statistical model is a family of distributions
+often represented as a collection of parameterized density functions.
+We use $\{f(x; \theta): \theta \in \Theta\}$ as a generic notation.
+In most applications, we let $\Theta$ be a subset of $\cR^d$.
+
+When a set of observations $\bX$ are obtained and a statistical model is
+assumed, a frequentist would regard $\bX$ is generated from {\bf ONE}
+member of $\{f(x; \theta): \theta \in \Theta\}$ but usually we do not know
+which one. The information contains in $\bX$ helps us to decide which
+one is most likely, or a close proximate of this {\bf ONE}.
+
+In comparison, a Baysian may also regard $\bX$ is generated from {\bf ONE}
+member of $\{f(x; \theta): \theta \in \Theta\}$. However, {\bf this one} $\theta$ 
+value itself is generated from another distribution called prior distribution, 
+$\Pi(\theta)$. 
+In other words, it is
+a realized value of a random variable whose distribution is given by
+$\Pi(\theta)$. If we have full knowledge of $\Pi(\theta)$, then it should
+be combined with $\bX$ to infer which $\theta$ has been THE $\theta$
+in $\{f(x; \theta): \theta \in \Theta\}$ that generated $\bX$.
+We generally cannot nail down to a single $\theta$ value given $\bX$
+and $\Pi(\theta)$. 
+With the help of Bayes theorem, we are able to compute the conditional
+distribution of $\theta$ given $\bX$, which is called posterior. That is,
+we retain the random nature of $\theta$ but update our knowledge
+about its distributions when $\bX$ becomes available.
+Statistical inference about $\theta$ will then be made based on the 
+updated knowledge.
+
+From the above discussion, it is seen that the a preliminary step in
+Bayes analysis is to obtain posterior distribution of $\theta$,
+assuming the model itself has been given and the data have been
+collected. That is, we have already decided on the statistical model
+$f(x; \theta)$, prior distribution $\Pi(\theta)$ and data $\bX$ collected
+in the application.
+Note that this $\bX$ can be a vector of \iid\ observations 
+{\bf given} $\theta$. The notion of {\bf GIVEN} $\theta$ is important
+because $\theta$ is a random variable in the context of Bayes analysis.
+
+Particularly in early days, the Bayes analysis is possible only if
+some kind of neat analytical expression of the posterior is available.
+Indeed, I can give you many such examples when things lineup nicely.
+
+\begin{example}
+Suppose we have an observation $X$ from a binomial distribution
+$f(x; \theta) = C(n, x) \theta^x (1-\theta)^{n-x}$ for $x=0, 1, \ldots, n$.
+Suppose we set the prior distribution with density function
+\[
+\pi(\theta) = \frac{\theta^{a-1} (1-\theta)^{b-1}}{\cB(a, b)}\ind(0 < \theta < 1).
+\]
+By Bayes rule, the density function of the posterior distribution of $\theta$
+is given by
+\[
+f_p (\theta | X=x) 
+= \frac{f(x; \theta) \pi(\theta)}{\int f(x; \theta) \pi(\theta) d\theta}.
+\]
+It appears to get explicit expression, we must find the outcome of
+the integration. However, this can often be avoided. 
+Note that
+\[
+f(x; \theta) \pi(\theta)
+= C(n, x) \theta^{a+x - 1} (1-\theta)^{b+n- x - 1} \ind(0 < \theta < 1).
+\]
+Hence, we must have
+\[
+f_p (\theta | X=x) 
+= \frac{ \theta^{a+x - 1} (1-\theta)^{b+n- x - 1} \ind(0 < \theta < 1)}{c(n, a, b, x)}
+\]
+for some constant $c(a, b, x)$ not depending on $\theta$.
+As a function of $\theta$, it matches the density function of Beta
+distribution with degrees of freedom $a+x, b+n-x$.
+At the same time, its integration must be 1. This shows
+that we must have
+\[
+c(n, a, b, x) = \cB(a+1, n+b - x).
+\]
+The posterior distribution is Beta with $a+x, n+b - x$
+degrees of freedom:
+\[
+f_p (\theta | X=x) 
+= \frac{ \theta^{a+x - 1} (1-\theta)^{b+n- x - 1} \ind(0 < \theta < 1)}
+{\cB(a+1, n+b - x)}
+\]
+This will be the posterior distribution used for Bayes decision. 
+\qed
+\end{example}
+
+You may notice that Binomial distribution and the Beta distribution are
+perfectly paired up to permit an easy conclusion on the posterior distribution.
+There are many such pairs. For instance, if $X$ has Poisson distribution
+with mean $\theta$, and $\theta$ has prior one parameter Gamma distribution,
+then the posterior distribution of $\theta$ is also Gamma. We leave this
+case as an exercise. Such prior distributions are call conjugate priors.
+Another good exercise problem is to draw the density function of many
+beta distributions. It helps to get an intuition on what you have assumed
+if a beta prior is applied.
+
+%possible pairs (a, b) = (0.5, 0), (0, 0.5), (0.5, 0.5), (1, 1), (5, 1), (1, 5),
+%%    (5, 20), (5, 50).
+
+\begin{defi}
+Let $\{f(x; \theta): \theta \in \Theta\}$ be a statistical model. Namely, it is
+a family of distributions. Suppose for any prior distribution $\pi(\theta)$
+as a member of distribution family $\{\pi(\theta; \xi): \xi \in \Xi\}$,
+the posterior distribution of $\theta$ given a set of \iid observations
+from $f(x; \theta)$ is a member of $\{\pi(\theta; \xi): \xi \in \Xi\}$,
+then we say that $\{\pi(\theta; \xi): \xi \in \Xi\}$ is a conjugate
+prior distribution family of $\{f(x; \theta): \theta \in \Theta\}$.
+\end{defi}
+
+
+\vs
+\no
+{\bf Remark}: We have seen that the posterior density is given by
+\[
+f_p (\theta | X=x) 
+= \frac{f(x; \theta) \pi(\theta)}{\int f(x; \theta) \pi(\theta) d\theta}.
+\]
+This formula is generally applicable.
+In addition, one should take note that the denominator in
+this formula does not depend on $\theta$. Hence, the denominator 
+merely serves as a scale factor in $f_p (\theta | X=x)$.
+In classical examples, its value can be inferred from the analytical
+form of the numerator. In complex examples, its value does not
+play a rule in Bayes analysis.
+
+
+\begin{example}
+Suppose that given $\mu$, $X_1, \ldots, X_n$ are \iid from 
+$N(\mu, \sigma_0^2)$ with known $\sigma_0^2$. Namely, $\sigma_0^2$ is not
+regarded as random.
+The prior distribution of $\mu$ is $N(\mu_0, \tau_0^2)$ with both parameter
+values are known. 
+The posterior distribution of $\mu$ given the sample is still normal with
+parameters
+\[
+\mu_B 
+= \frac{ n \bar x/\sigma_0^2 + \mu_0 /\tau_0^2}{ 1/\sigma_0^2 + 1 /\tau_0^2};
+\]
+and
+\[
+\sigma_B^2 = \left [ \frac{n}{\sigma_0^2} + \frac{1}{\tau_0^2} \right ]^{-1}.
+\]
+\end{example}
+
+The philosophy behind the Bayes data analysis is to accommodate our
+prior information/belief about the parameter in statistical inference. Sometime,
+prior information naturally exists. For instance, we have a good idea on the
+prevalence of human sex ratio. In other applications, we may have some
+idea on certain parameters. For example, the score distribution of a typical
+course. Even if we cannot perfectly summarize our belief with a prior distribution,
+one of the distributions in the beta distribution family can be good enough.
+
+It is probably not unusual that we do not have much idea about the
+parameter value under a statistical model assumption. Yet one may
+be attracted to the easiness of the Bayesian approach and would
+like to use Bayes analysis anyway. She may decide to use something
+called non-informative prior. Yet there seem to be no rigorious definition on
+what kind of priors are a non-informative priors.
+
+In the normal distribution example, one may not have much idea about
+the mean of the distribution in a specific application. If one insists on
+use Bayesian approach, he or she may simply use a prior density
+function
+\[
+\pi(\mu) = 1
+\]
+for all $\mu \in \cR$. This prior seems to reflect the lack of any
+idea on which $\mu$ value is more likely than any other $\mu$ values.
+In this case, $\pi(\mu)$ is not even a proper density
+function with respect to Lesbesgue measure. Yet one may obtain a proper
+posterior density following the rule of Bayes theorem. 
+
+It appears to me that Bayes analysis makes sense when prior information
+about the parameter truly exists. In some occasions, it does not hurt to
+employ this tool even if we do not have much prior information. If so,
+the Bayes inference conclusion should be critically examined just likely any
+other inference conclusions. 
+
+\section{Decision theory}
+Let us back to the position that a statistical model
+$f(x; \theta)$ is given, prior distribution $\Pi(\theta)$ is chosen
+and data $\bX$ have been collected. At least in principle,
+the Bayes theorem has enabled us to obtain posterior
+distribution of $\theta$: $f_p(\theta|\bX)$. At this point, 
+we need to decide how to estimate $\theta$, 
+the value generated from $\Pi(\theta)$, and $\bX$ is a 
+random sample from $f(x; \theta)$ with {\bf this} $\theta$.
+With $f_p(\theta|\bX)$ at hand, how do you estimate $\theta$?
+
+First of all, you may pick any function of $\bX$ as your estimator
+of $\theta$. This has not changed.
+
+Second, if you wish to find a superior estimator, then you must
+provide a criterion to judge superiority. In the content of Bayes
+data analysis, the criteria for point estimation is through loss
+functions. 
+
+\begin{defi}
+Assume a probability model with parameter space $\Theta$.
+A loss function $\ell(\cdot, \cdot)$ is a non-negative valued
+function on $\Theta \times \Theta$ such that
+$\ell(\theta_1, \theta_2) = 0$ when $\theta_1 = \theta_2$.
+\end{defi}
+
+Finally, since we do not know what the true $\theta$ value is,
+with the posterior distribution, we can only hope to minimize
+the average loss. Hence, the decision based on the bayes rule 
+is to look for $\hat \theta$ such that the expected loss is minimized:
+\[
+\int L(\hat \theta, \theta) f_p(\theta| \bX) d\theta = \mbox{min}.
+\]
+
+A naturally choice of the loss function is 
+\[
+L(\hat \theta, \theta) = (\hat \theta - \theta)^2.
+\]
+The solution to this loss function
+is clearly the {\bf posterior mean} of $\theta$
+ for one-dimension $\theta$..
+This extends to the situation where $\theta$ is multidimensional.
+ 
+One may use the loss function
+\[
+L(\hat \theta, \theta) = |\hat \theta - \theta|.
+\]
+If so, the solution is the {\bf posterior median} for one-dimension $\theta$.
+The extension to the multidimensional $\theta$ is possible.
+
+\begin{example}
+Suppose we have an observation $X$ from a binomial distribution
+$f(x; \theta) = C(n, x) \theta^x (1-\theta)^{n-x}$ for $x=0, 1, \ldots, n$.
+Suppose we set the prior distribution with density function
+\[
+\pi(\theta) = \frac{\theta^{a-1} (1-\theta)^{b-1}}{\cB(a, b)}\ind(0 < \theta < 1).
+\]
+By Bayes rule, the density function of the posterior distribution of $\theta$
+is given by
+\[
+f_p (\theta | X=x) 
+= \frac{f(x; \theta) \pi(\theta)}{\int f(x; \theta) \pi(\theta) d\theta}.
+\]
+The posterior distribution is Beta with $a+x, n+b - x$
+degrees of freedom:
+\[
+f_p (\theta | X=x) 
+= \frac{ \theta^{a+x - 1} (1-\theta)^{b+n- x - 1} \ind(0 < \theta < 1)}
+{\cB(a+1, n+b - x)}
+\]
+
+If the square loss is employed, then the Bayes estimator of $\theta$
+is given by
+\[
+\int \theta f_p (\theta | X=x) d\theta = \frac{a+x}{a+b+n}.
+\]
+
+When $a= b = 1$, the prior distribution of $\theta$ is uniform on 
+(0, 1). This is regarded as a non-informative prior. With this prior,
+we find
+\[
+\hat \theta = \frac{x+1}{n+2}
+\]
+which seems to make more sense than the MLE $x/n$.
+\qed
+\end{example}
+
+Since Bayes estimator is generally chosen as the minimizer of
+some expected posterior loss, it is optimal in this sense
+by definition. However, the optimality is judged with respect to
+the specific loss function and under the assumed prior.
+Blindly claiming a Bayes estimator is optimal out of content
+is not recommended here. If this logic is applicable, then 
+we would as rightfully claim that the MLE is optimal, 
+because it maximizes a criterion function called likelihood.
+Such a claim would be ridiculous because we have many examples 
+where the MLEs are not even consistent.
+
+We will have an exercise problem to work out Bayes
+estimators under square loss under normal model
+with some conjugate prior distribution on both mean
+and variance.
+
+Once the posterior distribution is ready,
+we are not restricted to merely give a point estimation.
+These issues will be discussed in other parts of this
+course. At the same time, we may get some sense that
+being able to precisely describing the posterior distribution
+is one of the most important topic in Bayes data analysis.
+
+\section{Some comments}
+
+There are two major schools on how the statistical data analysis
+should be carried out: frequentist and Bayesian. If some prior information
+exists and can be reasonably well summarized by some prior distribution,
+then I feel the inference based on Bayes analysis is fully justified. If one does not
+have much sensible prior information on the statistical model appropriate
+to the data at hand, it is still acceptable to use the formality of the
+Bayes analysis. Yet blindly claiming the superiority of a Bayesian approach
+is not of my taste. Particularly in the later case, the Bayes conclusion
+should be critically examined as much as any data analysis methods.
+
+To make things worse, many statisticians seem to regard themselves
+doing research on Bayesian methods, yet they do not aware
+the principle of the Bayes analysis. Probably, they merely feel that this is an easy
+topic to publish papers (not true if one is a serious Bayesian).
+To be more strict, a Bayesian should have a strong conviction that
+the model parameters are invariably realized values from some distribution.
+There is an interest and very valid question, is/was Bayes a Bayesian?

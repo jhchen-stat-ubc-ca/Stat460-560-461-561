@@ -1,0 +1,1447 @@
+\chapter{Analysis of regression models}
+
+In this chapter, we investigate the estimation problems when data
+are provided in the form
+\be
+\label{regr_dat}
+(y_i; \bx_i): ~~~i=1, 2, \ldots, n.
+\ee
+The range of $y$ is $\cR$ and the range of $\bx$ is $\cR^p$.
+We call them response variable and explanatory variables (sometimes covariates).
+In many applications, such data are collected because the
+users believe a large proportion of
+the variability in $y$ from independent trials
+can be explained away from the variations in $\bx$. 
+Often, we feel that they are linked via a regression
+relationship with additive error:
+\be
+\label{regr}
+y_i = g(\bx_i; \btheta) + \sigma \epsilon_i
+\ee
+such that the error terms $\epsilon_i$ are uncorrelated
+with mean 0 and variance $1$. In the current form of expression, 
+it hints that an analytical form of $g(x; \btheta)$ is specified. 
+All that are left to statisticians is
+to decide what is the most ``appropriate'' value of $\btheta$
+in the specific occasion. The distributional information about
+$\epsilon$ may or may not be specified depending on specific
+circumstances. Factoring out $\sigma$ in the error term
+may not always be most convenient for statistical discussion.
+We may choose to replace $\sigma \epsilon_i$ by $\epsilon_i$
+but allowing $\epsilon$ to have a variance different from 1.
+
+The observations on the explanatory variable, $\bx_i$, 
+are either regarded as chosen by scientists (users) so that their values are
+not random, or they are independent samples from some
+population whose distribution is not related to $g(\cdot)$
+nor $\btheta$.  In addition, they are independent of $\epsilon$.
+
+The appropriateness of a regression model in specific applications
+will not be discussed in this course. We continue our discussion
+under the assumption that all promises for \eqref{regr}
+are solid.
+
+It is generally convenient to use matrix notation here.
+We define and denote the covariate matrix as
+\bea
+\bX_n
+&=&
+\left (
+\begin{array}{llll}
+x_{11} & x_{12} & \cdots & x_{1p}\\
+x_{21} & x_{22} & \cdots & x_{2p}\\
+\hdots & \hdots &  & \hdots \\
+x_{n1} & x_{n2} & \ldots & x_{np}
+\end{array}
+\right ) 
+=
+\left (
+\begin{array}{llll}
+\bx^\tau_1\\
+\bx^\tau_2\\
+\hdots \\
+\bx^\tau_n
+\end{array}
+\right )  \vs \vs
+\\
+&=&
+(\bX_1, \bX_2, \ldots, \bX_p).
+\eea
+We define design matrix as
+\[
+\bZ_n = (\one, \bX_1, \bX_2, \ldots, \bX_p)
+\]
+which is the covariate matrix supplemented by a column vector made
+of $1$.
+
+We also use bold faced $\by$ and $\bepsilon$ for column vectors of
+length $n$ for response values and error terms. When necessary, we
+use $\by_n, \bX_n$ with subindex $n$ to highlight the sample size
+$n$. Be cautious that $\bX_3$ stands for the column vector of the
+third explanatory variable, not the covariate matrix when $n=3$.
+We trust that such abuses will not cause much confusion though 
+mathematically not rigorous.
+
+\section{Least absolution deviation and least square estimators}
+
+Suppose we are given a data set in the form of \eqref{regr_dat}
+and we are asked to use the data to fit model \eqref{regr}.
+Let us look into the problem of how to best estimate $\btheta$ and
+$\sigma$. We do not discuss the issues such as the fitness
+of function $g(\cdot)$ and the distribution of $\epsilon$.
+
+There are many potential approaches for estimating $\theta$.
+One way is to select $\theta$ value such that the average
+difference between $y_i$ and $g(x_i; \theta)$ is minimized.
+To implement this idea, one may come up with many potential distances.
+The absolute difference is one of the favourites. 
+With this choice, we define
+\[
+M_n(\theta) = \sum_{i=1}^n | y_i - g(\bx_i; \theta)|
+\]
+and find the corresponding M-estimator for $\theta$. This estimator
+is generally called the least absolute deviation estimator.
+A disadvantage of this approach is the inconvenience of
+working with absolute value function both analytically
+and numerically.
+
+A more convenient choice is
+\[
+M_n(\theta) = \sum_{i=1}^n \{ y_i - g(\bx_i; \theta)\}^2.
+\]
+The resultant estimator is called the least square estimator.
+
+We may place a parametric distribution assumption on that of
+$\epsilon$. If $\epsilon$ has standard normal N(0, 1)
+distribution, then the MLE of $\theta$ equals the least 
+squares estimator.
+If $\epsilon$ has double exponential distribution with
+density function
+\[
+f(u) = \frac{1}{2} \exp \{ - |u| \}
+\]
+then, the least absolute deviation estimator is also
+the MLE under this model. 
+
+\section{Linear regression model}
+Linear regression model is a special signal plus error model.
+In this case, the {\bf regression function} $\bbE(Y | X=x)$
+has a specific form:
+\[
+\bbE(Y | X=x) = g(\bx; \theta) = \beta_0 + \beta_1 x_1
++ \cdots + \beta_p x_p.
+\]
+We can write it in vector form with $\bz^\tau = (1, \bx^\tau)$ as
+\be
+\label{linear-regr}
+g(\bx; \theta) = \bz^\tau \bbeta
+\ee
+which is linear in {\bf regression coefficient}
+$\bbeta = (\beta_0, \beta_1, \ldots, \beta_p)^\tau$.
+While we generally prefer to include $\beta_0$ in most
+applications, this is not a mathematical necessity.
+In some applications, the scientific principle may
+seriously demand a model with $\beta_0 = 0$. 
+Luckily, even though the subsequent developments
+will be based on $\bz$ which implies $\beta_0$ is
+part of the model, most theoretical results remain valid when $\bz$
+is reduced to $\bx$ so that $\beta_0 = 0$ is enforced.
+We will not rewrite the same result twice for this reason.
+
+We have boldfaced two terminologies without formally
+defining them. It is worth to emphasize here 
+that model is linear not because the regression function $g(\bx; \theta)$ 
+is linear in $\bx$, but it is linear in $\theta$ which is denoted as $\bbeta$ 
+here. In applications, we may use $x_1$ for some explanatory variables
+such as dosage and include $x_2 = \log (x_1)$ as another explanatory
+variable in the linear model.
+In this case, the linear regression model has a regression function $g(\bx, \theta)$
+not linear in $x_1$.
+
+Suppose we have $n$ independent observations from regression model
+\eqref{regr} with linear regression function \eqref{linear-regr},
+one way to estimate the regression coefficient vector is by the least
+squares. The M-function now has form
+\be
+\label{regr-m}
+M_n(\bbeta) = (\by_n - \bZ_n \bbeta)^\tau (\by_n - \bZ_n \bbeta)
+=
+\sum_{i=1}^n (y_i - \bz_i^\tau \bbeta)^2.
+\ee
+For linear regression model, there is an explicit solution to the least
+squares problem in a neat matrix notation.
+
+\begin{theorem}
+Suppose $(y_i, \bx_i)$ are observations from linear regression
+model \eqref{regr} with $g(\bx, \theta)$ given by \eqref{linear-regr}.
+The solution to the least squares problem as defined in \eqref{regr-m}
+is given by
+\be
+\label{ls-linear}
+\hat{\bbeta}_n
+=
+(\bZ_n^\tau \bZ_n)^{-1} \bZ_n^\tau \by_n
+\ee
+if $\bZ_n^\tau \bZ_n$ has full rank.
+
+If $\bZ_n^\tau \bZ_n$ does not have full rank, one solution 
+to the least squares problem is given by
+\[
+\hat{\bbeta}_n
+=
+(\bZ_n^\tau \bZ_n)^{-} \bZ_n^\tau \by_n
+\]
+where $\bA^-$ here denotes a specific generalize inversion.
+\end{theorem}
+
+Remark: the statement hints that if $\bZ_n^\tau \bZ_n$ does
+not have full rank, the solution is not unique. However, we will
+not discuss it in details.
+
+\proof
+We only give a proof when $\bZ_n^\tau \bZ_n$ has full rank.
+It is seen that
+\bea
+M_n(\bbeta)
+&=&
+\{(\by_n - \bZ_n \hat \bbeta) + \bZ_n (\hat \bbeta - \bbeta)\}^\tau 
+\{(\by_n - \bZ_n \hat \bbeta) + \bZ_n (\hat \bbeta - \bbeta)\} \\
+&=&
+(\by_n - \bZ_n \hat \bbeta)^\tau (\by_n - \bZ_n \hat \bbeta)
++
+(\hat \bbeta - \bbeta)^\tau (\bZ_n^\tau \bZ_n) (\hat \bbeta - \bbeta)\\
+&\geq &
+(\by_n - \bZ_n \hat \bbeta)^\tau (\by_n - \bZ_n \hat \bbeta).
+\eea
+The lower bound implied by the above inequality is attained
+when $\bbeta = \hat \bbeta$. Hence, $\hat \bbeta$ is the
+solution to the least squares problem.
+\qed
+
+\vs
+Let $\hat \bbeta_n$ be the least squares estimator of $\bbeta$
+and $\bbeta$ be the true value of the parameter without giving
+it a special notation. We find
+\[
+\bbE\{ \hat \bbeta_n | X_n\} 
+=  (\bZ_n^\tau \bZ_n)^{-1} \bZ_n^\tau \{ \bZ_n \bbeta\}
+= \bbeta.
+\]
+Hence, $\hat \bbeta_n$ is an unbiased estimator
+of the regression coefficient vector. Notice that this conclusion
+is obtained under the assumption that $\bx$ and $\epsilon$
+are independent. Also notice that we assumed $\epsilon$ has
+zero mean and constant variance, but placed no assumption on its 
+distributions. Put the additive error terms in the form of
+$\sigma \bepsilon_n$, e have
+\[
+\hat \bbeta_n - \bbeta 
+=
+\sigma (\bZ_n^\tau \bZ_n)^{-1} \bZ_n \bepsilon_n.
+\]
+Hence,
+\[
+\var (\hat \bbeta_n)
+= (\bZ_n^\tau \bZ_n)^{-1} \sigma^2.
+\]
+Because we made a distinction between the
+covariate matrix $\bX_n$ and the design matrix $\bZ_n$,
+the above expression may appear different from 
+those in standard textbooks.
+
+With $\bbeta$ estimated by $\hat \bbeta$, it is naturally
+to regard
+\[
+\hat{\by}_n = \bZ_n \hat \bbeta_n = \bH_n \by_n
+\]
+as the estimated value of $\by_n$, where the hat matrix
+\[
+\bH_n = \bZ_n (\bZ_n^\tau \bZ_n)^{-1} \bZ_n^\tau.
+\]
+In fact, we call $\hat \by_n$ fitted value(s). 
+How closely does $\hat \by_n$ match $\by_n$? 
+The residual of the fit is given by
+\[
+\hat{\epsilon}_n
+=
+(\bI_n - \bH_n) \by_n
+=
+\sigma (\bI_n - \bH_n) \bepsilon_n.
+\]
+One can easily verify that $\bH_n$ and
+$\bI_n - \bH_n$ are symmetric and idempotent, and
+$(\bI_n - \bH_n)  \bZ_n = 0$.
+From geometric angle, $\bH_n$ is a projection
+matrix. The operation $\bH_n \by_n$ projects
+$\by_n$ into the linear space spun by $\bZ_n$.
+Naturally, $(\bI_n - \bH_n) \by_n$ is the projection of
+$\by_n$ into the linear space  orthogonal to $\bZ_n$.
+This leads to a decomposition of the sum of squares:
+\[
+\by_n^\tau \by_n
+=
+\by_n^\tau \bH_n  \by_n + \by_n^\tau (\bI_n - \bH_n)  \by_n.
+\]
+The second term is the ``residual sum of squares''.
+It is an easy exercise to prove that
+\[
+\by_n^\tau (\bI_n - \bH_n)  \by_n 
+= \hat \bepsilon_n^\tau \hat \bepsilon_n.
+\]
+
+We directly verified that $\hat \bbeta$ solves the least squares
+problem. One may derive this result by searching for solutions
+to 
+\[
+\frac{\partial M_n(\bbeta)}{\partial \bbeta} = 0.
+\]
+This leads to normal equation
+\[
+\bZ_n^\tau \{ \by_n - \bZ_n \bbeta \} = 0.
+\]
+We again leave it as an easy exercise.
+
+We have seen that the least squares estimator $\hat \bbeta_n$
+has a few neat properties. Yet we cannot help to ask: can we find
+other superior estimators? The answer is no at least in
+one respect. The least squares estimator has the lowest
+variance among all unbiased linear estimators of $\bbeta$.
+A linear estimator is defined as one that can be written as
+a linear combinations of $y_i$. It must be able to be written
+in the form of $\bA \by_n$ for some matrix $\bA$ not
+dependent on $\by_n$.
+
+\begin{theorem}
+{\bf Gauss-Markov Theorem}. Let $\hat \bbeta_n$
+be the least squares estimator and
+\[
+\tilde {\bbeta}_n = \bA \by_n
+\]
+for some nonrandom matrix $\bA$ (may depend on $\bX_n$)
+be an unbiased linear estimator of $\bbeta$ under
+the linear regression model with $n$ independent
+observations. Then
+\[
+\var(\tilde{\bbeta}) - \var(\hat \bbeta) \geq 0.
+\]
+\end{theorem}
+
+\proof
+Suppose $\bA \by_n$ is unbiased for $\bbeta$.
+We must have
+\[
+\bbE(\bA \by_n) = \bA \bZ_n \bbeta = \bbeta
+\]
+for any $\bbeta$. Hence, we must have
+$\bA \bZ = \bI_{p+1}$. This implies
+\bea
+\var(\tilde{\bbeta} - \hat \bbeta)
+&=&
+\sigma^2
+ \{\bA - (\bZ_n^\tau \bZ_n)^{-1}\bZ_n^\tau \}\{ \bA^\tau - \bZ_n (\bZ_n^\tau \bZ_n)^{-1}\}\\
+&=&
+\var(\tilde{\bbeta}) - \var(\hat \bbeta).
+\eea
+Because the variance matrix for any random variable is
+non-negative definite. Hence, we must have
+\[
+\var(\tilde{\bbeta}) - \var(\hat \bbeta) \geq 0.
+\]
+\qed
+
+An estimator which is linear in data and unbiased for the target
+parameter is called {\bf best linear unbiased estimator} (BLUE)
+if it has the lowest possible variance matrix.
+
+Not only the least squares estimator $\hat \bbeta$ is BLUE for
+$\bbeta$, but $\bb^\tau \hat \bbeta$ is BLUE for $\bb^\tau \bbeta$
+for any non-random vector $\bb$.
+
+At the same time, be aware that if we have additional information
+about the distribution of $\epsilon_n$ in the linear model, then we
+may obtain more efficient estimator for $\bbeta$, but that estimator
+is either not linear or not unbiased.
+
+
+\section{Local kernel polynomial method}
+
+Naturally, a linear regression model is not always
+appropriate in applications, but we may
+still believe a signal plus noise relationship is sound.
+In this section, we consider the situation where the
+regression function $g(x)$ is smooth in $x$, but we are
+unwilling to place more restrictions on it. At the same time,
+we only study the simple situation where $x$ is a univariate
+covariate.
+
+Suppose we wish to estimate $g(x)$ at some specific $x^*$ value.
+By definition, $g(x^*) = \bbE(Y|X=x^*)$. Suppose that
+among $n$ observations
+$\{(y_i, x_i)\}$, $i=1, \ldots, n$ we collected, there are many 
+$x_i$ values such that $x_i = x^*$. 
+The average of their corresponding
+$y_i$ would be a good estimate of $g(x^*)$. In reality, there may
+not be any $x_i$ equalling $x^*$ exactly. Hence, this idea does not
+work. On the other hand, when $n$ is very large, there might be
+many $x_i$ which are very close to $x^*$. Hence,
+the average of their corresponding
+$y_i$ should be a sensible estimate of $g(x^*)$.
+To make use of this idea, one must decide how close is close enough.
+Even within the small neighbourhood, should we merely use constant,
+rather than some other smooth functions of $x$ to
+approximate $g(x)$?
+
+For any $u$ in close enough to $x$ (rather than $x^*$ for
+notation simplicity) and some positive integer $p$, when $g(x)$
+is sufficiently smooth at $x$, we have
+\[
+g(u)
+\approx
+f(x) + f'(x)(u-x) + \ldots + (1/p!) f^{(p)}(x)(u-x)^p.
+\]
+Let 
+\[
+\beta_0=f(x), ~\beta_1= f'(x), ~\ldots, \beta_p= (1/p!) f^{(p)}(x).
+\]
+Then the approximation can be written as
+\[
+g(u)
+\approx
+\beta_0 +\beta_1(u-x) + \ldots + \beta_p (u-x)^p.
+\]
+Note that at $u = x$, we have $g(x) \approx \beta_0$.
+
+Suppose that for some $h>0$, $f(u)$ perfectly coincides
+with the above polynomial function for $x \in [x-h, x+h]$.
+If so, within this region, we have a linear regression model
+with regression coefficient $\bbeta_x$.
+A natural approach of estimating this {\it local}
+$\bbeta_x$ is the least squares:
+\bea
+\hat \bbeta_x
+=
+\arg \min_{\bbeta}
+\sum_{i=1}^{n} \ind (|x_i - x| \leq h)  \{y_i - \bz_i^\tau \bbeta \}^2
+\eea
+where
+\[
+\bz_i = \{1, (x_i - x), (x_i - x)^2, \ldots, (x_i - x)^p\}^\tau.
+\]
+Note again that $\bz_i$ is defined dependent on $x$-value,
+the location at which $g(x)$ is being estimated.
+
+Note that we have added a subindex $x$ to $\bbeta$.
+This is helpful because this vector is specific to the regression
+function $g(u)$ at $u=x$. When we change target from $u=x_1$
+to $u=x_2 \neq x_2$, we must refit the data and obtain
+the $\bbeta$ specific for $u = x_2$. We repeatedly state this
+to emphasize the local nature of the current approach.
+
+The above formulation implies that $i$th observation will
+be excluded even if $|x_i - x|$ is only slightly larger than $h$.
+At the same time, any observations with $|x_i - x|\leq h$
+are treated equally. This does not seem right in our intuition.
+One way to avoid this problem is to
+replace the indicator function by a general kernel function
+$K(x)$ often selected to satisfy the following properties:
+\begin{enumerate}
+\item 
+$K(x)\geq0$;
+\item 
+$\int_{-\infty}^\infty K(x)dy=1$;
+\item 
+$K(x)=K(-x)$, That is, $K(x)$ is a symmetric function. 
+\end{enumerate}
+For instance, the density function $\phi(x)$ of N(0, 1)
+has these properties. In fact, any symmetric density function
+does.
+
+Let $K_h(x) = h^{-1} K(x/h)$. We now define the 
+local polynomial kernel estimator of $\bbeta_x$ as
+\bea
+\hat \bbeta_x
+=
+\arg \min_{\bbeta}
+\sum_{i=1}^{n} K_h(x_i - x) \{y_i - \bz_i^\tau \bbeta \}^2
+\eea
+
+An explicit solution to the above optimization problem 
+is readily available using matrix notation.
+Let $\by_m$ be the response vector,
+define design matrix
+\[
+Z_x
+=
+\left(
+\begin{array}{cccc}
+1 & x_1-x &\cdots& (x_1-x)^p \\
+\vdots&\vdots&\cdots&\vdots\\
+1&x_n-x&\cdots&(x_n-x)^p
+\end{array}
+\right )
+\]
+and weight matrix
+\[
+W_x =
+\diag \{
+K_h(x_1-x), K_h(x_2 - x), \cdots,  K_h(x_n-x) \}.
+\]
+The M-function can then be written as
+\[
+M_n(\beta) = (\by-\bZ_x\bbeta)^\tau \bW_x (\by-\bZ_x\bbeta).
+\]
+It is an easy exercise to show that the solution is given
+by
+\[
+\hat \bbeta_x= (\bZ^\tau_x W_x \bZ _x)^{-1}\bZ^\tau_x \bW_x \by_n
+\]
+
+Let $\bfe_j$ be a $(p+1)\times 1$ vector such that 
+the $j$th element being 1 and all other elements being 0, $j=1,\ldots,p+1$.  
+Then we estimate $g(x)$ by
+\[
+\hat g(x)
+=
+\hat \beta_0
+=
+{\bfe}_1^\tau (\bZ^\tau_x W_x \bZ _x)^{-1}\bZ^\tau_x \bW_x \by_n
+\]
+where $\hat \beta_0$ is the first element of $\hat \bbeta_x$.
+
+\vs
+\noindent
+{\bf Remark}: Notationally, the above locally kernel polynomial
+estimator remains the same for any choice of $p$.
+
+Suppose $g(x)$ is differentiable up to order $p$.
+Then, for $k=1, \ldots, p$, we estimate 
+the $k$th derivative $g^{(k)}(x)$ by
+\[
+\hat g^{(k)}(x)
+=
+ k! \hat \beta_k
+=k! {\bfe}_{k+1}^\tau (\bZ^\tau_x W_x \bZ _x)^{-1}\bZ^\tau_x \bW_x \by_n.
+\]
+
+When we decide to use $p=0$ in this approach, the estimator
+$\hat g(x)$ becomes
+\[
+\hat f(x)
+=\frac{\sum_{i=1}^n K_h(x_i-x) y_i} {\sum_{i=1}^n K_h(x_i-x)},
+\]
+which is known as the local constant kernel estimator,
+kernel regression estimator  and  Nadaraya-Watson estimator. 
+This estimator can be motivated by the fact that $g(u)$ is a constant
+function in a small neighborhood of $x$:  $u \in [x-h, x+h]$
+for some sufficiently small $h$.  The estimator is the weighted
+average of the corresponding response values whose $x$
+is within small neighbourhood of $x$.
+
+When we decide to use $p=1$ in this approach, the estimator is 
+called the local linear kernel estimator of $g(x)$. 
+
+Before this estimator is applied to any specific data, we must
+make a choice on the kernel function $K$, the degree of the
+polynomial $p$ and the bandwidth  $h$.
+We now go over these issues.
+
+\vs\vs\noindent
+{\bf Choice of $K(y)$.}
+
+The choice of kernel function $K(x)$ is not crucial. 
+Other than it should have a few desired properties,
+its specific form does not markedly change the variance or
+bias of $\hat g(x)$.
+In our future examples, we will 
+mostly use normal density function.
+Clearly, the normal density function has the listed three
+properties.
+
+\vs\noindent
+{\bf Choice of $p$.}
+
+For the given bandwidth $h$ and kernel $K(x)$, 
+a large value of $p$ would expectedly reduce the bias of 
+the estimator because the local approximation becomes 
+more and more accurate  as $p$ increases. 
+At the same time, when $p$ is large, we have more parameters
+to estimate as reflected in the dimension of $\bbeta$.
+Hence, the variance of the estimator will increase and
+there will be a larger computational cost.
+
+Fan and Gijbels (1996) showed that when the degree
+of the polynomial employed increases from $p=k+2q$ to
+$p=k+2q+1$ for estimating $g^{(k)}(x)$,  the variance 
+does not increase.  
+However, if we increase the degree from $p=k+2q+1$ to $p=k+2q+2$,
+the variance increases.  
+Therefore for estimating $g^{(k)}(x)$, 
+it is beneficial to use a degree $p$ such that $p-k$ is odd. 
+Since bandwidth $h$ also controls the bias and variance 
+trade-off of $g^{(k)}(x)$, they recommended the lowest odd order for $p-k$, 
+namely  $p=k+1$, or occasionally $p=k+3$. 
+For the regression function itself, they recommended
+local linear kernel estimator (i.e. $p=1$) instead of the 
+Nadaraya-Watson estimator (i.e. $p=0$). 
+
+To have a better understanding of the above information, 
+we summarize some theoretical results about the local linear kernel 
+estimator and Nadaraya-Watson estimator here.
+Let them be denoted as $\hat g_{\mbox{\tiny \sc ll}}(x)$ and 
+$\hat g_{\mbox{\tiny {\sc nw}}}(x)$,  
+respectively. 
+We have
+\bea
+\hat g_{\mbox{\tiny {\sc nw}}}(x)
+&=&
+\frac{\sum_{i=1}^nK_h(x_i-x) y_i}{\sum_{i=1}^n K_h(x_i-x)}\\
+\hat g_{\mbox{\tiny \sc ll}}(x)
+&=& \hat\beta_0
+= \arg\min_{\beta_0}
+\{\min_{\beta_1} \sum_{i=1}^{n} K_h(x_i-x) \{y_i-\beta_0-\beta_1(x_i-x)\}^2\} .
+\eea
+Under the regression model assumption that 
+\[
+y_i = g (x_i)+ \sigma \epsilon_i
+\]
+and for random $x_i$ such that its density function is given by $f(x)$,
+and under many conditions regulating $f(x)$, $g(x)$ and distribution
+of $\epsilon$, we have
+\begin{eqnarray*}
+\bbE \{\hat g_{\mbox{\tiny {\sc nw}}}(x)| \bx \}
+&\approx&
+g(x) + 0.5 h^2 \mu_2(K) \left\{g''(x)+\frac{2f'(x)g'(x)}{f(x)}\right\};
+\\
+\bbE \{\hat  g_{\mbox{\tiny \sc ll}} | \bx \}
+&\approx&
+g(x) + 0.5 h^2 g''(x) \mu_2(K);
+\\
+\var\{\hat g_{\mbox{\tiny {\sc nw}}}(x)|\bx \}
+&\approx&
+\frac{\sigma^2}{nh f(x)} R(K);\\
+\var \{\hat  g_{\mbox{\tiny \sc ll}}(x)| \bx \}
+&\approx&
+\frac{\sigma^2}{nhf(x)} R(K)
+\end{eqnarray*}
+where $\mu_2(K)$ and $R(K)$ are some positive
+constants depending on kernel function $K$.
+
+The above results show that
+the local linear kernel estimator $\hat g_{\mbox{\tiny \sc ll}}(x)$
+and Nadaraya-Watson estimator $\hat g_{\mbox{\tiny {\sc nw}}}(x)$
+have the same asymptotic variance conditional on $\bx$.
+which is the conclusion that we discussed before. 
+The asymptotic bias of $\hat g_{\mbox{\tiny {\sc nw}}}(x)$ 
+has an extra bias term 
+$2f'(x)g'(x) \mu_2(K)h^2/f(x)$.
+The coefficient ${2f'(x)g'(x)}/{g(x)}$ is also called design bias because
+it depends on the design, namely, the distribution of $x$. 
+This implies that the bias is sensitive to the positions of 
+design point $x_i$'s. 
+Note that $\frac{f'(x)}{f(x)}$ can have high influence on the 
+bias when $x$ is close to the boundary. 
+For example,  when the density points $x_i$ have standard
+normal distribution,
+$|f'(x)/f(x)|=|x|$, which is very large when $x$ approaches to $\infty$. 
+Hence $2f'(x)g'(x)/{f(x)}$ is also known as boundary bias. 
+These two biases are reduced by using the local linear kernel 
+estimator.
+In summary,  local linear kernel estimator is free from the 
+design and boundary biases, 
+but Nadaraya-Watson estimator is not. 
+
+\vs\noindent
+{\bf Choice of bandwidth $h$}
+
+Suppose we have made choice of the kernel function $K(x)$ and $p$. 
+We now discuss the choice of bandwidth $h$. 
+Bandwidth plays a very important role in estimating the regression
+function $g(x)$. 
+
+First, as $h$ increases, the local approximation becomes worse and worse
+and hence the bias of local polynomial kernel estimator increases.
+On the other hand, more and more observations will be included in
+estimating $g(x)$.
+Hence the variance of local polynomial kernel estimator decreases. 
+A good choice of a bandwidth helps to balance the bias and variance. 
+Second, as $h$ increases, the local polynomial kernel estimate
+becomes smoother and smoother. 
+This can be observed in Figure \ref{normal_nw}, in which we compare the 
+Nadaraya-Watson estimates of $g(x)$ constructed when the
+bandwidth $h$ takes three values, 0.1, 1, and 4, respectively. 
+Conceptually, the number of parameters required to describe the curve decreases.
+In this sense, $h$ controls the model complexity. We should choose 
+a bandwidth to balance the modelling fitting and model complexity. 
+\begin{figure}[ht]
+\caption{Motorcycle data: Nadaraya-Watson estimates of $g(x)$ with normal kernel}
+\centerline{ \includegraphics[scale=0.5]{normal_NW.pdf}}
+\label{normal_nw}
+\end{figure}
+
+\clearpage
+
+We introduce two bandwidth selection methods here: l
+eave-one-out cross-validation (\cv) and 
+generalized cross-validation (\gcv).
+These two methods are also widely used in studying
+other regression problems. 
+
+The idea of leave-one-out \cv\ is as follows. 
+Recall that one purpose of fitting a regression model is to 
+predict the response value in a new trial. 
+So a reasonable choice of $h$ should result in a small prediction error. 
+Unfortunately, we do not know the true response, and therefore
+we cannot know how good is the prediction $\hat f(x)$ given $h$.  
+The idea of cross-validation is to first delete one observation
+from the data set, and treat the remaining $n-1$ observations 
+as the training data set and the deleted observations as testing data. 
+We then test the goodness of prediction for the testing observation 
+by using the training data set. 
+We repeat the process for all observations and get the prediction errors 
+for all observations. We choose $h$ by minimizing the sum of prediction errors. 
+Mathematically, let $\hat g_{-i}(x_i)$ be the estimate of $g(x_i)$ based 
+on the $n-1$ observations without $x_i$. 
+For the given $h$, 
+the \cv\ score is defined as 
+$$
+\cv(h)=\sum_{i=1}^n\{y_i-\hat g_{-i}(x_i)\}^2.
+$$
+The optimal $h$ based on the leave-one-out cross-validation idea is 
+$$
+h_{cv}=\arg\min \cv(h).
+$$
+
+It seems that it might be time consuming to evaluate $\cv(h)$
+since we apparently need to recompute the estimate after dropping
+out each observation. 
+Fortunately, there is a shortcut formula for computing $\cv(h)$. 
+
+Let 
+$$
+l(x)
+=\Big( l_1(x),\ldots, l_{n}(x)
+\Big)
+={\bf e}_1^\tau(\bZ^\tau_x \bW_x \bZ_x)^{-1} \bZ_x^\tau \bW_x. 
+$$
+Then 
+$$
+\hat g(x)=\sum_{j=1}^n l_j(x) y_j
+\mbox{ and }
+\hat g(x_i)=\sum_{j=1}^n l_j(x_i) y_j. 
+$$
+Define the fitted value vector 
+$$
+\widehat\by
+=\left(
+\hat y_1,\cdots,\hat y_n
+\right)^\tau
+=\left(\hat g(x_1),\cdots,
+\hat g(x_n)
+\right)^\tau. 
+$$
+It then follows that 
+$$
+\widehat\by=\bL\by
+$$
+where $\bL$ is an $n\times n$ matrix whose $i$th row is $l(x_i)$; 
+thus $\bL_{ij}=l_j(x_i)$ and $\bL_{ii}=l_i(x_i)$. 
+It can be shown that 
+$$
+\cv(h)
+=\sum_{i=1}^{n}\left\{\frac{y_i-\hat f(x_i)}{1-\bL_{ii}}\right\}^2. 
+$$
+We can minimize the above $\cv(h)$ to get the $h_{cv}$.
+
+The second method for choosing $h$ is called the generalized cross-validation. 
+For this method, rather than minimizing 
+$\cv(h)$, an alternative is to use an approximation called 
+generalized cross-validation (\gcv) score in which each $\bL_{ii}$ is replaced 
+with its average $v/n$, where 
+$v=\mbox{tr}(\bL)=\sum_{i=1}^n\bL_{ii}$ is called the effective degrees of freedom. 
+Thus, we would minimize \gcv score
+$$
+\gcv(h)=\sum_{i=1}^n\left\{ \frac{Y_i-\hat f(x_i)}{1-v/n}\right\}^2
+$$
+to obtain the bandwidth $h_{gcv}$. 
+That is, 
+$$
+h_{gcv}=\arg\min_h \gcv(h). 
+$$
+Usually $h_{cv}$ is quite close to $h_{gcv}$. 
+
+In Appendix I, we include the R function {\it bw.cv()} to 
+choose the bandwidth for the local polynomial kernel estimate for continuous response. 
+The source code is saved in {\it bw\_cv.R}. 
+In this function, if the option {\it cv=T}, then the \cv method is used; 
+if the option {\it cv=F}, then the \gcv method is used. 
+The R function {\it regCVBwSelC()} in the R package {\it locpol}
+can also be used to obtain $h_{cv}$ for the continuous response. 
+The R function {\it regCVBwSelC()} gives the same result as the R function 
+{\it bw.cv()} with {\it cv=T}. 
+Further it is much faster. 
+Figure \ref{cvgcv} gives the $\cv(h)$ and $\gcv(h)$ for $p=0,1$. 
+Here the normal kernel is used. 
+(Remark by your instructor: these programs are not included).
+
+\begin{figure}[p]
+\caption{Motorcycle data: $\cv(h)$ and $\gcv(h)$ for $p=0,1$ with normal kernel}
+\centerline{ \includegraphics[scale=0.5]{cvgcv.pdf}}
+\label{cvgcv}
+\end{figure}
+
+Similar to kernel density estimation, Wand and Jones (1995) applied
+the idea of direct plug-in methods for bandwidth selection
+for local linear kernel estimate. 
+This idea is implemented in R function {\it dpill()} in the package {\it KernSmooth}. 
+I did not cover this idea because it is only applicable for local linear kernel estimate. 
+Further it is more complicated to implement compared with  \cv\ and \gcv\ methods.  
+
+Applying the above mentioned R functions, for $p=0$, $h_{cv}=0.914$ and $h_{gcv}=1.089$; 
+for $p=1$, $h_{cv}=1.476$, $h_{gcv}=1.570$, and the direct plug-in gives $h_{DPI}=1.445$. 
+Figure \ref{fitcurve} gives the fitted curves of $f(x)$ with $p=0, 1$, in which the bandwidth
+is selected by \cv\ or \gcv. 
+Here  the normal kernel is used. 
+The two curves for $p=0$ are almost the same. 
+The fitted curves for $p=1$ with  the bandwidths $h_{cv}$, $h_{gcv}$, and  $h_{DPI}$
+are almost the same. Hence we only plot the curves with the bandwidths selected 
+by \cv\ and \gcv. 
+The four fitted curves are very close to each. 
+They do not show too much difference when they are plotted in the same panel. 
+
+\begin{figure}[p]
+\caption{Motorcycle data:  fitted curves for $p=0,1$ with normal kernel, in which the bandwidth
+is selected by \cv or \gcv}
+\centerline{ \includegraphics[scale=0.5]{fitcurve.pdf}}
+\label{fitcurve}
+\end{figure}
+
+
+\vs\vs
+\noindent
+{\bf Properties of $\hat f(x)$ }
+
+Let $h$ be given. We have
+\[
+\bbE\{ \hat g (x)| \bx \}
+\approx f(x)
+\]
+and
+\[
+\var\{\hat g(x) |\bx\}
+=
+\sigma^2{\bfe_1}^\tau
+(\bZ^\tau_x\bW_x \bZ_x)^{-1}
+(\bZ^\tau_x\bW^2_x \bZ_x)
+(\bZ^\tau_x \bW_x \bZ_x)^{-1} {\bfe}_1.
+\]
+Therefore the standard error is given by
+\[
+\mbox{se}\{\hat f(x)\}
+=
+\sqrt{
+\hat \sigma^2{\bfe_1}^\tau
+(\bZ^\tau_x\bW_x \bZ_x)^{-1}
+(\bZ^\tau_x\bW^2_x \bZ_x)
+(\bZ^\tau_x \bW_x \bZ_x)^{-1} {\bfe}_1
+},
+\]
+where $\hat\sigma^2$ is an estimator of $\sigma^2$. 
+Wand and Jones (1995) suggested the following form for $\hat\sigma^2$: 
+\[
+\hat \sigma^2
+=
+n - 2v +\tilde v
+\]
+with
+\[
+v=\mbox{tr}(\bL)=\sum_{i=1}^n \bL_{ii},~~
+\tilde v
+=
+\mbox{tr}(\bL^\tau \bL)=\sum_{i=1}^n \sum_{j=1}^n \bL_{ij}^2. 
+\]
+\clearpage
+
+\section{Spline method}
+Let us again go back to model \eqref{regr} but do not assume a parametric
+regression function $g(\bx; \btheta)$. Instead, we only postulate that
+$\bbE(Y|X=\bx) = g(\bx)$ for some smooth function $g(\cdot)$.
+Suppose we try to estimate $g(\cdot)$ by simplistic least
+squares estimator without a careful deliberation. The solution
+will be regarded as the solution to the minimization problem
+to
+\[
+\sumin \{ y_i - g(x_i)\}^2.
+\]
+If all $x_i$ values are different, the solution is given by
+any function $\hat g$ such that 
+$\hat g(x_i) = y_i$. Such a perfect fitting clearly
+does not have any prediction power for a new observation
+whose covariate value is not equal to the existing covariate values.
+Furthermore, if  $\hat g(x)$ just connects all points formed by
+observations, it lacks some smoothness we may expect.
+
+If we require $g(x)$ to be a linear function of $x$, then it
+is a very smooth function, but the fitting 
+is unsatisfactory if $\bbE(Y | X = \bx)$ is not far
+from linear in $\bx$.
+One way to balance the need of smoothness and fitness is
+to use smoothing spline.
+Among all functions with first two continuous 
+derivatives, let us find the one that minimizes
+the penalized $L_2$-loss function
+\begin{equation}
+\label{sm.spline}
+\hat g_{\lambda}(\bx)
+=
+\arg\min_{ g(\bx)}
+\left[
+\sum_{i=1}^{n}\{y_i- g(\bx_i)\}^2
++
+\lambda \int \{ g''(x)\}^2d\bx
+\right],
+\end{equation}
+for some positive tuning or smoothing parameter $\lambda$.
+which is called smoothing parameter. 
+In the penalized $L_2$-loss function, 
+the first term measures the goodness of model fitting, 
+while the second term penalizes the curvature in the function.
+We will remain vague on the range of $x$.
+
+\begin{enumerate}
+\item[] 
+When we use $\lambda=0$: 
+$\hat g_{\lambda}(\bx)$ becomes the ordinary least squares estimator.
+The solution is not unique and has little prediction power.
+\item[] 
+When we use $\lambda=\infty$, then the optimal solution must be
+$g''(x) = 0$ for all $x$. The solution must be linear in $\bx$.
+We are back to use linear regression model and the associated
+least squares estimator. 
+\end{enumerate} 
+
+Clear, a good fit is possible by choose a $\lambda$ value in between
+$0$ to $\infty$ to get a smooth function with reasonable fitting. 
+Note that the above minimization is taken over all possible
+function $g(\bx)$, and such functions form an infinite dimensional space. 
+Remarkably, it can be shown that solution $\hat g_{\lambda}(x)$
+to the penalized least squares problem
+is a {\it natural cubic spline with knots at the unique values of $\{x_i\}_{i=1}^{n}$.}
+Here we consider the case when $x$ is one-dimensional.
+
+\section{Cubic spline}
+
+We now need a brief introduction to the cubic spline.
+A cubic spline is a function which is piece-wisely cubic polynomial. 
+Namely, we partition the real line into finite number of intervals
+and a cubic spline is a polynomial of $x$ of degree 3
+which has continuous derivative.
+ 
+More precisely,  suppose 
+$-\infty = t_0 < t_1< t_2 < \ldots < t_k < t_{k+1}= \infty$ are $k$ 
+distinct real values, then $s(x)$ is a cubic spline if 
+\begin{enumerate}
+\item 
+It is a cubic function on each interval $[t_i, t_{i+1}]$:
+\bea
+s_i(x) 
+&=&  \{ a_i+b_ix+c_ix^2+d_ix^3 \}\\
+s(x) 
+&=& \sum_{i=0}^k s_i(x) \ind(t_i < x \leq t_{i+1}).
+\eea
+\item 
+$s(x)$ and its  first and second derivatives are continuous:
+\bea
+s_{i}(t_{i+1}) &=& s_{i+1}(t_{i+1}), \\
+s_{i}'(t_{i+1}) &=& s_{i+1}'(t_{i+1}),\\
+s_{i}''(t_{i+1}) &=& s_{i+1}''(t_{i+1}).
+\eea
+\end{enumerate} 
+The connection values $t_1, \ldots, t_{k}$ are called the knots of 
+the cubic spline. 
+In particular, $t_1$ and $t_k$ are called the boundary knots,
+and $t_2, \ldots, t_{k-1}$ are called the interior knots. 
+
+Furthermore, if
+\begin{enumerate}
+\item[3.] 
+$s(x)$ is linear outside the interval $[t_1, t_k]$; that is,
+\[
+s(x)\ind(x \leq t_1) = (a_0+b_0x) \ind(x \leq t_1) ;
+~~~   s(x)\ind(x \geq t_k) = (a_k+b_k x) \ind( x \geq t_k)
+\]
+for some $a_0, b_0, a_k, b_k$,
+\end{enumerate}
+we call 
+$s(x)$ a {\bf natural} cubic spline with knots at $t_1, \ldots, t_k$.
+Note that this also means $c_0 = c_{k} = 0$.
+
+The following result shows that there is a simpler way
+to express a cubic spline.
+
+\begin{theorem}
+Any cubic spline $s(x)$ with knots at $\left \{t_1, \ldots, t_k \right\}$
+can be written as: 
+\be
+\label{cubic-spline}
+s(x) =\beta_0+\beta_1x+\beta_2 x^2+\beta_3 x^3
+                + \sum_{j=1}^{k} \beta_{j+3} (x - t_j)_+^3,
+\ee
+where $(x)_+=\max(0,x)$
+for some coefficients $\beta_0, \ldots, \beta_{k+3}$. 
+
+In other words, the cubic spline is a member of the
+linear space with basis functions
+\[
+1, x, x^2, x^3, (x - t_1)_+^3, \ldots, (x - t_{k})_+^3.
+\]
+\end{theorem}
+
+\vs
+\proof
+The function defined by \eqref{cubic-spline} is clearly a cubic
+function on every interval $[t_0, t_{i+1}]$. We can also
+easily verify that its first two derivatives are continuous.
+This shows that such functions are cubic splines.
+
+To prove this theorem, we need further show that every
+cubic spline with knots at $\left \{t_1, \ldots, t_k \right\}$
+can be written in the form specified by \eqref{cubic-spline}.
+
+Let $g(x)$ be a cubic spline with knots at $\left \{t_1, \ldots, t_k \right\}$.
+Denote $\gamma_i = g''(t_i)$ for $i=1, 2, \ldots, k$.
+We show that there exists a function $s(x)$ in the form of 
+\eqref{cubic-spline} such that 
+\[
+\beta_3 = 0,  \beta_{k+3}= 0,
+\]
+and $s''(t_i) = \gamma_i$ for $i=1, \ldots, k$. 
+
+If such a function exists, we must have,
+for other $\beta$ values
+\bea
+&& \beta_2/3 = \gamma_1/6;\\
+&&\beta_2/3 +  \beta_4( t_2 - t_1) = \gamma_2/6;\\
+&&\beta_2/3 + \beta_4 ( t_3 - t_1) + \beta_5( t_3- t_2) = \gamma_3/6;\\
+&& \cdots \\
+&&\beta_2/3 + \beta_4 ( t_{k-1} - t_1) + \cdots + \beta_{k+1} (t_{k-1}- t_{k-2})  = \gamma_{k-1}/6;\\
+&&\beta_2/3 + \beta_4 (t_k - t_1) + \cdots + \beta_{k+1} (t_{k}- t_{k-2}) 
+                           + \beta_{k+2} (t_{k}- t_{k-1})  = \gamma_k/6;
+\eea
+Taking differences, we find another set of equations whose solutions
+clearly exist:
+\bea
+\beta_4 &=&  (1/6) (\gamma_2 - \gamma_1)/(t_2 - t_1); \\
+\beta_4 + \beta_5 &=&  (1/6) (\gamma_3 - \gamma_2)/(t_3 - t_2); \\
+\beta_4 + \beta_5  + \beta_6 &=&  (1/6) (\gamma_4 - \gamma_3)/(t_4 - t_3); \\
+&& \cdots \\
+\beta_4 + \beta_5  + \cdots + \beta_{k+2} &=&  (1/6) (\gamma_k - \gamma_{k-1})/(t_{k} - t_{k-1}).
+\eea
+
+The solution $s(x)$ with any choice of $\beta_0$
+and $\beta_1$ we have just obtained, has the
+same second derivatives with the cubic spline
+$g(x)$ at $\left \{t_1=0, t_2, \ldots, t_k \right\}$.
+Now we can select $\beta_0$ and $\beta_1$ values
+such that $s(t_1) = g(t_1)$ and $s'(t_1) = g'(t_1)$. 
+Together with $s''(t_1) = g''(t_1)$, $s''(t_2) = g''(t_2)$,
+and they are both cubic functions,
+we must have $s(x) = g(x)$ for all $x \in [t_1, t_2]$. 
+Applying the same argument,
+they must be identical over $[t_1, t_k]$. 
+This proves the existence.
+\qed
+
+\vs\vs
+As a remark, there can be multiple cubic splines identical on 
+$[t_1, t_k]$ but different outside this interval.
+ 
+Suppose
+\[
+s(x)
+=\beta_0+\beta_1x+\beta_2 x^2+\beta_3 x^3 
++ \sum_{j=1}^{k}\beta_{j+3} (x-t_j)_+^3
+\]
+is a {\bf natural} cubic spline with knots $\{t_1, t_2, \ldots, t_k\}$.
+Since it is linear below $t_1$, we must have
+\[
+\beta_2 = \beta_3=0.
+\]
+At the same time, being linear beyond $t_k$ implies we must have
+\[
+\sum_{j=1}^k \beta_{j+1} (x - t_j)_+ =0
+\]
+for all $x \geq t_k$. This is possible only if both
+\[
+\sum_{j=1}^k \beta_{j+3} = 0, ~~~ \sum_{j=1}^k t_j \beta_{j+3} = 0.
+\]
+In conclusion, out of $k+4$ entries of $\bbeta$, only
+$k$ of them are free for a natural cubic spline.
+For this reason, we need to think a bit about how to fit
+a natural cubic spline when data and knots are given.
+
+One approach is as follows. Define functions for $j=1, \ldots, k$
+\[
+d_{j}(x)
+=\frac{(x-t_{j})_+^3 - (x-t_{k})_+^3}{t_{k}-t_{j}}.
+\]
+Further, let $N_1(x)=1, ~ N_2(x)=x,$
+and for $j=3, \ldots, k$, let
+\[
+N_{j}(x) = d_{j-1}(x) - d_{1}(x).
+\]
+The following theorem says that every 
+natural cubic spline 
+is a linear combination of $N_j(x)$.
+
+\begin{theorem}
+Let $t_1 < t_2 < \ldots < t_k$ be $k$ knots and
+$\{N_1(x), \ldots, N_k(x)\}$ be functions defined above.
+Then all natural cubic splines $s(x)$ with knots in  $\left\{t_1, \ldots, t_k \right\}$
+can be expressed as: 
+\[
+s(x)=\sum_{j=1}^{k} \beta_j N_j(x),
+\]
+for some coefficients $\beta_1,\ldots,\beta_{k}$. 
+\end{theorem}
+
+\vs
+\proof
+
+Note that 
+\[
+(t_k - t_j) d_{j}(x) = (x-t_{j})_+^3 - (x-t_{k})_+^3.
+\]
+Equivalently,
+\[
+(x-t_{j})_+^3 = (t_k - t_j) d_{j}(x)+ (x-t_{k})_+^3.
+\]
+Substituting this expression into generic form of
+cubic spline, and activating the constrains on $\beta_j$
+implied by {\it natural} cubic spline, we find
+\[
+s(x) 
+= \beta_0 N_1(x) + \beta_1 N_2(x) +
+\sum_{j=1}^{k} \beta_{j+3} (t_k - t_j) N_{j+1}(x).
+\]
+Note that the $k$th term is zero.
+The conclusion is therefore true.
+\qed
+
+\vs\vs
+In general, a natural cubic spline can give very good
+approximation to any function in a finite interval. 
+This makes it useful to fit nonparametric 
+signal plus noise regression models.
+Given data $\{y_i;x_i\}$ and the $k$ knots, $t_1, \ldots, t_k$, 
+we may suggest that
+\[
+g(x) \approx \sum_{j =1}^{k}\beta_j N_j(x). 
+\]
+For the $i$th observation, we have
+\[
+g(x_i)
+\approx \sum_{j=1}^{k} \beta_l N_j(x_i),
+\]
+which is now a linear combination of $k$ derived covariates. 
+Let $\by$ be the response vector, 
+$\bbeta$ the regression coefficient vector and
+$\bepsilon$ the error vector.
+Define design matrix
+\[
+\bZ_n 
+=\left(
+ \begin{array}{ccc}
+ N_{1}(x_1) & \cdots & N_{k}(x_1)\\
+ \vdots&\vdots&\vdots\\
+ N_{1}(x_n) & \cdots & N_{k}(x_n)\\
+ \end{array}
+ \right).
+\]
+The approximate regression model becomes
+\be
+\label{appr-spline}
+ \by
+ \approx
+ \bZ \bbeta + \bepsilon.
+\ee
+We may use least squares estimator of $\bbeta$
+given by
+\[
+ \hat\bbeta=(\bZ^\tau\bZ)^{-1}\bZ^\tau \by. 
+\]
+Let $\bN(x) = \{N_1(x), \ldots, N_k(x)\}^\tau$.
+Once $\hat\bbeta$ is obtained, 
+we estimate the regression function by
+\[
+ \hat g(x) = \bN^\tau(x) \hat \bbeta.
+\]
+Suppose \eqref{appr-spline} is in fact exact, then the
+properties of least squares estimator are applicable. 
+We summarize them as follows: 
+\begin{enumerate}
+\item[(a)] 
+$\bbE \{\hat \bbeta\} = \bbeta$ and $\bbE\{\hat g(x)\} = g(x)$; 
+\item[(b)] 
+$\var(\hat \bbeta) = \sigma^2(\bZ^T\bZ)^{-1}$ 
+\item[(c)]
+$
+\var\{\hat g(x)\} =\sigma^2 \bN^\tau (x) (\bZ^\tau \bZ)^{-1} \bN(x).
+$
+\end{enumerate} 
+
+If \eqref{appr-spline} is merely approximate, then 
+the above equalities are approximate.
+The approximation errors will not be discussed here.
+
+The above idea is known as {\it regression spline}, 
+which is a large research topic in nonparametric regression. 
+This approach is very widely used in many applications
+to model a nonlinear and unknown function $g(x)$. 
+To apply this method, we must decide the number of knots
+and choose the knots $t_1,\ldots, t_k$ after the number of knots ($k$)
+is decided. 
+ 
+ \section{Smoothing spline}
+ 
+{\it Smoothing spline} addresses the knot-selection problem of regression spline
+ by taking all different covariate values as the knots. 
+ It uses the size of penalty to determine the level of smoothness. 
+ 
+Recall that we claim that  the numeric solution of smoothing spline to (\ref{sm.spline})
+is a natural cubic spline with knots at all distinct values 
+($t_1 <\cdots< t_k$) of $\{x_i\}_{i=1}^{n}$. 
+This conclusion is implied by the following two claims.
+
+Suppose $\hat g_{\lambda}(x)$ is the solution to the
+penalized sum of squares.  Two claims about this function is
+as follows.
+\begin{enumerate}
+\item
+Given $\{t_i; \hat g_{\lambda}(t_i)\}$, based on the discussion in the last section
+there is a unique natural cubic spline $s(x)$ with knots in 
+$\{t_1, \ldots, t_k\}$ such that 
+\[
+s(t_i)=\hat g_{\lambda}(t_i),~~i=1,\ldots, k.
+\]
+Because of the above, we have
+\[
+\sum_{i=1}^n \{y_i - s(x_i)\}^2
+=
+\sum_{i=1}^n \{y_i - \hat g_{\lambda}(x_i)\}^2.
+\]
+
+\item[2]
+For the $s(x)$ defined above, we have
+\[
+\int \{\hat g_{\lambda}''(x)\}^2 dx \geq  \int \{s''(x)\}^2 dx
+\]
+with the equality holds if and only if $\hat g_{\lambda}(x)=s(x)$
+for all $x$.
+If this is true, we must have $\hat g_{\lambda}(x)=s(x)$, a natural cubic spline.
+\end{enumerate}
+
+A serious proof is needed for the second claim. Here is the proof.
+
+Let $\gamma_i = s''(t_i)$ for $i=1, \ldots, k$ with $s(x)$
+being a cubic spline with knots on $t_1, \ldots, t_k$.
+Being ``natural'', we have $\gamma_1 = \gamma_k = 0$.
+
+Let $g(x)$ be another function with finite second derivatives
+such that $g(t_i) = s(t_i)$ for $i=1, 2, \ldots, t_k$. It is seen
+that 
+\bea
+\int_{t_i}^{t_{i+1}}
+g''(x) s''(x) dx
+&=& 
+\int_{t_i}^{t_{i+1}} s''(x) dg'(x) \\
+&=&
+[s''(t_{i+1}) g'(t_{i+1}) - s''(t_i) g'(t_i)]
+ - \int_{t_i}^{t_{i+1}} g'(x) s'''(x) dx,
+\eea
+
+Note that
+\[
+\sum_{i=1}^{k-1} [s''(t_{i+1}) g'(t_{i+1}) - s''(t_i) g'(t_i)]
+= \gamma_k g'(t_k) - \gamma_1 g'(t_1) = 0.
+\]
+Being linear on every interval [$t_i, t_{i=1}$], we have
+\[
+s'''(x) = \frac{\gamma_{i+1} - \gamma_i}{t_{i+1} - t_i} = \alpha_i
+\]
+where we have used $\alpha_i$ for the slope. With this, we find
+\[
+ \int_{t_i}^{t_{i+1}} g'(x) s'''(x) dx 
+ = \alpha_i \{g(t_{i+1}) - g(t_i)\}
+ = \alpha_i \{ s(t_{i+1}) - s(t_i)\}
+\]
+where the last equality is from the fact that $g(x)$ and $s(x)$ are
+equal at knots. Hence, we arrive at the conclusion that
+\[
+\int_{t_1}^{t_k}
+g''(x) s''(x) dx 
+=
+- \sum_{i=1}^k  \alpha_i \{ s(t_{i+1}) - s(t_i)\}.
+\]
+This result is applicable when $g''(x) = s''(x)$. Hence, we also have
+\[
+\int_{t_1}^{t_k}
+s''(x) s''(x) dx 
+=
+- \sum_{i=1}^k  \alpha_i \{ s(t_{i+1}) - s(t_i)\}.
+\]
+This implies that 
+\[
+\int_{t_1}^{t_k}
+g''(x) s''(x) dx  = \int_{t_1}^{t_k}
+s''(x) s''(x) dx.
+\]
+Making use of this result, we get
+\[
+\int_{t_1}^{t_k} \{ g''(x) - s''(x)\}^2 dx
+=
+\int_{t_1}^{t_k} \{ g''(x)\}^2 dx
+-
+\int_{t_1}^{t_k} \{ s''(x)\}^2 dx \geq 0.
+\]
+This equality holds only if $g''(x)= s''(x)$ for all $x \in [t_1, t_k]$.
+Hence the overall conclusion is proved.
+
+
+\vs\vs
+Consider the problem of searching for a natural cubic splines 
+that minimizes the penalized optimization problem (within this class
+of functions). 
+Given a function
+\[
+g(x)
+=
+\sum_{j=1}^k \beta_j N_j(x)
+\]
+for some constants $\beta_1,\ldots,\beta_k$,
+its sum of squared residuals is given by
+$$
+\sum_{i=1}^n\{y_i- g(x_i)\}^2
+=(\by - \bZ \bbeta)^\tau (\by-\bZ \bbeta)
+$$
+where 
+$$
+\bZ =\left(
+ \begin{array}{ccc}
+ N_{1}(x_1)&\cdots&N_{k}(x_1)\\
+ \vdots&\vdots&\vdots\\
+ N_{1}(x_n)&\ldots&N_{k}(x_n)\\
+\end{array}
+ \right).
+$$
+The penalty term over interval $[t_1, t_k]$ for this $g(x)$ becomes
+$$
+\int \{ g''(x)\}^2 dx
+=
+\int \sum_{j=1}^k \sum_{l=1}^k \beta_j \beta_l N_{j}''(x) N_l''(x) dx
+=
+\bbeta^T N \bbeta
+$$
+with 
+$$
+\bN=(N_{jl})_{k \times k}~\mbox{and}
+~
+N_{jl}= \int_{t_1}^{t_k} N_{j}''(x) N_{l}''(x) dx.
+$$
+The penalized sum of squares of $g(x)$ is given by
+$$
+(\by-\bZ \bbeta)^\tau (\by-\bZ \bbeta) + \lambda \bbeta^\tau  \bN \bbeta. 
+$$  
+It is minimized, given $\lambda$, at
+$$
+\hat\bbeta_{\lambda}
+=
+(\bZ^\tau \bZ + \lambda \bN)^{-1}\bZ^\tau \by
+$$
+and the fitted regression function is
+\[
+\hat g_{\lambda}(x)
+ =\sum_{j=1}^k\hat\beta_{\lambda,j}N_{j}(x). 
+\]
+ 
+ 
+\section{Effective number of parameters and the choice of $\lambda$}
+  
+If we regard $\hat g_\lambda (x)$ as a fit based on
+a linear regression, then we seem to have employed
+$k$ independent parameters.
+Due to regularization induced by penalty, the 
+effective number of parameters is lower than $k$. 
+Note that the fitted value of response vector is given by 
+$$
+\hat{\by}_{\lambda}
+=\bZ (\bZ^\tau \bZ + \lambda \bN)^{-1}\bZ^\tau \by
+=\bA_{\lambda} \by.
+$$   
+We call $\bA_{\lambda}$ smoother matrix.
+Similar to local polynomial kernel method, we define
+the effective degrees of  freedom (dfs) 
+or effective number of parameters to be
+$$
+df_{\lambda} =\mbox{trace}(A_{\lambda}). 
+$$ 
+As $\lambda$ increases, the effective number of parameters 
+($df_{\lambda}$) decreases and $ \hat g_{\lambda}(x)$ 
+becomes smoother and smoother. 
+We can hence  try out a range of $\lambda$ values and examine the resulting
+$\hat g_\lambda (x)$ and select the most satisfactory one.
+However, this procedure needs human interference and cannot
+be automated.
+
+To overcome this deficiency, one may choose $\lambda$ 
+using \cv\ or \gcv\ criteria. 
+Similar to local polynomial kernel method, we 
+define the \gcv\ score as a function of $\lambda$ to be 
+\[
+\gcv (\lambda)
+=
+\frac{(\by-\hat\by_{\lambda})^\tau (\by-\widehat\by_{\lambda})}
+{\{1-\mbox{trace} (\bA_{\lambda})/n\}^2}.
+\]
+The \gcv method chooses $\lambda$ as the minimizer of $\gcv(\lambda)$. 
+
+The \cv\ approach is similar.
+Let $\hat g_{-i}(x_i)$ be the estimate of $ g(x_i)$ 
+based on $n-1$ observations without the $i$th observation. 
+We define the \cv\ score as a function of $\lambda$ to be
+\[
+\cv(\lambda)
+=
+\sum_{i=1}^n\{y_i - \hat g_{-i}(x_i)\}^2. 
+\]
+It turns out that
+$$
+\cv (\lambda)
+=\sum_{i=1}^n
+\left(
+\frac{y_i-\hat g_{\lambda} (x_i)}{1 - \mbox{trace}(\bA_{\lambda, i, i}) }
+\right)^2.
+$$
+This expression enable us to only fit the model once for each $\lambda$
+in order to compute $\cv(\lambda)$.
+The \cv\ method chooses $\lambda$ value as the minimizer of $\cv(\lambda)$. 
+
+\vs\vs
+\noindent
+{\bf Remark}: The so-called R-functions are not included.
+
+\section{Assignment problems}
+
+\begin{enumerate}
+\item
+Find the asymptotic efficiency of the least absolute deviation estimator
+when the data are \iid\ samples from normal distribution, and
+the asymptotic efficiency of the least squares estimator
+when the data are \iid\ samples from double exponential.
+
+\item
+Let $\hat \bbeta$ be the least squares estimator of $\bbeta$ under
+the linear model. Show that for any non-random vector $\bb$
+$\bb^\tau \hat \bbeta$ is the BLUE of $\bb^\tau \bbeta$.
+
+\end{enumerate}
+

@@ -1,0 +1,597 @@
+\chapter{Uniformly most powerful test}
+
+Contemporary statistical education emphasizes teaching students
+effective data analysis methods in a time efficient way.
+The success is measured in terms of whether a student can
+quickly answer a statistical question raised from applications.
+This sometimes is done at the cost of not knowing why the
+statistical method actually answers the applied question other
+than it gives an ``answer''.
+Against this trend, in this course, we insist on discussing what it means by
+effective data analysis methods.
+We preach that even though the topic ``uniformly most powerful
+test'' itself is not important, the idea behind this concept is.
+
+\begin{defi}
+Let $\phi(x)$ be a test of size $\alpha$ for a test problem with
+null and alternative hypotheses $H_0$ and $H_1$.
+If for any size-$\alpha$ test $\phi_1(x)$ and any distribution $F \in H_1$, we have
+\[
+\bbE\{ \phi(X); F \} \geq \bbE\{ \phi_1(X); F \} 
+\]
+then $\phi(x)$ is a uniformly most powerful test.
+\end{defi}
+
+Let us emphasize again that both $H_0$ and $H_1$ 
+are subsets of a distribution family.
+When the data $X$ are from some $F \in H_1$, we 
+wish to have as high a probability as possible to 
+tell that its distribution $F$ is not in $H_0$.
+At the same time, we do not do it at any costs. We require
+$H_0$ is not rejected with high probability when
+$F \in H_0$. Since $X$ is random by the name of
+the game, there are unlikely any perfect solutions.
+
+The task of finding Uniformly Most Powerful (UMP) tests is
+often difficult or even impossible. Some may argue that
+such a result is not meaningful/useful. I agree to a large degree.
+However, the idea behind UMP is important and serves a good purpose.
+The knowledge we gain from such exercises helps us to develop 
+sensible methods for general problems.
+There are special cases where UMP tests exist. 
+We therefore do not wish to completely eliminate this concept
+from classroom discussions.
+Next, we work with the simplest case. 
+
+\section{Simple null and alternative hypothesis}
+
+When a null hypothesis is identified, the task of statistical significance
+test is to see whether or not the data suggest a departure from the null models
+in a specific direction. The simplest situation is where the statistical
+model $\cF$ contains only two distinct distributions. The null hypothesis
+contains one and the alternative hypothesis contains the other.
+More specifically, we may present them as two density functions
+(with respect to some $\sigma$-finite measure):
+\[
+H_0: f_0(x), ~~~ H_1: f_1(x).
+\]
+Note that if $X$ represents a set of \iid random variables, the above setting still
+applies. 
+we will use $\bbE_1$ and $\bbE_0$ for expectations under the alternative and
+the null models when applicable.
+
+Based on measure theory, for any given two distributions, it is possible
+to find a $\sigma$-finite measure, with respect to which,
+the density functions of two distributions exist. This justifies the
+above general assumption.
+
+\begin{lemma}
+{\bf Neyman-Pearson Lemma}: 
+Consider the simple null and alternative
+hypothesis test problem as specified.
+
+(1) 
+For any size $\alpha$ between $0$ and 1,
+there exists a test $\phi$ and a constant $k$ such that
+\begin{equation}
+\label{eq1}
+\bbE_0 \{ \phi(X) \} = \alpha
+\end{equation}
+and
+\begin{equation}
+\label{eq2}
+\phi(x) = \left \{
+\begin{array}{ll}
+1 & \mbox{when  } f_1(x) > k f_0(x); \\
+0 & \mbox{when  } f_1(x) < k f_0(x).
+\end{array}
+\right .
+\end{equation}
+
+(2) If a test has the properties (\ref{eq1}) and (\ref{eq2}), then it is the 
+{\it most powerful} for testing $H_0$ against $H_1$.
+
+(3) If $\phi$ is most powerful with size no more than $\alpha$, then it satisfies
+(\ref{eq2}) for some $k$. It also satisfies (\ref{eq1}) unless there exists a test
+of size smaller than $\alpha$ and with power 1.
+
+\end{lemma}
+
+\vs
+\noindent
+{\bf Proof and discussion}. 
+
+\vs \no
+Proof of (1):
+
+A likelihood ratio test 
+of size $\alpha$ exists. To prove the existence, let
+\[
+\alpha(t) = \pr ( f_1(X) > t f_0(X); H_0)
+\]
+It is a decreasing function of $t$.
+Hence, there exists a $t_0$ such that
+\[
+\alpha(t_0) \leq \alpha \leq \alpha(t_0-).
+\]
+Let
+\[
+\phi(x) = \ind ( f_1(X) > t_0 f_0(X)) +  c \ind (  f_1(X) = t_0 f_0(X)) 
+\]
+with 
+\[
+c = \frac{\alpha - \alpha(t_0)}{\alpha(t_0-) - \alpha(t_0)}
+\]
+if needed.
+Then this $\phi(x)$ is  the test with the required properties.
+
+\vs \vs \no
+Remark: The seemly overly complex proof is
+caused due to the need of covering the discrete situation where
+$\pr \{ f_1(X) = t_0 f_0(X)\} \neq 0$. 
+Otherwise, the truthfulness is trivial.
+
+\vs \no
+Proof of (2):
+
+Suppose $\phi(x)$ is the test given in (1), and $\tilde \phi$ is another test of
+size $\alpha$. Then
+\[
+\{ \phi(x) - \tilde \phi(x) \} \{ f_1(x) - k f_0(x) \} \geq 0
+\]
+This implies, by integrating both sizes, with respect to the measure the density
+is defined,
+\[
+\bbE_1 \{ \phi(X) - \tilde \phi(X)\}
+\geq
+k \bbE_0 \{ \phi(X) - \tilde \phi(X)\} = 0.
+\]
+where we used $\bbE_1$ and $\bbE_0$ for expectations under the alternative and
+ the null models. The right hand side equals 0 because two tests
+have the same size. Hence, $\phi$ has better power.
+
+\vs\no
+Proof of (3):
+
+If $\tilde \phi(X)$ is also a most powerful test, then we should have 
+\[
+P [ \{ \phi(x) - \tilde \phi(x) \} \{ f_1(x) - k f_0(x) \} > 0 ] =0.
+\]
+Otherwise, the derivation in the proof of (2) would implies
+$\tilde \phi(X)$ has lower power which is in contradiction 
+of the assumption hat $\tilde \phi(X)$ is also most powerful.
+
+From
+\[
+\{ \phi(x) - \tilde \phi(x) \} \{ f_1(x) - k f_0(x) \} =0
+\]
+with probability one, we conclude $\phi(x) = \tilde \phi(x)$
+for all $x$ except when
+\[
+ f_1(x) - k f_0(x)=0.
+\]
+Hence, $\tilde \phi(x)$ also has form (\ref{eq1}).
+\hfill{$\diamondsuit$}
+
+\vs
+This lemma claims that the most powerful test has to be the likelihood
+ratio test. At the same time, the third part of the lemma leaves rooms for non-uniqueness. 
+This is due to the flexibility of making decisions
+on the set of $x$ such that $f_1(x)/f_0(x) = k$.
+The randomization test can be used to achieve the right size of the test.
+It may also be possible to split this set in other ways and obtain
+a non-randomization test with the right size. These tests are all MP.
+Hence, MP test is not necessarily unique.
+
+What is the relevance of this classical, famous
+albeit absolete lemma? Introductory statistical courses
+generally recommend one-sample t-test or z-test for
+zero-mean hypothesis under normal model. Yet we usually
+do not comment on why they are most recommended.
+An important reason for z-test is that it is the Uniformly Most Powerful
+test as shown below.
+
+\begin{example}
+Let $X = (X_1, \ldots, X_n)$ be a random sample from $N(\theta, 1)$.
+Let us test $H_0: \theta = 0$ against $H_1: \theta = 1$.
+
+By Neyman-Pearson Lemma, the most powerful test has the form
+\[
+\phi(x) = \ind ( f_n(x; \theta =1) > k f_n(x; \theta = 0) \}
+\]
+where I use $f_n$ for the n-variate density, and use 
+$\theta = 1$ and $\theta = 0$ to highlight the parameter values
+under the alternative and null hypotheses. The constant $k$ is to be
+chosen such that the test has given size.
+It is not needed in this example because the density ratio, when
+regarded as random variable, has continuous distribution.
+
+Note that the critical region can be represented equivalently in
+many forms. Clearly,
+\ba
+&&\hspace{-8ex}
+\{ f_n(x; \theta =1) > k f_n(x; \theta = 0) \}\\
+&=&
+\{ \log f_n(x; \theta =1) > \log f_n(x; \theta = 0) + \log k \}\\
+&=&
+\{ - \frac{1}{2} \sum_{i=1}^n (X_i - 1)^2 > - \frac{1}{2} \sum_{i=1}^n X_i ^2  + k' \}\\
+&=&
+\{ \sum_{i=1}^n (X_i - 1)^2 < \sum_{i=1}^n X_i ^2  - k'' \}\\
+&=&
+\{ -2 \sum_{i=1}^n X_i  + n <  - k'' \}\\
+&=&
+\{ \sum_{i=1}^n X_i  >  k''' \}
+\ea
+In other words, there exists a $k'''$ such that
+\[
+\phi(x) = \ind ( f_n(x; \theta =1) > k f_n(x; \theta = 0) \}
+=
+\ind \{ \sum_{i=1}^n X_i  >  k''' \}.
+\]
+Since all we care is the size of the test, there is no need to find exactly
+how $k'''$ is related to $k$. We need only work out the critical value $k'''$
+in the last step each time a size of the test is specified.
+
+Suppose we want the test to have size $\alpha = 0.05$. This
+requires us to pick a specific value of $k'''$.
+Because the size
+is computed under the null hypothesis in this example 
+contains only a single distribution,
+we need only solve the equation
+\[
+P( \sum_{i=1}^n X_i > c; \theta = 0) = 0.05
+\]
+which implies that $c = 1.645 \sqrt{n}$ is the solution.
+If we set $\alpha = 0.025$, then $c = 1.960\sqrt{n}$ is the solution.
+
+Suppose in addition to require the size of the test being $0.05$, we also
+want to have power of the test $\beta(1) = 80\%$. This can be
+achieved by selecting an appropriate sample size $n$:
+\[
+P( \sum_{i=1}^n X_i > 1.645 \sqrt{n} ; \theta = 1) \geq 0.8.
+\]
+Because $n$ is discrete, the problem should be interpreted as
+finding the smallest $n$ such that the power is at least $0.8$.
+
+When $\theta = 1$, we have
+\ba
+P( \sum_{i=1}^n X_i > 1.645 \sqrt{n} ; \theta = 1)
+&=&
+P( n^{-1/2} \sum_{i=1}^n (X_i-1) > 1.645 -n^{1/2} ; \theta = 1)\\
+&=&
+P( Z > 1.645 -n^{1/2}).
+\ea
+with $Z$ being a standard normal random variable.
+The 20\% quantile of the standard normal is $- 0.842$.
+Thus, we require $1.645 -n^{1/2} \leq - 0.842$
+or $n \geq (1.645 + 0.842)^2 = 6.18$. Thus, $n=7$
+meets the requirement.
+\end{example}
+
+\vs
+\noindent
+{\bf Remark}: It is seen that if the alternative hypothesis $H_1$
+is replaced by $\theta = \theta_1$ for any $\theta_1 > 0$, the
+most powerful test itself remains the same. That is, the test
+is most powerful for any alternative such that $\theta_1 > 0$.
+In other words, the above test is also a UMP test against
+$H_1: \theta > 0$.
+However, to attain the power of $80\%$ at a different $\theta$
+value such as $\theta_1 = 0.5$,
+the required sample size will be higher.
+
+\vs
+\noindent
+{\bf Remark}: It is easy to verify that the critical region of the
+most powerful test when $H_1$ becomes $\theta = \theta_1 < 0$
+has the form
+\[
+\sum X_i < c.
+\]
+Clearly, a most powerful test for the $H_1$ being $\theta > 0$ cannot
+also be a most powerful for the $H_1$ being $\theta < 0$.
+Hence, the notion of most powerful is in general
+``alternative hypothesis'' specific.
+It is often impossible to have a test that is uniformly most
+powerful against composite alternative hypothesis.
+Here, composite means the alternative hypothesis
+$\cF - \cF_0$ contains more than a single distribution.
+
+\vs
+\noindent
+{\bf Remark}: 
+Point of the example: the UMP test derived from Neyman-Pearson Lemma
+is the same test we generally recommend in other courses.
+
+
+\section{Making more from N-P lemma}
+
+N-P lemma is more relevant than it appears. Here is a 
+helpful theorem to make the future derivation simpler.
+
+\begin{theorem}
+Suppose that a test $\phi(X)$ of size $\alpha$ is most powerful
+$H_0$ against $\tilde H_1: F = F_1$ for every $F_1 \in H_1$.
+Then it is UMP for $H_0$ against $H_1$.
+\end{theorem}
+
+\vs\no
+{\bf Proof}: Suppose $\tilde \phi(X)$ is another test of size $\alpha$
+for testing $H_0$ versus $H_1$.
+
+For any $F_1 \in H_1$, by the assumption on $\phi(X)$, we have
+\[
+\bbE \{ \phi(X): F_1\} \geq \bbE \{ \tilde \phi(X): F_1\}.
+\]
+This trivially shows that $\phi(X)$ is UMP against $H_1$.
+\hfill{$\diamondsuit$}
+
+
+\begin{example}
+Suppose $X_1, \ldots, X_n$ is an \iid sample from
+Poisson distribution. We test for $H_0: \theta \leq 1$ versus $H_1: \theta > 1$
+with the nominal level $\alpha$.
+
+Consider testing $\tilde H_0: \theta = 1$ versus $\tilde H_1: \theta = 2$.
+The likelihood ratio  $f(x; 2)/f(x; 1) = c \exp\{  (\log 2) \sum x_i\}$.
+By Neyman--Pearson Lemma, one UMP test has the form of
+\[
+\phi(X) = 
+\left \{
+\begin{array}{ll}
+1 & \sum x_i > k;\\
+c & \sum x_i = k;\\
+0 & \sum x_i < k
+\end{array}
+\right .
+\]
+for some $k$ and $c$ to get the size of the test equaling $\alpha$.
+That is, they are chosen so that
+\[
+\bbE \{ \phi(X): \theta = 1\} = \alpha.
+\]
+Thus, the choice of $k$ and $c$ does not depend on $\tilde H_1$.
+Hence, it is UMP for $\tilde H_0$ versus $H_1$.
+
+
+Next, we hope to retain the same proposition
+with $\tilde H_0$ replaced by $H_0$.
+
+It is clear that $\bbE \{ \phi(X): \theta\} < \alpha$ when $\theta < 1$.
+Hence, $\phi(X)$ remains a size $\alpha$ test for $H_0$.
+Therefore, there cannot be any other tests of size $\alpha$
+having greater power at any $\theta > 1$.
+\end{example}
+
+The above result is more generally applicable.
+Note that allowing randomization makes the discussion under Poisson
+model smoother. We do not recommend this type of randomization
+in applications.
+
+\section{Monotone likelihood ratio}
+
+In two previous examples, we started with searching for a most
+powerful test for simple $H_0$ and $H_1$. In the end, however,
+the test is found uniformly most powerful for some composite
+null and alternative hypotheses. This is because the distributions
+in the statistical model are parameterized in a monotonic way.
+The following definition provides a specific terminology for
+distribution families with such a property.
+
+\begin{defi}
+Suppose that the distribution of $X$ belongs to
+a parameter family with density functions 
+$\{f(x; \theta): \theta \in \Theta \subset \mathbb{R}\}$.
+
+The family is said to have {\it monotone likelihood ratio} in $T(x)$
+if and only if, for any $\theta_1 < \theta_2$,
+\[
+\frac{f(x; \theta_2)}{f(x; \theta_1)}
+\]
+is a nondecreasing function of $T(x)$ for values
+$x$ at which at least one of $f(x; \theta_1)$ and $f(x; \theta_2)$
+is positive.
+\end{defi}
+
+It is seen that $T(x)$ is a useful statistic for the purpose of hypothesis
+test because it is a stochastically increasing function of $\theta$.
+
+\begin{lemma}
+\label{monotone}
+{\bf Monotonicity of $\{T(x)\}$}.
+Suppose $X$ has a distribution from a monotone likelihood ratio family.
+Then $\bbE \{T; \theta\}$ is nondecreasing in $\theta$.
+\end{lemma}
+
+\vs\no
+{\bf Proof}: Because when $\theta_2 > \theta_1$,
+\[
+\frac{f(x; \theta_2)}{f(x; \theta_1)}
+\]
+is non-decreasing in $T$. Two random variables,
+$T(X)$ and $f(X; \theta_2)/f(X; \theta_1)$ are positively
+correlated when the distribution of $X$ is $f(x; \theta_1)$.
+Let $\mu_1 = \bbE_1\{T(X)\} $, the expectation under $\theta_1$.
+We have
+\[
+\bbE_1 
+\left \{ [ T(X) - \mu_1]\frac{ f(X; \theta_2)}{f(X; \theta_1)}
+\right \} \geq 0.
+\]
+Expanding this inequality gives us the conclusion.
+\hfill{$\diamondsuit$}
+
+\vs \no
+{\bf Extension}
+This conclusion is applicable to any nondecreasing function $g(T)$.
+
+\begin{example}
+One parameter exponential family
+\[
+f(x; \theta) = \exp ( \eta(\theta) T(x) - \xi(\theta) ) h(x)
+\]
+has monotone likelihood ratio in $T(x)$ when $\eta(\theta)$
+is a nondecreasing function in $\theta$.
+
+The result remains true  for the joint distribution an \iid observations.
+\end{example}
+
+It will be seen that the UMP tests exist for one parameter exponential families
+with the above property. It is helpful if you remember that most commonly
+employed one parameter distribution families are one parameter
+exponential family. Therefore, the result to be shown in the
+next theorem is broadly applicable.
+
+Before introducing another theorem, we point out another
+monotone likelihood ratio family. This one is more of theoretical
+interest.
+
+\begin{example}
+Let $X_1, \ldots, X_n$ be an iid sample from 
+\[
+f(x; \theta) = \theta^{-1} \ind ( 0 < x < \theta).
+\]
+Then the distribution family of $X = (X_1, \ldots, X_n)$
+has monotone likelihood ratio in $X_{(n)}$, the largest
+order statistic.
+\end{example}
+
+\begin{theorem}
+Suppose the distribution of $X$ is in a parametric family
+with real valued parameter $\theta$ and has
+monotone likelihood ratio in $T(X)$.
+
+Consider $H_0: \theta \leq \theta_0$ and $H_1: \theta > \theta_0$.
+
+(i) There exists a UMP test of size $\alpha$, given by
+\[
+\phi(X) =
+\left \{
+\begin{array}{ll}
+1 & T(X) > k;\\
+c  & T(X) = k;\\
+0 & T(X) < k.
+\end{array}
+\right .
+\]
+
+(ii) For any $\theta < \theta_0$, $\phi(X)$ minimizes 
+the type I error $\alpha(\theta)$ among all $\tilde \phi$ such that 
+$\bbE\{ \tilde \phi(X); \theta_0\} = \alpha$.
+\end{theorem}
+
+\vs\no
+{\bf Proof}
+
+(i) By Neyman--Pearson lemma, this test is one of the Most Powerful
+tests for
+$\tilde H_0: \theta = \theta_0$ against $\tilde H_1: \theta= \theta_1$ for any
+$\theta_1 > \theta_0$ because
+the density ratio is an increasing function of $T$.
+Hence, $\phi(X)$ is Uniformly Most Powerful for $\tilde H_0$ against 
+$H_1: \theta > \theta_0$.
+
+By Lemma on the Monotonicity of $\bbE\{T(x)\}$, 
+$\bbE\{\phi(X); \theta\}$ is a nondecreasing function of $\theta$.
+Therefore $\bbE\{\phi(X); \theta\} \leq \alpha$ for all $\alpha \in H_0$.
+Thus, $\phi(X)$ is a size-$\alpha$ test for $H_0$ versus $H_1$.
+Subsequently, it is UMP $H_0$ versus $H_1$ by the extended
+N-P lemma.
+
+(ii)
+Let us define $\xi = - \theta$ so that we have a density function
+\[
+g(x; \xi) = f(x; - \theta).
+\]
+In terms of $\xi$, the family has monotone density ratio for $\xi$
+in $\tilde T = - T(x)$.
+
+Consider testing for $H^*_0: \xi \leq \xi_0 = - \theta_0$ versus
+$H_1^*: \xi > \xi_0 = - \theta_0$ with size $\alpha^* = 1- \alpha$.
+
+Hence, the UMP tests will have the following form
+\[
+ \phi^*(X) = 1 - \phi(X) = 
+\left \{
+\begin{array}{ll}
+1 & T(X) <  k;\\
+1- c  & T(X) = k;\\
+0 & T(X) > k.
+\end{array}
+\right .
+\]
+with $k$ and $c$ chosen such that the test has size $\alpha^*$.
+We remark here that the middle part is not unique but it does not
+invalidate our claim.
+This uniformly most power test has its power maximized
+is the same as having
+\[
+\bbE\{ \phi(X): \theta\} = 1- \bbE\{\phi^*(X): \xi\}
+\]
+minimized when $\xi \in H_1^*$ which is the same as $\theta \in H_0$.
+This completes the proof.
+\hfill{$\diamondsuit$}
+
+\begin{example}
+{\bf Uniform distribution}
+Let $X_1, \ldots, X_n$ be a random sample
+from the uniform distribution on ($0, \theta$).
+Then the distribution family of $X = (X_1, \ldots, X_n)$
+has monotone likelihood ratio in $X_{(n)}$.
+
+For any $\theta_1 < \theta_2$, the density ratio
+\[
+f(x; \theta_2)/f(x; \theta_1) 
+= (\theta_1/\theta_2)^n 
+\frac{\ind (0 < x_{(n)} < \theta_2)}{\ind (0 < x_{(n)} < \theta_1)}.
+\]
+Other than the constant factor $(\theta_1/\theta_2)^n$,
+the ratio takes three values: 1, $\infty$ and undefined.
+The last case does not matter as the case of both densities being zero
+is excluded in the definition. This ratio is clearly an increasing function
+of $X_{(n)}$.
+
+Consider the hypothesis $H_0: \theta \leq \theta_0$
+and $H_1: \theta > \theta_0$. By the theorem we have
+just proved, the UMP test can be written
+as
+\[
+\phi(X) =
+\left \{
+\begin{array}{ll}
+1 & X_{(n)} > k;\\
+c  & X_{(n)}  = k;\\
+0 & X_{(n)}  < k.
+\end{array}
+\right .
+\]
+for some $k$ and $c$. 
+
+Because the distribution of $X_{(n)}$ is continuous,
+we have $P(X_{(n)}  = k) = 0$ for any $k$.
+Hence, it can be simplified into
+\[
+\phi(X) =
+\left \{
+\begin{array}{ll}
+1 & X_{(n)} > k;\\
+0 & X_{(n)}  < k.
+\end{array}
+\right .
+\]
+The \cdf of $X_{(n)}$ is given by $(x/\theta_0)^n$ under null
+for $0 < x < \theta_0$.
+Hence, the choice of $k$ is determined by
+\[
+\alpha = 1 - (k/\theta_0)^n
+\]
+and $k = \theta_0 (1 - \alpha)^{1/n}$ is the solution.
+
+The power at $\theta > \theta_0$ is
+\[
+\beta(\theta) = 1 - (1-\alpha)(\theta_0/\theta)^n.
+\]
+\end{example}
+
+{\bf Remark} The UMP is not unique as the density ratio
+is a discrete random variable.

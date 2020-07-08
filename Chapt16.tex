@@ -1,0 +1,824 @@
+
+\chapter{Likelihood ratio test}
+
+The conclusion in the famous Neyman--Pearson lemma may not be too useful
+when we must work with more complex models. However, it tells us
+that the ``optimal metric'' in testing for a null model containing only a single
+distribution with parameter value $\theta_0$
+against the alternative which also only contains a single distribution with parameter
+value $\theta_1$ is their relative likelihood size.
+This motivates the use of likelihood ratio test.
+
+\section{Likelihood ratio test: as a pure procedure}
+Let us consider the situation where we have a random sample from
+a distribution that belongs to a parametric distribution family:
+\[
+\{ f(x; \theta): \theta \in \Theta\}.
+\]
+Let $H_0$ and $H_1$  be subsets of $\Theta$. In common practice, we
+take $H_1 = \Theta - H_0$, the complement of $H_0$. Hence, when both $H_0$ and $H_1$ are
+explicitly specified in a problem, we also automatically set $\Theta = H_0 \cup H_1$.
+
+Let $L_n(\theta) = \prod_{i=1}^n f(X_i; \theta)$ be the likelihood function of $\theta$
+defined in $\Theta$ under the commonly assumed \iid setting.
+We call
+\[
+\{ f(x; \theta): \theta \in H_0\}
+\]
+or simply $H_0$ the null model.
+We also call $H_1$ the alternative model but things will be slightly different
+as will be seen.
+The distribution in $H_0$ that fits the data best from the likelihood angle
+is the one with $\theta$ value that maximizes
+$L_n(\theta)$ within $H_0$. 
+Let $\hat \theta_0$ be the maximizer. 
+Similarly, the best value under the alternative model is the
+one that maximizes $L_n(\theta)$ for $\theta \in H_1$.
+Yet we do not directly utilize this value subsequently.
+Instead, we let $\hat \theta_1$ be the maximizer
+of $L_n(\theta)$ over $\Theta = H_0 \cup H_1$, {\bf the entire parameter space}.
+Namely, $\hat \theta_1$ is the MLE under the full model.
+In order for the definitions of $\hat \theta_0$ and $\hat \theta_1$ viable,
+the supremums at null and full models must be attained at some parameter value. 
+This is generally true and we assume this is the case without truly lose
+much of generality. This technical issue has an easy fix.
+
+The commonly used likelihood ratio statistic in the literature is defined to be
+\[
+\Lambda_n = \frac{ L_n(\hat \theta_0)}{L_n(\hat \theta_1)}
+=
+\exp \{ \sup_{\theta \in {H_0} } \ell_n(\theta) - \sup_{\theta \in \Theta } \ell_n( \theta) \}.
+\]
+The likelihood ratio test statistic is defined to be
+\[
+R_n = - 2 \log \Lambda_n = 2\{ \ell_n(\hat \theta_1) - \ell_n(\hat \theta_0)\}
+\]
+where we have used the log likelihood function
+\[
+\ell_n(\theta) = \log L_n(\theta) =  \sum_i \log f(x_i; \theta).
+\]
+The multiplication factor $2$ in $R_n$ does not play a rule in defining
+a test. It makes the limiting distribution of $R_n$ a neat chisquare under
+regularity conditions to be seen,
+
+We define the likelihood ratio test as 
+\[
+\phi(x) = \ind\{ R_n \geq c\}
+\]
+for some $c$ such that the test has pre-specified size.
+From now on, we will not pay attention to the situation where
+$R_n$ has a discrete distribution. More precisely, the test will be regarded
+as if randomization is never needed to make the size of the test
+being exactly the same as pre-specified. 
+One reason for this convention is that to find the precise
+critical value $c$ is generally difficult, numerically infeasible, even without this complication. 
+In addition, when the sample size $n$ is large, we have the following result due to Wilks that
+works well enough. This result enables us to come up with an approximate critical value. 
+If it is an approximation already, it is
+pointless to have another layer of approximation.
+
+From the data analysis point of view, we have to go over
+several steps to perform a likelihood ratio test.
+
+\begin{enumerate}
+\item
+Understand the data structure and come to an agreed model from which
+the data were supposedly collected.
+
+\item
+Work out the likelihood function. Identify the null and alternative
+hypotheses from the application background. 
+
+\item
+Numerically find the MLE of unknown parameters under the null and the full models. 
+Numerically obtain the value of likelihood ratio statistic, $R_n$.
+
+\item
+Based on the user specified size of the test, $\alpha$,
+and our knowledge on the sample distribution of $R_n$ under the null
+model to determine the rightful $c$ such that a rejection of the
+null model is recommended when $R_n \geq c$.
+
+We may instead compute $\pr(R_n > R_{obs})$ and report
+this value as the p-value of this test and the specific pair
+of hypotheses. Leave the decision to the user.
+\end{enumerate} 
+
+The model choice should be made after thorough
+scientific understanding of the applied problem.
+The statistical properties of the model should reflect this understanding. 
+This is a topic in Statistical Consulting courses. 
+We mostly discuss situations where the observations are \iid here. 
+Point 2 is generally a topic in specialized courses such as ``Generalized Linear Models''.
+Numerical computation can be fitted into a specialize course in statistics or computer science.
+A course in mathematical statistics focuses on the last point. 
+How we determine the appropriate value of $c$ or compute $p$-values symbolically.
+
+\section{Wilks Theorem under regularity conditions}
+
+The likelihood ratio test is most popular in applications
+not only because it is ``optimal'' due to Neyman-Peason lemma, 
+but also because the distribution of its test-statistic 
+is ``model-free'' when the sample size $n$ is very large, 
+the model and hypotheses are regular.
+Here is a simplified version of the elegant result by Wilks( 1938?).
+
+\begin{theorem}
+\label{thm16.1}
+Suppose $H_0$ is an open subset of an $m$-dimensional
+subspace of $\Theta$ and $\Theta$ is an open subset of $R^{m+d}$.
+Under some regularity conditions and assume the
+data set is made of $n$ \iid observations, we have
+\[
+\pr\{ R_n \leq t) \to \pr( Z_1^2 + Z_2^2 + \cdots Z_d^2 \leq t \}
+\]
+as the sample size $n \to \infty$, and under any null model 
+$\theta = \theta_0 \in H_0$.
+\end{theorem}
+
+We have used $Z_1, \ldots, Z_d$ as a set of \iid standard normal
+random variables. Based on the above theorem, when $n$ is large, 
+a test with approximate size $\alpha$ is obtained
+by choosing the critical value $c = \chi^2_{d, 1- \alpha}$, 
+the $(1-\alpha)$th quantile of
+the chisquare distribution with $d$ degrees of freedom.
+
+When $H_0$ contains many distributions, this theorem
+says whichever $\theta_0 \in H_0$ is the specific distribution
+which generated the data, the distribution of $R_n$ stays the
+same, asymptotically.
+
+In many research papers, the distribution of the test-statistic
+is often referred to as the distribution of the test.
+Such a statement is not rigorous, but does not seem to cause
+many problems. If you get confused, it can be helpful to question
+the meaning of this statement.
+
+We  do not give a proof nor a list the conditions at the moment.
+Let us examine a few examples of the likelihood ratio test.
+
+\begin{example}
+Consider the exponential distribution model with mean parameter
+$\theta$ and parameter space $\cR^+$, and a hypothesis
+test problem in which
+$H_0: \theta = 1$ and $H_1: \theta \neq 1$.
+Given a random sample of observations, 
+we find $\hat \theta_1 = \bar X_n$.
+Since $H_0$ contains a single distribution, we have $\hat \theta_0 = 1$.
+The likelihood ratio statistic is given by
+\[
+R_n = - 2 n \{ \log \bar X_n  - (\bar X_n - 1) \}
+\]
+Under the null hypothesis, it is known that
+$\bar X_n \to 1$ almost surely. Thus, we have, approximately,
+\[
+2 n \{ (\bar X_n - 1) - \log \bar X_n\}
+= n (\bar X_n - 1)^2 + o_p(1)
+\]
+where $o_p(1)$ is an asymptotically zero random quantity.
+More precisely, $o_p(1)$ is a random quantity that goes to 0 in probability.
+See the definition in an earlier chapter.
+
+By the central limit theorem, $\sqrt{n} (\bar X_n - 1)$ is asymptotically $N(0, 1)$
+under the null hypothesis: $\theta = 1$.
+Using Slutsky's theorem,
+we find that $R_n$ is asymptotically $\chi_1^2$.
+
+Because of this, an asymptotical rejection/critical region for a size $0.05$
+likelihood ratio test is approximately
+\[
+C = \{x:  R_n \geq 3.841 \}.
+\]
+In the form of test function, $\phi(x) = \ind \{ R_n \geq 3.841 \}$.
+\end{example}
+
+Suppose we put $H_1$ as the set of $\theta$-values larger than 1.
+Subsequently, we regard the parameter space is 
+given by $\Theta = [1, \infty)$.
+If so, the MLE of $\theta$ under $H_1$ is no longer always $\bar X_n$.
+In this case, the limiting distribution of $R_n$ is not $\chi_1^2$.
+We will see that the regularity condition is not satisfied with this $H_1$.
+That is,  Theorem \ref{thm16.1} does not always apply.
+
+\begin{example} 
+Consider the test problem where an iid sample is from
+$N(\theta, \sigma^2)$ and $H_0: \theta = 0$ against $H_1: \theta \neq 0$.
+
+The MLE under $H_1$ is given by $\hat \theta = \bar X_n$
+and $\hat \sigma_n^2 = n^{-1} \sum (X_i - \bar X_n)^2$.
+Under the null hypothesis, the MLE of $\sigma^2$ is
+$\hat \sigma_0^2 = n^{-1} \sum X_i^2$.
+It is not too hard to find that
+\[
+R_n
+\approx 
+n \log \left [ 1 + \frac{\hat \sigma_0^2 - \hat \sigma_n^2}{\hat \sigma_n^2} \right ]
+\approx 
+n \bar X_n^2.
+\]
+Thus, its limiting distribution is $\chi_1^2$.
+\end{example}
+
+\vs
+There are many reasons why the likelihood ratio test is preferred by
+statisticians and practitioners. Let me try to give you a list that I am
+aware of.
+
+\begin{itemize}
+\item[a)] 
+Because the limiting distribution of the likelihood ratio statistic
+under regularity conditions is chisquare, it does not depend on
+unknown parameters. We say that it is {\bf asymptotically pivotal}.
+One may recall that one of the two preferred properties of a test
+statistic is that the statistic has a sample distribution free from
+unknown parameters under the null hypothesis.
+
+\item[b)] 
+Due to Neyman-Pearson Lemma, we believe that the LRT is
+nearly ``most powerful''. The claim is unproven, and likely false.
+Yet when lacking any evidences to the contrary, we love to believe the
+power of the LRT is superior.
+
+\item[c)] 
+Whether a limiting distribution is useful or not for statistical
+inference depend on how
+closely it approximates the finite sample distribution when the
+sample size is in the range that often occurs in applications. For example,
+if a clinical trial typically recruits 200 patients, then the limiting
+distribution is useful when it provides a good approximation when
+$n=200$. It would be not so useful if the approximation is poor
+until $n=2000$. There is a general belief that the chisquare approximation
+for LRT is often good for moderate $n$.
+
+\item[d)] 
+The LRT is invariant to parameter transformation. If a one-to-one
+transformation is applied to $\theta$ to get $\xi  = g(\theta)$.
+The LRT remains equal when testing $g(H_0)$ against $g(H_1)$.
+Note that I am regarding $H_0$ and $H_1$ as subsets of
+parameters. If one makes an one-to-one transformation to the
+data, the inference conclusion based on likelihood approach
+will also remain the same.
+A user should be aware that the data transformation leads to
+change of the model before making use of this claim.
+\end{itemize}
+
+Let us also point out that the LRT is often
+abused. The asymptotic chisquare distribution is valid only if
+(a) the true value of the parameter is an interior point of the
+parameter space; (b) the distribution family is regular; (c)
+the observations are \iid. The result may still be valid when (c)
+is violated. Yet the validity depends on the structure of the model 
+which should be examined before the LRT together
+with the chisquare approximation is used. If (a) is violated,
+the result is almost surely void. If (b) is violated, we probably should
+not use LRT although there are examples, I believe, that the
+asymptotic result remains valid. Yet there is no reason to assume
+so in general.
+
+\begin{example} 
+Suppose we have an \iid sample from
+\[
+f(x; \pi) = (1-\pi) N(0, 1) + \pi N(1, 1).
+\]
+The parameter space is $[0, 1]$. Suppose we want to test
+$H_0: \pi = 0$ against $H_1: \pi > 0$.
+
+Under the null model, that is, assume the true value of $\pi = 0$,
+the MLE $\hat \pi = 0$ with probability approximately 0.5. 
+Because of this, the limiting distribution of the likelihood
+ratio statistic equals 0 with probability 0.5.
+Hence, the chisquare limiting distribution does not apply.
+The reason for the failure is that $\pi = 0$ is on the boundary
+of the parameter space.
+\end{example}
+
+Your may work out the asymptotic involved in the above example
+following mathematical principles. We do not provide details here.
+
+%\chapter[Consistency of MLE]{Consistency of MLE for one-dimensional $\theta$
+%as a local maximum}
+%%% new chapter in the future.
+%
+%Suppose we have an \iid sample of size $n$ from a parametric
+%distribution family $\{f(x; \theta): \theta \in \Theta\}$.
+%The observations will be denoted as $x_1, \ldots, x_n$.
+%The corresponding random variables are $X$, $X_i$ and
+%so on.
+%
+%Under some conditions, the maximum likelihood estimator
+%is known to be consistent and asymptotically normal as $n \to \infty$.
+%
+%Yet fewer and fewer statistics students know these ``conditions''
+%under which these claims are valid. I am particularly despised the
+%practice of stating ``the result is true by assuming these conditions
+%are satisfied''. It would much more appropriate to state that
+%``the result is true if these conditions are satisfied''.
+%
+%The consistency proof in general is technical and tedious. 
+%Let go over a simple case first.
+%Even for this simple case, we still need to list conditions
+%carefully. Let the log likelihood function and score function
+%be
+%\bea
+%\ell_n(\theta) 
+%&=& \sum_{i=1}^n \log f(x_i; \theta);\\
+%S_n(\theta) 
+%&=& \sum_{i=1}^n \frac{\partial \{ \log f(x_i; \theta)\}}{\partial \theta}.
+%\eea
+%
+%Regularity conditions for this special case are:
+%\begin{itemize}
+%\item[R0]
+%the parameter space of $\theta$ is an open interval in $\mathbb{R}$
+%
+%\item[R1]
+%$f(x; \theta)$ is differential to order three with respect to $\theta$
+%at all $x$.
+%
+%\item[R2]
+%For each $\theta_0 \in \Theta$. there exist functions
+%$g(x)$, $H(x)$ such that for all $\theta$ in a neighborhood $N(\theta_0)$,
+%\ba
+%&(i) &\left | \frac{\partial f(x; \theta)}{\partial \theta} \right | \leq g(x);\\
+%&(ii) & \left | \frac{\partial^2 f(x; \theta)}{\partial \theta^2} \right | \leq g(x);\\
+%&(iii) & 
+%\left | \frac{\partial^3 \log f(x; \theta)}{\partial \theta^3} \right | \leq H(x)
+%\ea
+%hold for all $x$, and
+%\[
+%\int g(x) dx < \infty; ~~\bbE_\theta \{ H(X)\} < \infty.
+%\]
+%
+%\item[R3]
+%For each $\theta \in \Theta$,
+%\[
+%0 < \bbE_\theta \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta}  \right \}^2 < \infty.
+%\]
+%\end{itemize}
+%
+%Although the integration in regularity conditions is stated as with respect to $dx$, 
+%the results we are going to state remain valid if it is replace by some
+%$\sigma$-finite measure. For instance, the result is applicable to 
+%Poisson distribution in which the integration is interpreted as summation.
+%All conditions are stated as for all $x$. An except over a 0-measure set
+%of $x$ is allowed (with respect to the
+%corresponding $\sigma$-finite measure), 
+%as long as the 0-measure set is the same for all $\theta$.
+%
+%\begin{lemma}
+%Under regularity conditions, we have
+%\[
+%\bbE_\theta \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \} = 0.
+%\]
+%\end{lemma}
+%
+%\vs
+%\no
+%{\bf Proof}. It is seen that
+%\[
+%\int f(x; \theta) dx = 1
+%\]
+%for all $\theta$. Hence, for any $\delta$, we have
+%\[
+%\int \frac{f(x; \theta+ \delta) - f(x; \theta)}{\delta} dx = 0.
+%\]
+%Condition R2 (i) makes it okay to let $\delta \to 0$ within the
+%integration, we hence get
+%\[
+%\int f'(x; \theta) dx 
+%= 
+%\bbE_\theta  \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \} 
+%=0.
+%\]
+%\hfill{$\diamondsuit$}
+%
+%The regularity conditions are commonly regarded as conditions
+%to allow the exchange the order of derivative and integration.
+%
+%\begin{lemma}
+%Under regularity conditions, we have
+%\[
+%\bbE_\theta \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \}^2
+%=
+%-
+%\bbE_\theta \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta^2} \right \}
+%\]
+%\end{lemma}
+%
+%\vs\no
+%{\bf Proof}. 
+%We have shown
+%\[
+%\int f'(x; \theta) dx = 0.
+%\]
+%The Condition R2 (ii) now allows us to get
+%\[
+%\int f''(x; \theta) dx = 0.
+%\]
+%Note that
+%\[
+% \frac{\partial^2 \log f(x; \theta)}{\partial \theta^2}
+% =
+%\left \{ \frac{f''(x; \theta)}{f(x; \theta)} \right \} - \left \{ \frac{f'(x; \theta)}{f(x; \theta)}\right \}^2.
+%\]
+%Multiplying $f(x; \theta)$ and integrating with respect to $x$, we get
+%the conclusion.
+%\hfill{$\diamondsuit$}
+%
+%\begin{lemma}
+%Under regularity conditions,
+%\[
+%\bbE_0 \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \}
+%\]
+%is a strictly decreasing function of $\theta$ in a neighborhood of $\theta_0$.
+%\end{lemma}
+%
+%\vs\no
+%{\bf Proof}. 
+%Let us pay special attention to the distribution under which the
+%expectation is calculated, and the parameter value at which
+%the density function is being considered. We use $\bbE_0$ for
+%expectation calculated at $\theta_0$.
+%With this clarification, we first notice that
+%\[
+%\frac{\partial}{\partial \theta}
+%\left [
+%\bbE_0 \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \}
+%\right ]
+%=
+%\bbE_0 \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta^2} \right \}.
+%\]
+%The exchange of expectation and differentiation is ensured by R2,
+%and all three subconditions are needed.
+%At the same time, we have already shown earlier that
+%\be
+%\label{eqn7.1}
+%\bbE_0 \left \{ \frac{\partial^2 \log f(X; \theta_0)}{\partial \theta^2} \right \}
+%=
+%-
+%\bbE_0 \left \{ \frac{\partial \log f(X; \theta_0)}{\partial \theta}  \right \}^2 < 0.
+%\ee
+%In the above expression, the partial derivative is computed at $\theta$ first,
+%after which, we set $\theta = \theta_0$. This extra remark is to
+%avoid a potential ambiguity.
+%
+%If we trust that, as a function of $\theta$,
+%\[
+%\bbE_0 \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta^2} \right \}
+%\]
+%is continuous at $\theta = \theta_0$, then \eqref{eqn7.1} is sufficient
+%to ensure that it takes negative value in a small neighborhood of
+%$\theta_0$. The continuity is ensured by R3(iii).
+%\hfill{$\diamondsuit$}
+%
+%
+%
+%\begin{lemma}
+%Suppose $\theta_0$ is the true parameter value.
+%Under Conditions R0-R3, there exists an $\hat \theta_n$ sequence
+%such that
+%
+%(i) $S_n(\hat \theta_n) =0$ almost surely; 
+%
+%(ii) $\hat \theta_n \to \theta_0$ almost surely.
+%\end{lemma}
+%
+%\vs\no
+%{\bf Proof} 
+%
+%(i) Let $\epsilon$ be an arbitrarily small positive value satisfying
+%\[
+%[ \theta_0- \epsilon,   \theta_0 + \epsilon] \subset N(\theta_0).
+%\]
+%By the law of large numbers, and condition R2 first bound, we have
+%\ba
+%n^{-1} S_n(\theta_0 - \epsilon) 
+%&\to &
+%\bbE_0 \left \{ \frac{\partial \{ \log f(X; \theta_0 - \epsilon)\}}{\partial \theta}\right \}
+%> 0 \\
+%n^{-1} S_n(\theta_0 + \epsilon) 
+%&\to &
+%\bbE_0 \left \{ \frac{\partial \{ \log f(X; \theta_0 + \epsilon)\}}{\partial \theta}\right \}
+%< 0.
+%\ea
+%Thus, as $n \to \infty$, we have that
+%\[
+%S_n(\theta_0 - \epsilon) > 0 > S_n(\theta_0 + \epsilon)
+%\]
+%almost surely. By the intermediate value theorem, there
+%must a $\hat \theta_n \in (\theta_0 - \epsilon, \theta_0 + \epsilon)$
+%at which,
+%\[
+%S_n(\hat \theta_n) = 0.
+%\]
+%That is, there is a solution in any small enough neighborhood of $\theta_0$
+%in the sense of almost surely as $n \to \infty$.
+%
+%(ii) Because we can choose an arbitrarily small $\epsilon$,
+%it implies  that this particular estimator sequence 
+%$\hat \theta_n \to \theta_0$ almost surely.
+%\hfill{$\diamondsuit$}
+%
+%This result is not equivalent to the consistency of MLE even
+%for this special case. The MLE is defined as the global maximum,
+%not merely the solution to the score function.
+%However, the result implies the consistency of MLE
+%for some special distribution families.
+%
+%\begin{corollary}
+%If $\bbE_0 [ \partial \{ \log f(X; \theta)\}/\partial \theta]$
+%is a monotone function of $\theta$ for all $\theta_0$, then the
+%MLE is strongly consistent.
+%\end{corollary}
+%
+%\vs\no
+%{\bf Remarks} In some applications, the parameter is defined by
+%an estimating equation (system)
+%\[
+%\bbE \{ g(X; \theta) \} = 0.
+%\]
+%The function $g(x; \theta)$ may be vector valued and $\theta$
+%is also a vector. The estimator is then defined as
+%the solution to 
+%\[
+%\sum_{i=1}^n g(x_i; \theta) = 0.
+%\]
+%The consistency of such estimators is implied in special cases
+%using a similar proof.
+%
+%\section{Asymptotic normality of MLE after consistency}
+%
+%Our discussion remains focused on the one-dim situation.
+%
+%Under the assumption that $f(x; \theta)$ is smooth, and
+%that the MLE $\hat \theta$ is a consistent estimator of $\theta$, 
+%we must have
+%\[
+%S_n(\hat \theta) = 0.
+%\]
+%Note that this conclusion also relies on the true parameter value
+%is an interior point. This is true because the parameter space is an
+%open interval.
+%
+%By the mean-value theorem in mathematical analysis, we have
+%\[
+%S_n( \theta_0 ) = S_n(\hat \theta) + S'_n(\tilde \theta) (\theta_0 - \hat \theta)
+%\]
+%where $\tilde \theta$ is a parameter value between $\theta_0$
+%and $\hat \theta$.
+%
+%By one of the lemmas, we have 
+%\[
+%n^{-1} S'_n(\tilde \theta) \to - \bbI(\theta_0)
+%\]
+%the Fisher information almost surely.
+%In addition, the classical central limit theorem can be applied
+%to obtain
+%\[
+%n^{-1/2} S_n( \theta_0 ) \to N(0, \bbI(\theta_0)).
+%\]
+%Thus, by Slutzky's theorem, we find
+%\[
+%\sqrt{n} (\hat \theta - \theta_0) 
+%= n^{-1/2} \bbI^{-1}(\theta_0) S_n( \theta_0 )  + o_p(1)
+%\to N(0, \bbI^{-1}(\theta_0))
+%\]
+%in distribution as $n \to \infty$.
+
+\section{Asymptotic chisquare of LRT statistic}
+
+Let consider the simplest case when $H_0 = \{ \theta_0 \}$
+and that $\theta$ is one dimensional.
+In this case, the LRT statistic
+\[
+R_n = 2 \{ \ell_n(\hat \theta) - \ell_n(\theta_0)\}.
+\]
+We carry out the simplistic proof for the
+situation where the MLE is consistent.
+Thus, it is within an infinitesimal neighbourhood of $\theta_0$.
+We do not spell out but assume the model under consideration
+is regular. The more technical discussion will be
+given in subsequent chapters.
+
+Applying Taylor's expansion, we have
+\[
+\ell_n(\theta_0) 
+=  
+\ell_n(\hat \theta) +  \ell_n'(\hat \theta)(\theta_0 - \hat \theta)
++ (1/2)  \ell_n''(\tilde \theta)(\theta_0 - \hat \theta)^2.
+\]
+However, being MLE, $\hat \theta$ makes 
+$\ell_n'(\hat \theta) = 0$.
+In addition, being consistent, we find
+\[
+n^{-1} \ell_n''(\tilde \theta)
+=
+n^{-1} \ell_n''(\theta_0) + o_p(1)
+= - \bbI(\theta_0) + o_p(1)
+\]
+where $\bbI(\cdot)$ is the Fisher information.
+Hence, we find
+\[
+R_n = 2 \{ \ell_n(\hat \theta) - \ell_n(\theta_0)\}
+=
+\{n \bbI(\theta_0) + o_p(n) \}(\theta_0 - \hat \theta)^2.
+\]
+Recall that
+\[
+\sqrt{n}(\hat \theta - \theta_0) 
+= n^{-1/2} \bbI^{-1} S_n( \theta_0 )  + o_p(1)
+\]
+we get
+\[
+R_n
+= \bbI^{-1} \{ n^{-1/2} S_n( \theta_0 ) \}^2  + o_p(1).
+\]
+Because $n^{-1/2} S_n( \theta_0 ) \to N(0, \bbI(\theta_0))$,
+we find
+\[
+R_n \to \chi_1^2
+\]
+in distribution.
+
+\section{Assignment problems}
+\begin{enumerate}
+\item
+Suppose we have one bi-variate normally distributed observation
+$(X_1, X_2)$ with mean ${\mathbf \mu}= (\mu_1, \mu_2)$ and identity variance matrix.
+Consider the likelihood ratio test for
+\[
+H_0:  (\mu_1 \leq 0) \mbox{ and } (\mu_2 \leq 0); ~~ H_1: \mu_1 > 0 \mbox{ or }  \mu_2 > 0.
+\]
+
+(i) Obtain the expression of the likelihood ratio test statistic $R$.
+
+(ii) What is the distribution of $R$ when $(\mu_1, \mu_2) = (0, 0)$? That is, obtain
+its cumulative distribution function.
+
+Hint: Notation such as $X^+ = \max\{0, X\}$ can be useful.
+
+
+\item
+Let $(X_i, Y_i), i=1, 2, \ldots, n$ be a set of \iid bivariate distributions
+with joint probably mass function
+\[
+f(x, y, \theta_1, \theta_2) = \frac{\theta_1^x \theta_2^y}{x!y!} \exp( - \{\theta_1 + \theta_2\}).
+\]
+
+(i) Obtain the analytical expression of the likelihood ratio test statistic $R_n$
+for $H_0: \theta_1 = \theta_2$ versus $H_1: \theta_1 \neq \theta_2$.
+
+(ii) Directly prove that $R_n$ has a chi-square limiting distribution 
+with one degree of freedom under the null model.
+
+(iii) Let $n=50$ and $\theta_1 = \theta_2 = 2$. Use computer simulation
+to find out how closely the null rejection probability is to the nominal level $0.05$.
+
+(iv) Repeat (iii) when $\theta_1 = \theta_2 = 20$. Should the type I error
+in this case closer to $0.05$ compared to the test in (iii), why and is it?
+
+Remark: Do not cite a generic result when you prove (ii).
+Based on the asymptotic result, the rejection region for a level $0.05$ test
+is $R_n > 3.84$.  Employ at least 20K repetitions in the simulation.
+
+\item
+Let $X_1, X_2, \ldots, X_n$ be an iid sample from a distribution in
+Poisson distribution family with mean parameter $\theta$:
+\[
+P(X = k) = \frac{\theta^k}{k!} \exp(- \theta).
+\]
+
+(a) Derive the expression of the likelihood ratio test statistic $R_n$ for 
+$H_0: \theta = 1$ against $H_1: \theta \neq 1$.
+
+(b) Verify Wilks theorem that $R_n$ in 
+(a) has $\chi_1^2$ limiting distribution under $H_0$.
+%You may assume that $\sqrt{n}(\bar{X}_n - \theta_0) \to N(0, \theta_0)$
+%in distribution when $\theta_0$ is the true parameter value
+%as in assignment problems.
+
+%Hint: Taylor expansion: when $|t - \theta_0|$ is very small,
+%\[
+%t \log t 
+%\approx
+%\theta_0  \log \theta_0 
+%+ 
+%(1 + \log \theta_0) (t - \theta_0) + \frac{1}{2\theta_0} (t - \theta_0)^2.
+%\]
+
+(c) Derive the expression of the likelihood ratio test statistic $R_n$ for 
+$H_0: \theta = 1$ against $H_1: \theta > 1$.
+
+(d) Derive the score function $S_n(\theta)$ of $\theta$ in the current context.
+
+(e) Derive the score test statistic  for $H_0= 1$ against $H_1: \theta \neq 1$.
+
+(f) Obtain the limiting distribution of the likelihood ratio test in (c).
+
+%{\bf Solution}
+%
+%(a) Under Poisson model, it is well known that the MLE of the mean is given by
+%$\bar X_n$ under the full model.
+%Currently, the log-likelihood function is given by
+%\[
+%\ell_n(\theta) 
+%= n \bar X_n \log \theta - n \theta.
+%\]
+%Under the null hypothesis, $\theta = 1$.
+%Hence, the likelihood ratio statistic is given by
+%\[
+%R_n = 2 n \{ \bar X_n \log \bar X_n - (\bar X_n - 1) \}.
+%\]
+%By Taylor's expansion, when $\bar X_n \approx \theta_0= 1$, one has
+%\[
+%\bar X_n \log \bar X_n
+%= \theta_0 \log \theta_0 + (1+ \log \theta_0) (\bar X_n - \theta_0)
+%+ \frac{1}{2 \theta_0}  (\bar X_n - \theta_0)^2 + O_p(n^{-3/2}).
+%\]
+%Hence,
+%\[
+%R_n = \frac{n}{ \theta_0}  (\bar X_n - \theta_0)^2 + O_p(n^{-1/2})
+%\to \chi_1^2
+%\]
+%in distribution. 
+%
+%(c) When $H_1: \theta > 1$, the MLE of $\theta$ under $H_1$ becomes
+%$\hat \theta = \max\{1, \bar X\}$. 
+%This implies the likelihood ratio test statistics
+%\[
+%R_n = 2 n \{ \bar X_n \log \bar X_n - (\bar X_n - 1) \} I(\bar X_n > 1).
+%\]
+%Namely, it is the same as the $R_n$ in (a) when $\bar X_n > 1$ and it
+%reduces to 0 when $\bar X_n \leq 1$.
+%
+%(d) The score function is given by
+%\[
+%S_n(\theta; x) 
+%= \frac{\partial \ell_n(\theta)}{\partial \theta}
+%=
+%\frac{n \bar X_n}{\theta} - n.
+%\]
+%
+%(e) The Fisher information based on $n$ observations is given by
+%\[
+%{\mathbf I} (\theta) = \mbox{var}(S_n) = \frac{n \theta}{\theta^2} = \frac{n}{\theta}.
+%\]
+%Hence, the score test statistic for $\theta = 1$ is given by
+%\[
+%{\mathbf I}^{-1} (\theta) S^2_n(\theta; x) 
+%= n (\bar X_n - 1)^2.
+%\]
+%
+%(f) When $\bar X_n > 1$, we still have
+%\[
+%R_n = \frac{n}{ \theta_0}  (\bar X_n - \theta_0)^2 + O_p(n^{-1/2})
+%=
+%n (\bar X_n - 1)^2+ O_p(n^{-1/2}).
+%\]
+%We also know that $R_n = 0$ otherwise.
+%Hence, for any $x > 0$ and under the null hypothesis $\theta = 1$, we have
+%\begin{eqnarray*}
+%P(R_n > x) 
+%&=&
+%P(R_n > x; \bar X_n > 1) \\
+%&=&
+%P( n (\bar X_n - 1)^2 > x, \bar X_n > 1) + o(1)\\
+%&=&
+%P( \sqrt{n} (\bar X_n - 1) > \sqrt{x}, \bar X_n > 1) + o(1)\\
+%&=&
+%P( \sqrt{n} (\bar X_n - 1) > \sqrt{x}) + o(1)\\
+%&\to &
+% 1 - \Phi(\sqrt{x}).
+%\end{eqnarray*}
+%At the same time, we have
+%\[
+%P(R_n = 0) = P(\bar X_n < 1) \to 0.5.
+%\]
+%In other words, the cdf of $R_n$, in the limit when $n \to \infty$,
+%\[
+%P(R_n \leq x) \to 0.5 + P( Z^2 \leq x)
+%\]
+%for $x \geq 0$, and $P(R_n \leq x) = 0$ for $x < 0$,
+%where $Z$ is a standard normally distributed random variable.
+%
+
+\item
+Let $X_1, X_2, \ldots, X_n$ be an \iid sample from a
+negative binomial distribution family with parameter $\theta$ and a known
+constant $m$ (which is a positive integer):
+\[
+P(X = x) = { m+x-1 \choose x} (1-\theta)^x \theta^m = c(m, x) (1-\theta)^x \theta^m.
+\]
+for $x=0, 1, \ldots$ and the parameter space $\Theta = (0, 1)$.
+Use $\bar{X}_n$ as notation for the sample mean.
+
+
+(a) Derive the expression of the likelihood ratio test statistic $R_n$ for 
+$H_0: \theta = 0.5$ against $H_1: \theta \neq 0.5$.
+
+(b) Verify Wilks theorem that $R_n$ has $\chi_1^2$ distribution
+under $H_0$.
+
+\end{enumerate}
+
+

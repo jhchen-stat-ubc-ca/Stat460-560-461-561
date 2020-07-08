@@ -1,0 +1,931 @@
+\chapter{Resampling methods}
+
+\section{Problems addressed by resampling}
+
+We have routinely started a statistical inference problem with
+``let $x_1, \ldots, x_n$ be an \iid sample from $F$''.
+When a parametric distribution family $f(x; \theta)$
+for $F$ is proposed,
+then the focus is to get $\theta$ well estimated.
+Often, the focus is to investigate certain aspect of $F$.
+For this purpose, we may define a function in a generic form $\theta = T(F)$.
+The formation of $T(F)$ is commonly applicable whether or
+not $F$ is a member of a parametric family. In both cases,
+a natural estimator of $\theta$ is $\hat \theta_n = T(F_n)$ where
+$F_n(x)$ is the empirical distribution based on the \iid sample.
+When $\theta$ is the population mean, 
+the estimator is the sample mean.
+
+A point estimation of $\theta$ is generally only a starting point
+of the statistical inference. An immediate question might be:
+what is the (sample) distribution of $\hat \theta_n$?
+If $F$ is a member of Poisson distribution and $T(F)$ is the population
+mean, then $\hat \theta = \bar X_n$ whose distribution is a scaled Poisson.  
+If $F$ is a member of normal distribution, then 
+$\hat \theta = \bar X_n$ has normal distribution 
+with some mean and variance.
+
+If $T(F)$ is more complex than sample mean and $F$ is 
+a member of a generic distribution family, the answer to 
+``what is the distribution of $\hat \theta_n$'' is much more complex.
+Typically, if $n$ is very large, $\hat \theta_n = T(F_n)$ is asymptotic
+normal. This partly answers the above question.
+Yet even if so, we are burdened with analytically obtaining
+the mean and variance of the asymptotic distribution.
+
+Bootstrap and other resampling methods provide some alternative 
+ways to answer such question.
+They are labor intensive in terms of computation, but 
+simple in terms of mathematical derivation. 
+Because of these properties, this line of approach is admired by 
+many applied statisticians.
+At the same time, resampling methods can be abused by many who know very
+little on their limitations. This chapter aims to get you informed about
+the idea behind the resampling methods and about when
+the methods work as intended. In no circumstances we should
+blindly trust a cure-all magic.
+
+\section{Resampling procedures}
+
+Let $x_1, x_2, \ldots, x_n$ be a set of \iid observations.
+We have available the empirical distribution function $F_n(x)$ 
+which is a good estimate of their common distribution.
+Note that $F_n(x)$ is the uniform distribution on these
+$n$ observed values. If these observations have ties, this interpretation
+remains useful and harmless.
+Let $X^*$ denote a random variable with distribution $F_n$. 
+That is,
+\[
+\pr( X^* = x_i ) = \frac{1}{n}~~~~\mbox{for} \hspace{3pt} i=1, 2, \ldots, n.
+\]
+In addition, let $X_1^*, \ldots, X_n^*$ be \iid random variables
+with the same distribution as that of $X^*$. 
+Let $F_n^*(x)$ be the empirical distribution based on observed
+values of $X_1^*, \ldots, X_n^*$.
+We regard $F_n^*$ and its related entities as mirror image of
+$F_n$ in the bootstrapping world. 
+For this reason, $F_n$ is regarded as a real world subject.
+
+For parameters of interest in the form of $\theta = T(F)$, we may estimate
+their value by $\hat \theta = T(F_n)$. 
+In the bootstrapping world, we find their images
+$\theta^* = T(F_n)$ and $\hat \theta^* = T(F_n^*)$.
+The distribution of $T(F_n)$ has its bootstrap world image as
+distribution of $T(F_n^*)$, conditional on fixed $F_n$. 
+When $F \approx F_n$ as it is the case when $n$ is large, 
+we anticipate that the distribution of
+$T(F_n)$ is well approximated by the conditional distribution of $T(F_n^*)$
+given data, namely $F_n$. We should take note that such claims
+are meaningful when $T(F)$ is smooth in $F$ in some sense.
+It does not always work but often work well.
+
+Alone this line of thinking, the distributions of the sample mean and sample
+variance $\bar X_n$ and $s_n^2$ should be approximately
+the same as the conditional distribution of
+$\bar X_n^* = \frac{1}{n} \sum_{i=1}^n X_i^*$ and 
+$s_n^{2*} = \frac{1}{n-1} \sum_{i=1}^n (X_i^* - \bar X_n^*)^2$.
+In fact, these claims extend to their joint distribution and
+their functions. 
+
+Instead of working hard mathematically on the
+distributions of the sample mean and variance and so on, 
+we intend to approximate them by these of their bootstrap images.
+At this point, we cannot help question the practicality of this
+suggestion: if
+deriving the distribution of $\bar X_n$ is hard, 
+deriving the distribution of $\bar X_n^*$ is likely harder. 
+This is true. 
+However, if we can generate a million of independent
+and distributionally identical copies of $\bar X_n^*$,
+the distribution of $\bar X_n^*$ can then be 
+numerically determined accurately. 
+If this idea works, we would have successfully unloaded
+our technical burden to computers.
+We will be able to work on many problems without
+placing restrictive normality assumption or
+other parametric assumptions on the populations.
+Remember, {\bf placing assumptions on the population
+does not make the population satisfy these assumptions}.
+
+Approximating various aspects of $T(F_n)$ by that
+of $T(F_n^*)$ is a tool called bootstrap.
+Bootstrapping or other resampling procedures
+are generally portrayed as a non-parametric method. 
+They are used for many purposes far more than merely  
+approximating the distributions of $\bar X_n$
+and $s_n^2$.  For example, the bootstrap method can be
+used to approximate the distribution of sample median under
+very general conditions. Such universality makes it a popular choice. 
+Furthermore, when data do not have an \iid structure, a
+carefully designed schedule may be used to
+create a faithful resampling mirror image in the bootstrap world.
+Hence, the resampling method is not restricted to data with
+\iid structures.
+
+In many applications, a parametric model
+$f(x; \theta)$ itself is an acceptable assumption. 
+Suppose $\hat \theta$ is the maximum likelihood
+estimator of $\theta$. What is the distribution of $\hat \theta$?
+The large sample answer can also be mathematically difficulty.
+In this case,
+one may study the distribution of $\hat \theta$, when
+the data are a random sample from $f(x; \hat \theta)$. To implement
+this idea by resampling method, one may generate samples
+from $f(x; \hat \theta)$, and obtain a large number of
+$\hat \theta^*$, the MLE based on generated data sets.
+The empirical distribution based on $\hat \theta^*$
+can be an accurate approximation of the distribution of $\hat \theta$.
+When the resampled data are drawn from a parametric
+distribution, the bootstrapping method becomes parametric 
+bootstrap.
+
+\section{Bias correction}
+
+Let $\theta = T(F)$ be a parameter.  Since the empirical distribution 
+$F_n(x)$ is a good estimator of $F$, we have proposed to use
+$\hat \theta = T(F_n)$ to estimate $\theta$.
+At the same time, the bias of $T(F_n)$ itself is a
+functional of $F$. Thus, bootstrap can be used
+to estimate the bias of $T(F_n)$ and 
+subsequently reduce the bias.
+
+Although $\bbE\{F_n(x)\} = F(x)$ for all $x$, it is not necessarily
+true that $\bbE\{T(F_n)\} = T(F)$. If so, how large is the bias of
+$\hat \theta = T(F_n)$? Let us denote the bias
+by $\xi = \bbE[T(F_n)] - T(F)$.
+
+Let $X_1^*, \ldots, X_n^*$
+be \iid observations from the empirical distribution $F_n$.
+Let $F_n^*(x)$ be the corresponding empirical distribution. 
+Subsequently,
+$\hat \theta^* = T(F_n^*)$ is then a bootstrap estimator of
+$\hat \theta$. 
+Its (conditional) bias is given by
+\[    
+\hat \xi^* = \bbE_* \{T(F_n^*)\} - T(F_n), 
+\]
+where $\bbE_*$ is the expectation conditional on $X_1, \ldots, X_n$.
+If $\hat \xi^*$ cannot be evaluated theoretically,
+we can evaluate it by simulation. Is $\hat \xi^*$ a good
+estimator of $\xi$?
+
+\begin{example}
+(a) Assume $\theta = \int x dF(x)$ and $\bbE |X| < \infty$. 
+Consequently, the bias $\xi = 0$.
+At the same time, 
+\[
+\bbE_* T(F_n^*) 
+= \bbE_*  \{ n^{-1}  \sum_{i=1}^n X_i^* \}
+= n^{-1} \sum_{i=1}^n X_i = T(F_n).
+\] 
+Thus, we also have
+$\hat \xi^* = 0$. 
+This result shows that $\hat \xi^*$ works fine as an estimator of $\xi$. 
+Of course, in this example, the exercise does not lead to any useful results.
+
+
+\vs\vs
+\noindent
+(b) Let us consider the parameter estimation of
+\[
+\theta = T(F) = \bbE^2(X) =  [\int x dF(x)]^2.
+\]
+ Assume that $\sigma^2 = var (X_1) < \infty$. 
+We have
+$T(F_n) = [\bar X_n]^2$ and its bias is given by
+$\xi = n^{-1}  \sigma^2$. 
+The conditional expectation of $T(F_n^*)$ given $F_n$
+is given by
+\bea
+\bbE_* T(F_n^*) 
+&=& \bbE_* \{ n^{-1} \sum_{i=1}^n X_i^*\}^2\\
+&=& \{ \bbE_* X_1^*\}^2 + n^{-2} \var_*(X_1^*)\\
+&=& T(F_n) + (n-1) s_n^2/n^2.
+\eea
+Thus, if we estimate $\xi$ by $\xi^* = \bbE_* T(F_n^*)  - T(F_n)$,
+we have $\hat \xi^* = (n-1)s_n^2/n^2$.
+This is a very reasonable estimator of $\xi$ though we certainly
+do not have to go over bootstrap resampling procedure to find out.
+\end{example}
+
+\section{Variance estimation}
+
+Consider the problem of assessing the variance of $T(F_n)$. 
+The bootstrap method estimates the variance of
+$T(F_n)$ by the conditional variance of $T(F_n^*)$, 
+where  $F_n^*$ is the empirical distribution based on 
+an \iid sample from the distribution $F_n$. 
+
+\begin{example}
+(a) Let the parameter of interest be $\theta = T(F) = \int x dF$ again.
+It is seen that $\hat \theta = T(F_n) = \bar X_n$. Let us 
+work as if we do not have a good idea on its variance.
+Consequently, we use resampling method to estimate its
+variance. 
+Take an \iid sample  from the empirical distribution $F_n$. 
+Let $\bar X_n^*$ be the resulting sample mean.
+We now use the conditional variance of $\bar X_n^*$ to
+estimate the variance of $\bar x_n$.
+
+We can easily calculate the conditional variance as
+\[
+\var_* (\bar X_n^*) 
+= n^{-1}  \var_*(X_1^*) 
+= n^{-2} \sum_{i=1}^n (X_i - \bar X_n)^2.
+\]
+Recall the true variance of $\bar X_n$ is $n^{-1} \sigma^2$ where
+$\sigma^2 = \var(X_1)$.
+The bootstrap variance estimation
+is $n^{-1} s_n^2 + O(n^{-2})$. 
+Clearly, we have
+\[
+\frac{\var_* (\bar X_n^*) }{\var(\bar X_n)} \to 1
+\]
+almost surely as $n \to \infty$. This result shows that
+the bootstrap variance estimator is well justified.
+
+It is important to realize that $\var(\bar X_n) \to 0$ as $n \to \infty$.
+Hence, even if a variance estimator $\widehat{\var}(\bar X_n)$ makes
+\[
+\widehat{\var}(\bar X_n) - \var(\bar X_n) \to 0
+\]
+almost surely, this property alone does not make it a good estimator.
+
+\vs\vs
+(b)
+Let the parameter of interest be $\theta = \{ \int x dF\}^2$.
+Its natural estimator is $\hat \theta = \bar X_n^2$. How 
+large is the variance of  $\hat \theta$? Assume that $X$ has
+finite 4th moment.
+It is seen that
+\bea
+\bbE (\bar X_n^4)
+&=&
+\bbE \{ ( \bar X_n - \mu) + \mu\}^4 \\
+&=&
+\bbE \{ ( \bar X_n - \mu) ^4 + 4 ( \bar X_n - \mu)^3 \mu \\
+&& 
++ 6 ( \bar X_n - \mu) ^2 \mu^2 + 4( \bar X_n - \mu) \mu^3 + \mu^4 \}\\
+&=& \mu^4 + \frac{6 \mu^2 \sigma^2}{n} + O(n^{-2}).
+\eea
+We also have, putting $s_n^2 = n^{-1} \sum (x_i - \bar x_n)^2$,
+\[
+\bbE^2(\bar X_n^2)
+= ( \mu^2 + \sigma^2/n)^2
+= \mu^4 + \frac{2 \mu^2 \sigma^2}{n} + O(n^{-2}).
+\]
+Therefore,
+\bea
+\var( \bar X_n^2) 
+&=&
+\bbE (\bar X_n^4)  - \bbE^2(\bar X_n^2) \\
+&=&
+ \frac{4 \mu^2 \sigma^2}{n} + O(n^{-2}).
+\eea
+
+In terms of bootstrap method, it is easy to get
+\begin{eqnarray*}
+\var_*(\{\bar X_n^*\}^2) 
+& = & 
+4\bar X_n^2 \bbE_* \{ \bar X_n^* - \bar X_n\}^2
++ \bbE_* \{ \bar X_n^* - \bar X_n\} ^4 \\
+&&  \hspace{0.5cm} 
+- \{ \bbE_*[\bar X_n^* - \bar X_n]^2\}^2  
++ 4\bar X_n \bbE_* \{\bar X_n^* - \bar X_n\}^3.
+\end{eqnarray*}
+
+\vs
+The order of the last three terms are 
+$O_p(n^{-2})$. The order of
+the first one is $O_p(n^{-1})$ when the
+true mean is not zero. Thus, the leading term in this
+bootstrap variance estimator is
+$({4\bar X_n^2}/{n^2} )\sum_{i=1}^n (X_i - \bar X_n)^2$.
+This marches the approximate variance of $\bar X_n^2$
+which equals $({4 \mu^2 \sigma^2})/{n}$.
+\end{example}
+
+\vs
+In both examples, we analytically obtained the properties of
+the bootstrap method for bias and variance estimation of
+estimators in the form of $T(F_n)$ for parameter $T(F)$.
+Analytical derivation is not always feasible. 
+For instance, suppose $\theta$
+is the location parameter in Cauchy distribution, we will not
+be able to find $\var_*(T(F_n^*))$ by theoretical computation.
+Instead, computer simulation is likely the only option
+which can be carried out as follows.
+
+First, draw an \iid sample of size $n$ $x_1^*, \ldots, x_n^*$ from $F_n$ based
+on some computer package.
+Compute, based on $b$th sample, 
+\[
+\hat \theta^*_b = T(F_n^*)
+\]
+where $F_n^*(x) = n^{-1} \sum_{i=1}^n \ind (x_i^*\leq x)$
+which is the empirical distribution based on bootstrap sample.
+
+Next, define the simulated $\var_*(T(F_n^*))$ value to be
+\[
+v_*^2 = \frac{1}{B-1} \sum_{b=1}^B \{ \hat \theta^*_b - \bar \theta^*\}^2
+\]
+where $\bar \theta^* = B^{-1} \sum_{b=1}^B \hat \theta_b^*$.
+If $\theta$ is a vector, we need to modify the above formula
+for the variance-covariance matrix.
+
+Under some conditions, $v_*^2$ is a consistent estimator of $\var (T(F_n))$.
+Yet we must be more cautious on the meaning of consistency:
+\[
+v_*^2/\var (T(F_n)) \to 1
+\]
+ in some modes.
+
+One may define the bootstrap variance estimator to be
+\[
+\tilde {v}_*^2 = \frac{1}{B-1} \sum_{b=1}^B \{ \hat \theta^*_b - \hat \theta\}^2.
+\]
+Since the difference between $\hat \theta$ and $\bar \theta^*$ is likely
+very small in asymptotic argument, both of them are well justified.
+None of them can be judged as ``wrong'' as many would like to ask.
+
+In addition, simulation study will likely find situations where $v_*^2$ is
+more accurate and other situations where $\tilde{v}_*^2$ is superior.
+
+In summary, being a statistician does not make you an authority to
+decide between these estimators. We do notice that 
+$\tilde {v}_*^2$ resembles mean square error. It therefore
+takes a larger value. If one likes to have a more conservative
+statistical procedure, using $\tilde {v}_*^2$ a good choice.
+
+
+
+\section{The cumulative distribution function}
+
+We now investigate the problem of approximating the distribution of $T(F_n)$ 
+by that of $T(F_n^*)$.
+We follow the same line of approach as the one for variance estimation.
+We wish to confirm that the conditional distribution of $T(F_n^*)$ is a 
+good approximation to the distribution of $T(F_n)$.
+
+Consider the simplest situation where the parameter to
+be estimated is $\theta = T(F) = \int x dF$.
+The estimator of $\theta$ is the sample mean $\bar X_n$, 
+and we aim at estimating
+the cumulative distribution function of $\bar X_n$.
+%Assume without loss of generality that the true values
+%$\theta = 0$ and $\sigma^2 = \var (X_1) = 1$.
+
+Under the assumption of the finite second moment,
+$\sqrt{n}(\bar X_n - \theta)/\sigma$ is asymptotically normal.
+This fact pretty much tells us to not bother at estimating
+its distribution. 
+Nevertheless, if we insist on using bootstrap to
+estimate the distribution of $\bar X_n$,
+we should have, as $n \rightarrow \infty$,
+\[
+\pr 
+\left ( 
+\frac{\sqrt{n} (\bar X_n^* - \bar X_n) }{s_n} \leq x \big | 
+F_n
+\right ) 
+\rightarrow 
+\Phi(x) ~~~~\mbox{almost surely}
+\]
+for any $x$ with $s_n^2$ being the sample variance
+and $\Phi(x)$ being the \cdf of the standard normal distribution.
+Note that this is a limit where both the event under investigation and
+the condition are changing when $n$ increases.
+As $n$ increases, we may use the central limit theorem for triangular
+array to obtain the above result.
+
+To prove the asymptotic normality, Berry-Esseen bound
+is the most simple tool though at a relatively stronger conditions.
+
+\begin{theorem}
+Let $X_1, \ldots, X_n$ be an \iid sample from a distribution $F$
+with finite mean $\theta$, finite variance $\sigma^2$
+and finite $\bbE |X|^3$. Then, we have
+\[
+\sup_x \left  |
+\pr 
+\left (
+\frac{\sqrt{n} (\bar X_n - \theta) }{\sigma}  \leq x
+\right ) 
+-
+\Phi(x) 
+\right |
+\leq
+\frac{33}{4} \frac{\bbE (|X - \theta|^3)}{\sqrt{n} \sigma^{3/2}}
+\]
+\end{theorem}
+
+Note that the inequality in this theorem holds for all $n$. 
+In other words, it is
+not an asymptotic one, but universal one. At the same time, it
+shows that the precision of the normal approximation improves
+with increased sample size at rate $n^{-1/2}$.
+Applying this bound to bootstrapping sample, we find
+\[
+\sup_x \left |
+\pr \left ( \frac{\sqrt{n} (\bar X_n^* - \bar X_n)}{s_n} \leq x \big | 
+F_n \right ) 
+-
+\Phi(x) \right | 
+\leq 
+\frac{33}{4}
+\frac{\bbE_*|X_1^* - \bar X_n|^3}
+{\sqrt{n} [\bbE_*|X_1 - \bar X_n|^2]^{3/2}}.
+\]
+Again, this result holds for any $F_n$ and $n$.
+
+
+In view of such an inequality, the asymptotic normality is valid when
+\[
+\frac{\bbE_*|X_1^* - \bar X_n|^3}
+{[\bbE_*|X_1 - \bar X_n|^2]^{3/2}} 
+=o(n^{1/2})
+\]
+almost surely or in any appropriate modes.
+
+Suppose the model satisfies $\bbE|X_1|^3 < \infty$
+and $\sigma^2 = \var(X_1)  = 1$.
+In this case, we have
+\[
+\bbE_*|X_1^* - \bar X_n|^3 
+= 
+\frac{1}{n} \sum_{i=1}^n |X_i - \bar X_n|^3
+\rightarrow 
+\bbE |X_1|^3,~~\mbox{almost surely}
+\]
+and
+\[
+\bbE_*|X_1^* - \bar X_n|^2 = \frac{1}{n} \sum_{i=1}^n |X_i - \bar X_n|^2
+\rightarrow \sigma^2 = 1, ~~\mbox{almost surely}.
+\]
+Thus, it is trivial to find that 
+\[
+\frac{\bbE_*|X_1^* - \bar X_n|^3} {[\bbE_*|X_1 - \bar X_n|^2]^{3/2}}
+\rightarrow 
+\bbE |X_1|^3.
+\]
+Hence, when $\bbE|X_1|^3 < \infty$, the (conditional)
+asymptotic normality is proved. The simple proof is benefitted
+from an unnecessarily strong assumption on the finiteness
+of the  third moment.
+
+A generalization of this result can be easily made. If $g(\bar X_n)$ is a smooth
+function of $\bar X_n$, then $g(\bar X_n)$ is asymptotic normal.
+By the same logic, $g(\bar X_n^*)$ is also asymptotically normal
+conditional on $F_n$. Thus, the conditional distribution of
+$g(\bar X_n^*)$ still marches that of $g(\bar X_n)$. 
+
+Although the above example is very supportive on the usefulness of
+the bootstrap method, it is not without its limitations. For the sample
+mean, its asymptotic normality can be established easily. The calculation
+of the limiting distribution is also very simple. 
+Why should we bootstrap in these simple situations?
+In situations where the asymptotic become complex, do we have a good
+theory to support the bootstrap?
+
+One crucial justification of using bootstrap method comes from
+Singh (1981). There are many results contained in this paper. Here
+I only pick up a relatively simple case.
+
+\begin{theorem}
+( Singh, 1981).
+Assume $X_1, \ldots, X_n$ are \iid samples from $F$.
+Assume $\bbE X_1 = \theta$, $\sigma^2 = \var(X_1) > 0$, 
+and $\bbE |X_1|^3 < \infty$.
+Let $\bar X_n$ be the sample mean and $s_n^2$ be the sample variance.
+In addition, let $\bar X_n^*$ be the bootstrap sample mean. Then
+\[
+\sup_x 
+\left |
+\pr
+\left (
+\frac{\sqrt{n} (\bar X_n - \theta)}{\sigma} \leq x 
+\right )
+- \pr 
+\left (
+\frac{\sqrt{n}[\bar X_n^* - \bar X_n]}{s_n} \leq x| F_n 
+\right )
+\right |
+= O (n^{-1/2})
+\]
+almost surely.
+If $F$ is a continuous distribution, then
+\[
+\sup_x 
+\left |
+\pr
+\left(
+\frac{\sqrt{n}(\bar X_n- \theta)}{\sigma} \leq x
+\right)
+- 
+\pr
+\left (
+\frac{\sqrt{n}[\bar X_n^* - \bar X_n]}{s_n} \leq x| F_n
+\right)
+\right |
+= o(n^{-1/2}).
+\]
+\end{theorem}
+
+\vs\vs
+The first result is implied by Berry-Esseen bound.
+We do not prove the second result here.
+The second result shows that the
+bootstrapping approximation has better precision than
+the normal approximation. This is a surprising good news.
+
+The bootstrap sampling procedure for approximating 
+\cdf of some functional $T(F_n)$ is very simple.
+First, we draw an \iid sample of size $n$ 
+$X_1^*, \ldots, X_n^*$ from $F_n$ using
+some computer software package.
+We repeat this step a sufficiently large number $B$ times.
+Next we compute, based on the $b$th sample, 
+\[
+\hat \theta^*_b = T(F_n^*)
+\]
+where $F_n^*(x) = n^{-1} \sum_{i=1}^n \ind (x_i^*\leq x)$.
+The last step is to define the estimated cumulative distribution function to be
+\[
+\hat H_n(t) 
+= B^{-1} \sum_{b=1}^B \ind ( \hat \theta^*_b \leq t).
+\]
+Needless to say, under some conditions, 
+$\hat H_n(t) $ is consistent for $H(t) = \pr ( \hat \theta \leq t)$.
+We should be aware that only if the limiting distribution of $T(F_n)$ does
+not degenerate, the bootstrap approximation is meaningful.
+The result of Singh, for instance, is effective for 
+\[
+T(F_n) =  \frac{\sqrt{n}(\bar X_n- \theta)}{\sigma}.
+\]
+A similar result for
+\[
+T(F_n) =  \frac{(\bar X_n- \theta)}{\sigma}
+\]
+would be meaningless. 
+Be aware that the
+both $T(F_n)$ given above are not statistics, 
+because they are functions of both data
+and parameter.
+
+
+\section{Recipes for confidence limits}
+
+We still discuss the inference problem under the assumption
+that an \iid sample of size $n$ from distribution $F$ is given. The parameter
+of interest is some $\theta = T(F)$. It is estimated by
+$\hat \theta = T(F_n)$ where $F_n$ is the empirical distribution
+function. We will also use some variance estimator based on
+$F_n$ and denote it as $\hat \sigma$. It is not necessary the
+variance of distribution $F$, but some quantity used for
+constructing pivotal quantities.
+
+\vs
+\noindent
+{\bf Percentile method.}
+Consider the case when
+$\hat \theta - \theta$ is more or less a pivotal quantity.
+Suppose that  its distribution is given by $H(x)$, namely, 
+\[
+\pr ( \hat \theta - \theta \leq x) = H(x).
+\]
+Let $H^{-1} (\alpha)$ be the $\alpha$th quantile of $H(x)$. 
+Then
+\[
+\pr ( \hat \theta - \theta \geq H^{-1} (\alpha))
+= 1 - \alpha
+\]
+when $H(\cdot)$ is a strictly increasing function.
+This implies that an upper $(1-\alpha)$ limit for $\theta$ is given by
+\[
+\hat \theta - H^{-1} (\alpha).
+\]
+A two-sided confidence interval can be formed by using one upper
+and one lower confidence limits.
+
+Let $\hat H(x)$ be an estimator of $H(x)$. 
+Define
+\[
+\underline{\theta}_{BP} 
+= 
+\hat \theta - \inf_t \{ \hat H_n(t) \geq \alpha\} 
+= 
+\hat \theta - \hat H^{-1} (\alpha).
+\]
+This is an approximate upper confidence bound for $\theta$
+because
+\[
+\pr( \theta <  \underline{\theta}_{BP}) 
+=
+\pr( \hat \theta - \theta \geq \hat H^{-1}_n(\theta)  ) 
+\approx
+\pr( \hat \theta - \theta \geq H^{-1} (\theta)  ) 
+= 1 - \alpha.
+\]
+Computing confidence lower limit based on the above
+approach is generally called percentile method.
+The subscript BP is used for ``bootstrap percentile'' though
+we motivated this upper limit without a bootstrap
+simulation procedure.
+
+\vs
+\noindent
+{\bf Ordinary and studentized methods}
+Consider the case we have estimators
+$\hat \theta$ and $\hat \sigma$ for $\theta$ and
+the standard error of $\sqrt{n} \hat \theta$. 
+Note that the later is not the population standard error.
+In many cases, it might be more realistic that
+\[
+\frac{\sqrt{n} (\hat \theta - \theta)}{\sigma};~~~
+\frac{\sqrt{n} (\hat \theta - \theta)}{ \hat \sigma}
+\]
+are approximate pivotal quantities. 
+If they are, without any ambiguity, we may define
+\[
+H(x) = \pr\{ \frac{\sqrt{n} (\hat \theta - \theta)}{\sigma} \leq x\}
+\]
+and
+\[
+K(y) =  \pr\{ \frac{\sqrt{n} (\hat \theta - \theta)}{ \hat \sigma} \leq y\}.
+\]
+If we had complete information of $H(x)$ and $K(y)$,
+constructing confidence intervals for $\theta$ would be a simple task.
+
+We further notice that the task is reduced to find upper
+and lower confidence limits.
+Let $x_\alpha = H^{-1}(\alpha)$ and $y_\alpha = K^{-1} (\alpha)$
+so that $1-\alpha$ is the targeted level of confidence.
+Depending on either we have knowledge on $H$ or on $K$,
+their  lower confidence limits are respectively
+\[
+\hat \theta_{ord}(\alpha) 
+= 
+\hat \theta -  x_{1-\alpha}  \sigma/\sqrt{n}, ~~
+\]
+and
+\[
+\hat \theta_{stud}(\alpha) 
+= 
+\hat \theta - y _{1-\alpha} \hat{\sigma}/\sqrt{n}.
+\]
+Both of them have the format we presented in a previous chapter. 
+The subscripts, ord and stud, are abbreviations for
+{\it ordinary} and {\it studentized}. They would have been
+$z_{1-\alpha}$ or $t_{1-\alpha}$ when $H$ and $K$ are
+\cdf of normal and $t$ distributions.
+
+\vs
+\noindent
+{\bf Hybrid and backward methods}.
+As it is well known, when the sample size is large,
+$\hat \sigma \approx \sigma$ and hence $x_\alpha \approx y_\alpha$.
+One may therefore use a hybrid lower confidence limit:
+\[
+\hat \theta_{hyb} 
+= \hat \theta - x_{1-\alpha}  \hat{\sigma}/\sqrt{n}.
+\]
+This can be compared to the situation where quantile of
+$t$-distribution should be used, yet we mistakenly use
+the quantile of the normal distribution.
+
+Under normal distribution, $z_\alpha = - z_{1-\alpha}$ because
+the normal distribution is symmetric. If $H$ is symmetric, then
+$x_\alpha = - x_{1-\alpha}$ for the same reason. 
+Hence, when $H$ is believed symmetric, we may use
+another lower confidence limit:
+\[
+\hat \theta_{back} (\alpha ) 
+= 
+\hat \theta +  x_\alpha  \hat{\sigma}/\sqrt{n}.
+\]
+
+It is clearly confusing to present so many possibilities.
+Which one is correct? The answer depends on what we
+mean by ``correct''. If any (random) interval which covers
+the true value of $\theta$ with probability $1-\alpha + o(1)$,
+we feel that they are okay, or ``correct''.
+When the sizes of these intervals are not taken into consideration,
+we may want to examine the exact sizes represented
+by $o(1)$ term in the coverage probability.
+
+
+\section{Implementation based on resampling}
+Having complete knowledge of $H(x)$ and $K(x)$ is not possible. 
+More often than not, they are also dependent on unknown parameter
+values. Nonetheless, bootstrap simulation can be used to properly
+estimate $H$ and $K$, when the population distribution is given
+by $F$ and the parameter $\theta$ is a functional of $F$.
+
+We will see what it means by ``can be estimated''.
+The distribution $H$ is estimated by
+\[
+\hat H(x) = \pr( \sqrt{n} (\hat \theta^* - \hat \theta) \leq \hat \sigma x |F_n).
+\]
+The distribution $K$ is estimated by
+\[
+\hat K(x) = \pr( \sqrt{n} (\hat \theta^* - \hat \theta) \leq \hat \sigma^* x |F_n).
+\]
+The quality of the approximation depends on many factors.
+We do not give detailed discussion on this topic in this course.
+
+Once they are obtained via bootstrap simulation, we define
+$\hat x_\alpha = \hat H^{-1}(\alpha)$ and 
+$\hat y_{\alpha} = \hat K^{-1} (\alpha)$.
+All lower confidence limits proposed in the last section
+are transformed to bootstrap lower confidence limits by putting
+a hat on either $x_\alpha$ or $y_\alpha$.
+
+Now, which one makes $o(1)$ inside the coverage probability
+$1-\alpha + o(1)$ the smallest? Peter Hall (AOS some year) had
+a discussion paper specifically for this problem. The technical
+discussion is too complex for this course. The results are not that
+insightful either. Without going back to the paper itself, I put down
+my unverified memory here: the studentized approach together with
+bootstrap resampling has this $o(1)$ reduced to $O(n^{-1})$. 
+Without studentization, this $o(1)$ is $o(n^{-1/2})$. Both conclusions
+are obtained under the assumption that $\hat \theta$ is a smooth function
+of the sample mean $\bar X_n$, after being broadly interpreted.
+For instance,
+\[
+\theta  = \frac{\mu}{\sigma}
+\]
+has its estimator given by
+\[
+\hat \theta = \frac{\bar x_n}{\sqrt{\bar{x^2} - (\bar x)^2}}.
+\]
+This estimator is a smooth function of the sample mean in
+$(x_i, x_i^2)$.
+
+\section{A word of caution}
+
+The bootstrap method is generally used to simulate the variance
+and the distribution of a point estimator. Based on bootstrap simulation,
+we can often subsequently make inference on various parameters.
+Most noticeably, the results are subsequently used to
+construct confidence intervals for parameter
+$\theta$ and test the hypotheses such as $\theta = \theta_0$.
+We are often freed from complex technical issues.
+
+At the same time, one has to have a good point estimator $\hat \theta$ before
+the resampling procedure can even start. The statistical properties of the
+corresponding data analysis is largely determined by that of $\hat \theta$.
+The resampling methods help to determine these properties.
+They do not instill good properties into these procedures.
+
+There is no guarantee that the resampling methods always lead
+to valid statistical inferences. By this statement, for instance, a
+$1-\alpha$ level confidence interval may have far lower coverage
+probability and the under-coverage problem does not go away
+even if the sample size increases. The theory in mathematical
+statistics cannot be thrown out simply because the resampling
+procedure is powerful at freeing us from the task of a lot of
+technical derivations.
+
+
+\section{Assignment problems}
+
+
+\begin{enumerate}
+\item
+Let $X_1, \ldots, X_n$ be a random sample from exponential
+distribution with density function
+\[
+f(x; \theta) = \theta^{-1} \exp ( - \theta^{-1} x).
+\]
+
+Consider the case $n=201$ and $\theta = 1$.
+
+(a) Theoretically determine the median of this distribution.
+
+(b) Generate 1000 data sets with $n=201$ to estimate the
+bias and variance of the sample median for estimating
+the population median.
+
+(c) Bootstrap the first sample in (b) to obtain estimates of
+the bias and variance of the sample median for estimating
+the population median.
+
+\item
+Continue from the last problem. 
+
+(a) 
+Use a Bootstrap method to construct a 95\% 
+confidence interval for $\theta$ based
+on the following two asymptotic pivotals:
+\[
+T_1 = \frac{\sqrt{n}(\bar x - \theta)}{{\theta}}; ~~~
+T_2 = \frac{\sqrt{n}(\bar x - \theta)}{s_n}.
+\]
+Set $B = 1999$. Present your intervals for the
+first data set generated. Show your code.
+
+(b) Repeat (a) for $N=100$ data sets. Compute their average
+lower and upper confidence limits, average lengths and
+standard error of the lengths. 
+Which one do you recommend based these outcomes?
+
+\item
+Generate 7 observations from uniform (0, 1) distribution.
+
+(a) How many distinct bootstrap samples (standard
+bootstrap as in this book) are possible?
+
+(b) Draw the \cdf of $\bar X^*$ and compute its 
+0.25, 0.5 and 0.75 quantiles.
+
+(c) Compute the difference between the variance of $\bar X^*$
+and the variance of $\bar X$ both numerically and by theoretical
+derivation. Of course, two results are the same if round-off is ignored.
+
+\item
+Based on an \iid sample of size $n=99$ from Cauchy distribution with only a location
+parameter $\theta$. Namely, the density function is given by
+\[
+f(x; \theta) = \frac{1}{\pi\{1 + (x - \theta)^2\}}
+\]
+
+One wishes to test the hypothesis $H_0: \theta = 0$ against
+$H_1: \theta \neq 0$. Two potential approaches are: 
+(1) score test and
+(2) Wald test based on sample median (the 50th order statistic).
+
+(a) For the purpose of implementation, you need to work out
+some additional details for these two tests such as the asymptotic
+variances. Get them done and present your work and results.
+
+(b) Suppose the precisions of the asymptotic distributions for these two
+tests are not sufficiently high. Design bootstrap procedures to carry out
+these two tests.
+
+(c) Implement the bootstrap procedures in (b) based on $B=1999$ and repeat
+$N=500$ to obtain observed rejection rate under the null hypothesis.
+
+\item
+Suppose $\{0, 2, 3, 5, 10\}$ is an \iid sample from some distribution $F$.
+
+(a) Let $X^*$ be a single bootstrap observation in the conventional form
+used in this course. What is the distribution of $X^*$ (conditional on 
+these observed values)? Compute its mean and variance.
+
+(b) Let $X_1^*, \cdots, X_5^*$ be an \iid bootstrap sample from $F_n$,
+where $n=5$.
+Let $X^*_{(n)} = \max \{X_1^*, \cdots, X_5^*\}$
+What is the conditional distribution of $X^*_{(n)}$? Namely,
+work out its probability mass function.
+
+
+\item
+Suppose $x_1, \ldots, x_n$ is an iid sample from a distribution
+family ${\cal F}$ with finite and positive variance $\sigma^2$.
+
+Let us estimate the population mean $\theta$ by $\hat \theta = \bar x$
+as usual, and we certainly have $\mbox{var}(\hat \theta) = \sigma^2/n$.
+
+However, a researcher insists of using bootstrap method to
+estimate the variance $\mbox{var}(\hat \theta)$ or more precisely
+$n\mbox{var}(\hat \theta)$. In addition, she suggests to generate 
+$b=1, 2, \ldots, 2B$ sets of conditional iid samples of size $n$,
+\[
+x_1^*, x_2^*, \ldots, x_{n}^*
+\]
+from the empirical distribution $F_n(x)$. 
+For each $b$, she would compute 
+\[
+\bar x_b^* = n^{-1} \sum_{i=1}^n x_i^*.
+\]
+She then defines
+\[
+\hat \nu^* = (2B)^{-1} \sum_{b=1}^B (\bar x_{2b-1}^*- \bar x^*_{2b})^2
+\]
+as an estimate of $\mbox{var}(\hat \theta)$.
+
+(a)  Given $F_n$, compute the conditional mean and variance of $x_1^*$.
+
+(b) For each $b$, compute the conditional mean and variance of
+$\bar x_b^*$ given $F_n$.
+
+(c)
+Show that the conditional expectation 
+\[
+E\{ \hat \nu^*|F_n\} = \frac{1}{n^2} \sum_{i=1}^n ( x_i - \bar x_n)^2.
+\]
+
+(d) Show that as $B \to \infty$, 
+\[
+n \hat \nu^* \cp  n^{-1} \sum_{i=1}^n ( x_i - \bar x_n)^2.
+\]
+
+(e) Show that $n\{ \hat \nu^* - \mbox{var}(\hat \theta)\} \to 0$
+in probability as $B, n \to \infty$. More precisely, almost surely or in probability,
+\[
+\lim_{n \to \infty} \lim_{B \to \infty} \{ n\{ \hat \nu^* - \mbox{var}(\hat \theta)\} \} = 0.
+\]
+
+\end{enumerate}
+
+

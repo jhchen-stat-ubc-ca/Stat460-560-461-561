@@ -1,0 +1,599 @@
+\chapter{Hypothesis test}
+
+Recall again that a statistics model is a family of distributions.
+When they are parameterized, the model is parametric.
+Otherwise, the model is nonparametric. One may notice that
+the regression models are not exceptions to this definition.
+Suppose a random sample from a distribution 
+$F$ is obtained/observed. A statistical model assumption is
+to specify a distribution family $\cF$ such that
+$F$ is believed to be a member of it. 
+
+Often, we are interested in a special subfamily $\cF_0$ of $\cF$.
+The statistical problem is to decide whether or not $F$ is a member 
+of $\cF_0$ based on a random sample from this unknown $F$.
+There might be situations where the question can be answered with
+certainty. Most often, statistics are used to quantify the strength of the 
+evidence against $\cF_0$ from chosen angles. 
+Hypothesis test is an approach which recommends
+whether or not $\cF_0$ should be rejected. It also implicitly
+recommends a distribution in the complement of $\cF_0$ if
+$\cF_0$ is rejected.
+We consider $\cF_0$ as null hypothesis and also denote it
+as $H_0$. Its complement in $\cF$ forms alternative hypothesis
+and is denoted as $H_a$ or $H_1$. 
+
+The specification of $\cF$ is based on our knowledge on the
+subject matter and the property of probability distributions.
+For instance, a binomial distribution family is used when
+the number of passengers show up for a specific flight,
+the number of students show up for a class and so on.
+The choice of $\cF_0$ often relates to the background of the
+application. We provide a number of scenarios in the
+next section.
+
+\section{Null hypothesis.}
+Where is $\cF_0$ from? The question is more complicated than
+we may believe. Here are some examples motivated from
+various classical books.
+
+\begin{itemize}
+\item[(a)] 
+The null hypothesis may correspond to the prediction out of some
+scientific curiosity. One wishes to use data to examine
+its validity.
+
+We suspect that the sex ratio of new babies is 50\%.
+In this case, one may collect data to critically examine how well
+this belief approximates the real world.
+
+\item[(b)] 
+In genetics, when two genes are located in two
+different chromosomes, their recombination rate is
+exactly $\theta = 0.5$ according to Mendel's law.
+Rejection of a null hypothesis of $\theta = 0.5$ based
+on experimental or observational data leads to
+meaningful scientific claims.
+
+Scientists or geneticists in this and similar cases
+must bear the burden of proof. The null hypothesis
+stands on the opposite side of their convictions.
+
+%$H_0$ may correspond to the prediction of some
+%scientific theory or some model of the system though quite
+%likely to be true or nearly so. 
+%
+%An example might be: it might be believed that the
+%sex of a new baby has 50\% chance to be a boy. 
+%The sexes of babies are independent of each other.
+%Thus, a null hypothesis $H_0$ claiming the number of
+%boys in a family is binomially distributed fits well into
+%this category. 
+
+\item[(c)] 
+Some statistical methods are developed under certain
+distributional assumptions on the data such as the analysis of variance.
+If the normality assumption is severely violated, the related statistical
+conclusions become dubious. A test of normality as the null
+hypothesis is often conducted. 
+We are alarmed only if there is a serious departure from normality.
+Otherwise, we will go ahead to analyze the data
+under normality assumption.
+
+\item[(d)]
+$H_0$ may assert complete absence of structure in some sense. 
+So long as the data are consistent with $H_0$ it is not
+justified to claim that data provide clear evidence in favour of some
+particular kind of structure.
+
+Does living near hydro power line make children more likely
+to have leukaemia? The null hypothesis would suggest the cases
+to be distributed geographically randomly.
+
+\item[(e)]
+The quality of products from a production-line fluctuates randomly 
+within some range over the time. One may set up a
+null hypothesis that the system is in normal status characterized
+by some key specific parameter values.
+The rejection of the null hypothesis sets off an alarm that the system
+is out of control.
+
+\item[(f)]
+When a new medical treatment is developed, its superiority
+over the standard treatment must be established in order to
+be approved. Naturally, we will set the null hypothesis to be
+``there is no difference between two treatments''.
+
+\item[(g)]
+There are situations where we wish to show a new medicine is
+not inferior than the existing one. This is often motivated by the desire
+to produce a specific medicine at a lower cost. One needs to be
+careful to think about what the null hypothesis should be here.
+
+\item[(i)]
+In linear regression models, we are often interested to test
+whether a regression coefficient has a value different from zero. 
+We put zero-value as the null value. Rejection of which
+implies the corresponding explanatory has no-nil influence
+on the response value.
+\end{itemize}
+
+In all examples, we do not reject $H_0$ unless the evidence
+against it is mounting. Often, $H_0$ is not rejected not because
+it holds true perfectly, but because the data set does not contain sufficient
+information, or the departure is too mild to matter in a scientific sense, 
+or the departure from $H_0$ is not in the direction of concern.
+It is hard to distinguish these causes.
+We will come to this issue again after introduction of the
+alternative hypothesis.
+
+\section{Alternative hypothesis}
+%%% third possibility
+
+In the last section, we discussed the motivation of choosing
+a subset $\cF_0$ of $\cF$ to form $H_0$. It is naturally to form
+the alternative hypothesis $H_a$ or $H_1$ as the
+remaining distributions in $\cF$. If so, the alternative
+hypothesis is heavily dependent on our choice of $\cF$.
+Since any data set is extreme in some respects,
+severe departure from $\cF_0$ can always be established.
+Thus, it can be meaningless to ask absolutely whether $\cF_0$
+is true, by allowing $\cF$ to contain all imaginable distributions.
+The question becomes meaningful only
+when a proper alternative hypothesis is proposed.
+
+The alternative hypothesis serves the purpose of
+specifying the direction of the departure the true model from the null
+hypothesis that we care! In the example when a new medicine is
+introduced, the ultimate goal is to show that it extends our lives.
+We put down a null hypothesis that the new medicine is not
+better than the existing one. The goal of the experiment and hence
+the statistical hypothesis test is to show the contrary: the new
+medicine is better. Thus, the alternative hypothesis specified the
+direction of the departure we intend to detect.
+
+In regression analysis, we may want to test the normality assumption on
+the error term to ensure the suitability of the least sum of squares approach.
+In this case, we often worry whether the true distribution has
+a heavier tail probability than the normal distribution. Thus, we
+want to detect departures toward ``having a heavy tail''. 
+If the error distribution is not normal but uniform on a finite interval, 
+for instance, we may not care at all. Therefore, if $H_1$ is
+not rejected based on a hypothesis test,  we have not
+provided any evidence to claim $H_0$ is true.
+All we have shown is that the error distribution does not 
+seem to have a heavy tail.
+
+According to genetic theory, the recombination rate $\theta$
+of two genes on the same chromosome is lower than $0.5$. 
+Hence, if the data lead to an observed very high recombination
+rate, we may have evidence to reject the null hypothesis
+of $\theta = 0.5$. However, it does not support the sometimes
+sacred genetic claim that two genes are linked. 
+To establish linkage, $\cF$ would be chosen as all binomial distributions 
+with probability of success no more than $0.5$.
+
+In many social sciences, theories are developed in which the
+response of interest is related to some explanatory variable.
+When one can afford to collect a very large data set, such a
+connection is always confirmed by rejecting the null hypothesis
+that the correlation is nil. As long as the theory is not completely
+nonsense, a lower level of connection inevitably exists.
+When the data size is large, even a practically meaningless
+connection will be detected with statistical significance. 
+
+In summary, specifying alternative hypothesis is more than simply
+putting done the possible distributions of the data in addition
+to these included in the null already. It specifies the direction of
+the departure from the null model which we hope to detect
+or to declare its non-fitness. We generally investigate
+the hypothesis test problem under the assumption that the
+data are generated from a distribution inside $H_0$
+and what happens if this distribution is a member of $H_1$.
+This practice is convenient for statistical research. We should
+not take it as truth in applications. It could happen that the
+data suggest the truth is not in $H_0$, $H_1$ is slightly
+a better choice, yet the truth is not in $H_0$ nor $H_1$.
+Hence, by rejecting $H_0$, the hypothesis test itself does not
+prove that $H_1$ contains the truth.
+
+
+\section{Pure significance test and $p$-value}
+Suppose a random sample $X=x$ is obtained from a distribution
+$F_0$ and the statistics model is $\cF$. 
+We hope to test the null hypothesis $H_0: F_0 \in  \cF_0$.
+Let $T(x)$ be a statistic to be used for statistical hypothesis test.
+Hence, we call it test statistic. Ideally, it is chosen to
+has two desirable properties:
+\begin{itemize}
+\item[(a)] 
+the specific sample distribution of $T$ when $H_0$ is true is known
+(not merely up to a distribution family but a specific distribution)
+at least approximately. If $H_0$ contains many distributions, 
+this property implies that the sample distribution of $T$ remains 
+the same whichever distribution in $\cF_0$ that $X$ may have, 
+or at least approximately. In other words, it is an auxiliary statistic
+under $H_0$.
+
+\item[(b)] 
+the larger the observed value of $T$, the stronger the evidence
+of departure from $H_0$, in the direction of $H_1$.
+\end{itemize}
+
+If a statistic has these two properties, we are justified to reject the null
+hypothesis when the realized value of $T$ is large.
+Let $t_0 = T(x)$ be its realized/observed value and
+\[
+p_0 = \pr( T(X) \geq t_0; H_0)
+\]
+which is the probability that $T(X)$ is larger than the observed value
+when the null hypothesis is true.
+When $\pr(T(X) = t_0; H_0) > 0$, a continuity correction may be
+applied. That is, we may revise the definition to
+\[
+p_0 = \pr( T(X) > t_0; H_0) + 0.5 \pr( T(X) = t_0; H_0).
+\]
+In general, this is just a {\bf convention}, not an issue of ``correctness''.
+The smaller the value of $p_0$, the stronger is the evidence that
+the null hypothesis is false. We call $p_0$ the p-value
+of the test. 
+
+Remark: the definition of $p$-value is well motivated when a
+test statistic has been introduced and it has the above two desired properties.
+Without the known-distribution assumption, $\pr( T(X) \geq t_0; H_0)$
+does not have a definitive answer. Without the other property, we
+are not justified to be exclusively concerned on the choice of $T(X) \geq t_0$,
+rather than other possible values of $T(X)$.
+
+If $T$ is a test statistic with properties (a) and (b), and that $g$ is
+a monotone strictly increasing function, the $g(T)$ makes an
+another test statistic, and the $p$-value based on $g(T)$ will be the
+same as the p-value based on $T$.
+
+Since there is no standard choice of $T(x)$, there is not
+a definite p-value for a specific pair of hypotheses even if
+the test statistic $T(x)$ has these two properties. Because
+of this, the definition of p-value has been illusive in many
+books.
+
+Assume issues mentioned above have been fixed.
+If magically, $p_0 = 0$, then $H_0$ cannot be true
+or something impossible would have been observed.
+When $p_0$ is very small, then either we have observed
+an unlikely event under $H_0$, or the rare event is
+much better explained by a distribution in $H_1$.
+Hence, we are justified to reject $H_0$ in favour of $H_1$.
+Take notice that a larger $T(x)$ value is more likely
+if the distribution $F$ is a member of $H_1$.
+
+How small $p_0$ should be in order for us to reject $H_0$.
+A statistical practice is to set up a standard, say $5\%$, so
+we commonly reject $H_0$ when $p_0 < 5\%$.
+The choice of 5\% is merely a convention.
+There is no scientific truth behind this magic cut-off point. There is a
+joke related to this number: scientists tell their students that 5\% is
+found to be optimal by statisticians, and statisticians tell their students
+that the 5\% is chosen based on some scientific principles.
+Incidentally, the Federal Food and Drug administration in the United
+States uses 5\% as its golden standard. If a new medicine beats
+the existing one by a pre-specified margin, and it is demonstrated
+by test of significance at 5\% level, then the new medicine
+will be approved. Of course, we assume that all other requirements
+have been met. Most research journals used to accept results established
+via statistical significance at 5\% level. You will pretty soon be
+under pressure to find a statistical method that results in a $p$-value
+smaller than 5\% for a scientist.
+Recently, however, this practice has been discredited.
+
+Not all test statistics we recommend have both properties (a) and (b).
+There are practical reasons behind the use of statistics without these 
+properties. 
+When their usage leads to controversies, it is helpful to review the 
+reasons why properties (a) and (b) are
+desirable and interpret the data analysis outcomes accordingly.
+
+In the above discussion, no specifics about $H_0$ and $H_1$ are
+given, nor anything specific about the test statistic. So the discussion
+is purely conceptual, leading to the term of ``pure significance'' test.
+One is advised to not taking this term very seriously.
+
+\section{Issues related to $p$-value}
+After one has seen the data, he can easily find the data are extreme
+in some way. One may select a null hypothesis accordingly and most
+likely, the p-value will be small enough to declare it is statistically
+significant (if the old standard is permitted). This
+problem is well--known but hard to prevent. 
+After you have seen the final exam results of stat460/560, 
+you may compare the average marks between under and graduate students, 
+between male and female students, foreign and domestic students, 
+younger and older students and many more ways. 
+If 5\% standard on p-value is applied to each test, pretty soon
+we will find one set of hypothesis that is tested significant. This is statistically invalid. To find
+one out of 20 tests with its p-value below 5\% is much more likely than
+to find a p-value below 5\% of a pre-decided test.
+
+A pharmaceutical company must provide a detailed protocol
+before a clinical trial is carried out. If the data fail to reject the null
+hypothesis, but point to an other meaningful phenomenon, 
+the FDR will not accept the result based on analysis of the current data.
+The company must conduct another clinical trial to establish the new claim. 
+For example, if they try to show that eating carrots reduces
+the rate of stomach cancer, yet the data collected imply a reduction
+in the rate of liver cancer, the conclusion will not be accepted. 
+One could have examined the rates of a thousand cancers: liver
+cancer happened to produce a low $p$-value.
+By this standard, Columbus did not discover America because
+he did not put discovering America into his protocol.
+Rather, he aimed to find a short cut to India.
+
+Another issue is the difference between 
+{\bf Statistical significance and the Scientific significance}. 
+Consider a problem in lottery business,
+each ball, numbered from 1 to 49, should be equally likely to be
+selected. Suppose I claim that the odd numbers are more likely to be
+sampled than the even numbers. The rightful probability of
+an odd ball being selected should be $p=25/49$.
+In the real world, nothing is perfect. Assume that the truth
+is $p = 25/49 + 10^{-6}$. It is not hard to show that if we 
+conduct $10^{24}$ trials, the chance that the null hypothesis $p=25/49$
+being rejected is practically 1, at 5\% level or any reasonable level
+based on a reasonable test.
+Yet such a statistical significant result is nonsensical to a lottery company.
+They need not be alarmed unless the departure from $p = 25/49$ is
+more than $10^{-3}$, presumably. In a more practical example, if a drug
+extends the average life expectancy by one-day, it is not significant
+no matter how small the $p$-value of the test produces.
+
+There are abundant discussions on the usefulness of $p$-value.
+There has been suggestions of not teaching the concept of 
+the $p$-value which I beg to differ. The key is to make
+everyone understand what it presents, rather than frantically
+searching for a test (analysis) that gives a $p$-value smaller than $0.05$.
+
+Here is an example suggested by students. It is not as meaningful
+to be 100\% sure that someone stole 10 dollars from a store.
+It is a serious claim if we are 50\% sure that someone killed the
+store owner.
+
+In regression analysis, a regression coefficient
+is often declared highly significant. It generally refers to
+a very small p-value is obtained when testing for its value
+being zero. This is unfortunate: the regression coefficient
+may be scientifically indifferent from zero,
+but its effect is magnified by a microscope created
+by a big data set.
+
+\section{General notion of statistical hypothesis test}
+Suppose a random sample of $X$ from $\cF$ is taken.
+The null hypothesis $H_0$ as a subset of $\cF$ is specified
+and $H_1$ is made of the rest of distributions in $\cF$.
+No matter how a test statistic is constructed, in the end,
+one divides the range of $X$ into two, potentially three
+non-overlap regions: $C$ and its complement $C^c$. 
+We will come back to the potential third region.
+
+The procedure of the hypothesis test then rejects $H_0$ when
+the observed value of $X$, $x \in C$. Thus, $C$ is called the
+critical region. When $x \not \in C$, we retain the null hypothesis.
+However, I do not advocate the terminology of ``{\bf Accept $H_0$}''.
+Such a statement can be misleading. When we fail to prove an accused
+guilty, it does not imply its innocence. ``Not guilty $\neq$ Innocent.''
+
+When the true distribution $F \in H_0$ yet $x \in C$ occurs,
+the null hypothesis $H_0$ is erroneously rejected. The probability
+$\pr(X \in C)$ is called {\bf Type I} error. We use
+\[
+\alpha(F)  = \pr( X \in C; F)
+\]
+as a function of $F$ on $H_0$. 
+We define
+\[
+\alpha = \sup_{F \in H_0} \pr( X \in C; F) = \sup_{F \in H_0} \alpha(F)
+\]
+as the size of the test. Type I error is not
+the same as the size of the test because $H_0$ may contain
+many distributions. The size of a test is determined by the
+``least favourable distribution'' which is the one that maximizes
+the probability of $X \in C$. Under simple models, it is easy
+to identify such a least favourable distribution. In a general
+context, we have long given up the effort of doing so.
+
+If $x \not \in C$ yet $F \in H_1$, we fail to reject $H_0$, 
+the corresponding probability is called {\bf Type II} error. 
+For each distribution $F \in H_1$, we call
+\[
+\beta(F) = \pr (X \in C; F)
+\]
+the power function of $F$ on $H_1$.
+If $\cF$ is a parametric model with parameter $\theta$, 
+it is more convenient to use 
+\[
+\beta (\theta) = \pr ( X \in C; \theta), ~~~\theta \in H_1.
+\]
+The type II error is therefore $\gamma (\theta) = 1 - \beta(\theta)$.
+The notational convention may differ from one textbook to another,
+one should always read the ``fine prints'' before determining
+whether $\beta(\theta)$ is the power function or type II error.
+
+We do not usually discuss the situation where $F \not \in \cF$.
+If this happens, a ``third type'' of error has occurred. 
+One should take this possibility into serious consideration in
+real world applications.
+
+\begin{example}
+\label{ex12.1}
+(One-sample t-test). Assume we have a random sample
+from a distribution that belongs to $\cF = \{ N(\theta, \sigma^2) \}$ family. 
+We test the null hypothesis $H_0: \theta = 0$.
+
+Let 
+\[
+T(x) = \frac{ \sqrt{n} \bar x}{ s}
+\]
+where $\bar x = n^{-1}(x_1 + x_2 + \cdots + x_n)$ is the realized
+value of $\bar X$ and $s^2$ is the realized value of the sample
+variance.
+It is seen that $T(X)$ has t-distribution regardless of which distribution
+in $H_0$ is the true distribution of $X$. Thus, it has property (a).
+At the same time, the larger is the value of $|T|$, the more obvious
+that the null hypothesis is inconsistent with the data. Thus, $|T|$ also
+has property (b). In other words, $|T|$ rather than $T$ makes
+a desirable test statistic.
+
+Let $t_{0.975, n-1}$ be the 97.5\% quantile of the t-distribution 
+with $n-1$ degrees of freedom. We may put
+\[
+C = \{ x:  |T(x)| \geq t_{0.975, n-1} \}
+\]
+as the critical region of a test. If so, its size is
+\[
+\alpha = \pr ( |T(X) | \geq t_{0.975, n-1}; H_0) = 0.05.
+\]
+It is less convenient to write down its power function. 
+
+The p-value of this test is
+\[
+p_0 = \pr ( |T(X)| \geq T(x); H_0)
+\]
+where $T(x)$ is the realized value of $T$. Rejecting $H_0$
+whenever $p_0 < 0.05$ is equivalent to rejecting $H_0$ whenever
+$x \in C$. Providing a $p$-value has added benefit: we know whether
+$H_0$ is rejected with barely sufficient evidence or very strong
+evidence.
+\end{example}
+
+Again, $p$-value should be read with a pinch of salt. Even if the
+true $\theta$-value is only slightly different from $0$, the evidence
+against $H_0$ can be made very strong with a large sample size
+$n$. Hence, small $p$-value shows how strong the evidence
+is against $H_0$, it does not necessarily indicate $H_0$
+is an extremely poor model for the data.
+
+To avoid the dilemma implied by overly relying on small p-value, 
+it might be better to specify $H_1$ as $|\theta| > 0.1$
+and put $H_0$ as $|\theta| < 0.1$ instead.
+We have placed an arbitrary value $0.1$ here, it is not hard to
+come up with a sensible small value in a real world application.
+
+\section{Randomized test}
+
+Particularly in theoretical development, we often hope to construct
+a test with exactly the pre-given size. The above approach may not be feasible
+in some circumstances.
+
+\begin{example}
+Suppose we observe $X$ from a binomial model
+with $n=2$ and the probability of success $\theta \in (0, 1)$. Let the
+desired size of the test be $\alpha = 0.05$ for the null hypothesis 
+$\theta = 0.5$. 
+In this case, we have only 8 candidates for the critical region $C$.
+None of them result in a test of the exact size $\alpha = 0.05$. 
+\end{example}
+
+An artificial approach to find a test with the pre-specified size is as follows.
+We do not reject $H_0$ if $X = 1$.  When $X = 0, 2$, we toss
+a biased coin and reject $H_0$ when the outcome is a head.
+By selecting a coin such that $\pr (\mbox{Head} ) = 0.1$, the probability
+of rejecting $H_0$ based on this approach is exactly $0.05$ when $\theta = 0.5$. 
+Thus, we have artificially attained the required size $0.05$.
+
+The region $\{0, 2\}$ is the third region
+in the range of $X$ mentioned previously.
+
+Abstractly, a statistical hypothesis test is represented
+as a function $\phi(x)$ such that $0 \leq \phi(x) \leq 1$.
+We reject $H_0$ with probability $\phi(x)$ when $X = x$.
+When $\phi(x) = 0$ or $1$ only, the sample space is neatly divided
+into the critical region and its complement. Otherwise, the region
+of $0 < \phi (x) < 1$ is a randomization region. When $x$
+falls into that region, we randomize the decision.
+
+Defining a test by a function $\phi(x)$
+is mathematically convenient. Note that its size
+\[
+\alpha = \sup_{F \in H_0} \bbE \{ \phi (X); F\}
+\]
+and its power function on $F \in H_1$ is given by
+\[
+\beta (F) = \bbE \{ \phi (X); F\}.
+\]
+The type I error is defined for $F \in H_0$ and given by 
+\[
+\alpha(F) = \bbE \{ \phi (X); F\}.
+\]
+
+We do not  place many restrictions on $\phi(x)$ to use it as a test function. 
+Instead, we ask when $\phi(x)$ is a good test.
+This question leads to the call for optimality definitions. 
+We will come to this issue soon.
+
+\section{Three ways to characterize a test}
+
+Discussions in previous section have presented three 
+hypothesis test procedures.
+
+\begin{enumerate}
+\item
+Define a test statistic, $T$, such that we reject $H_0$ when $T$ is large.
+Preferably, $T$ has two specific properties: 
+known and same sample distribution under whichever distribution in $H_0$; 
+larger observed value of $T$ indicates more extreme departure of $F$ from $H_0$
+toward the direction we try to capture. We compute p-value as
+\[ 
+p = \pr ( T \geq t_{obs}; H_0)
+\]
+where $t_{obs}$ is the observed value. 
+When $T$ has discrete distribution, we may apply a continuity correction
+\[ 
+p = \pr ( T > t_{obs}; H_0) + 0.5 \pr( T = t_{obs}; H_0).
+\]
+We reject $H_0$ if $p$ is below some pre-decided level, usually 5\%.
+
+There seem to be no universal and rigorous definitions of the $p$-value.
+A general requirement for $p$-value calculation is to have a test statistic
+which takes larger values when $H_0$ is violated. After which, one identifies
+a most likely distribution of the data, say $\hat F$, and computes
+\[ 
+p = \pr ( T \geq t_{obs}; \hat F)
+\]
+in which $\hat F$ is not regarded as random.
+This value is generally regarded as $p$-value of the test.
+
+
+\item
+Define a critical region $C$ in terms of the range of $X$. When the realized value
+$x \in C$, we reject $H_0$. The region $C$ is often required to have a given
+size $\alpha$:
+\[
+\sup_{H_0}  \pr ( X \in C) = \alpha.
+\]
+
+\item
+When $X$ is discrete, we may get into situation where no critical region
+has a pre-specified size $\alpha$. This is not problematic in applications, 
+but is problematic for theoretical discussions. Hence, we define a test as
+a function $\phi(x)$ taking values between 0 and 1.
+We reject $H_0$ with probability $\phi(x)$ where 
+$x$ is the realized/observed value of $X$.
+The size of this test is calculated as $\sup_{H_0} \bbE \{ \phi(X)\}$.
+\end{enumerate}
+
+Method 1 is a special case of method 2 by letting $C = \{ x: T(x) > k \}$
+for some $k$. 
+Both methods 1 and 2 can be regarded as special cases of method 3:
+by letting $\phi(x) = \ind ( x \in C)$.
+We reject $H_0$ with probability 1 when $x \in C$, 
+and do not reject $H_0$ otherwise.
+
+Clearly, a trivial test $\phi(x) = \alpha$ has size $\alpha$.
+Its existence ensures that a test with any specific size
+between 0 and 1 is possible.
+The statistical issue is on finding one with better properties.
+
+Suppose $\tilde \phi(x)$ is a test of size $\tilde \alpha < \alpha$
+for a pair of hypotheses $H_0$ and $H_1$. There
+must exist a test $\phi(x)$ of size $\alpha$ such that
+\[
+\bbE \{ \phi(X); F\} \geq \bbE \{ \tilde \phi(X); F\}
+\]
+for every $F \in H_1$. 

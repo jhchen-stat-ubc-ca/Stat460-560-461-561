@@ -1,0 +1,459 @@
+\chapter{Approaches of point estimation}
+
+Even though any statistics with proper range is a point estimator,
+we generally prefer estimators derived based on some principles.
+This leads to a few common estimation procedures.
+
+\section{Method of moments}
+
+Suppose $\cF$ is a parametric distribution family so that
+it permits a general expression
+\[
+\cF = \{ F(x; \theta): \theta \in \Theta \}
+\]
+such that $\Theta \subset \cR^d$ for some positive integer $d$.
+We assume the parameter is identifiable.
+
+In most classical examples, the distributions are labeled smoothly
+by $\theta$: two distributions having close parameter values are
+similar in some metric. In addition, the first $d$ moments are
+smooth functions of $\theta$. They map $\Theta$ to $\cR^d$
+in a one-to-one fashion: different $\theta$ value leads to
+different first $d$ moments.
+
+Suppose we have an \iid\ sample $X_1, \ldots, X_n$
+of size $n$ from $\cF$ and $X$ is univariate.
+For $k=1, 2, \ldots, d$, define equations with respect to $\theta$
+as
+\[
+n^{-1} \{ X_1^k + X_2^k + \cdots + X_n^k\} = \bbE \{ X^k; \theta \}.
+\]
+The solution in $\theta$, if exists and unique, are called
+moment estimator of $\theta$.
+
+\begin{example}
+If $X_1, \ldots, X_n$ is an \iid sample from Negative binomial
+distribution whose probability mass function (\pmf) is given by
+\[
+f(x; \theta) = {-m \choose x} (\theta - 1)^x \theta^m
+\]
+for $x=0, 1, 2, \ldots$.
+It is known that $\bbE\{X; \theta\} = m/\theta$.
+Hence, the moment estimator of $\theta$ is given by
+\[
+\hat \theta = m/ \bar X_n.
+\]
+
+If $X_1, \ldots, X_n$ is an \iid sample from N($\mu, \sigma^2$)
+distribution. It is known that $\bbE\{X, X^2\} = (\mu, \mu^2+\sigma^2)$.
+The moment equations are given by
+\bea
+n^{-1} \{ X_1 + X_2+ \cdots + X_n\} &=& \mu;  \\
+n^{-1} \{ X_1^2 + X_2^2 + \cdots + X_n^2\} &=& \mu^2 + \sigma^2.
+\eea
+The moment estimators are found to be
+\[
+\hat \mu = \bar X_n; ~~ \hat \sigma^2 = n^{-1} \sum X_i^2 - \bar X_n^2.
+\]
+Note that $\hat \sigma^2$ differs from
+the sample variance by a scale factor $n/(n-1)$.
+\end{example}
+
+Moment estimators are often easy to construct and have
+simple distributional properties. In classical examples, they
+are also easy to compute numerically. 
+
+The use of moment estimator depends on the existence
+and also uniqueness of the solutions to the corresponding
+equations. There seem to be little discussion on this topic.
+We suggest that moment estimators are estimators of ancient
+tradition in which era only simplistic models were considered.
+Such complications do not seem to occur too often for these
+models. We will provide an example based on exponential
+mixture as an exercise problem. One may find the classical
+example in Pearson (1904?) where a heroic effort was devoted
+to solve moment equations to fit a two-component normal
+mixture model.
+Other than it is a general convention, there exists nearly no theory to
+support the use of the first $d$ moments for the method of moments
+rather than other moments. 
+The method of moments also does not have to be restricted to
+situations where \iid\ observations are available.
+
+\begin{example}
+Suppose we have $T$ observations from a simple linear regression
+model:
+\[
+Y_t = \beta X_t + \epsilon_t
+\]
+for $t=0, 1, \ldots, T$,
+such that $\epsilon_1, \ldots, \epsilon_T$ are \iid\ N(0, 1)
+and $X_1, \ldots, X_T$ are non-random constants.
+
+It is seen that 
+\[
+\bbE\{ \sum Y_t \} = \beta \sum X_t.
+\]
+Hence, a moment estimator of $\beta$ is given by
+\[
+\hat \beta = \frac{\sum Y_t}{\sum X_t}.
+\]
+\end{example}
+%%% A time series model will be the best.
+
+The method of moments makes sense based on our intuition.
+What statistical properties does it have? Under some conditions,
+we can show that it is consistent and asymptotically normal.
+Specifying exact conditions, however, is surprisingly more tedious
+than we may expect.
+
+Consider the situation where an \iid sample of size $n$ from a 
+parametric statistical model $\cF$ is available. 
+Let $\theta$ denote the parameter and $\Theta\subset \cR^d$
+be the parameter space.
+Let $\mu_k(\theta)$ be the $k$th moment of $X$, the random
+variable whose distribution is $F(x; \theta)$ which is a member
+of $\cF$.
+
+Assume that $\mu_k(\theta)$ exists and
+continuous in $\theta$ for $k=1, 2, \ldots, d$.
+Assume also the moment estimator of $\theta$,
+$\hat \theta$ is a unique solution to moment equations
+for large enough $n$.
+Recall the law of large numbers: 
+\[
+n^{-1} \{ X_1^k + X_2^k + \cdots + X_n^k \}
+\to \mu_k(\theta)
+\] 
+almost surely when $n \to \infty$.
+
+By the definition of moment estimates, we have
+\[
+\mu_k(\hat \theta) \to \mu_k(\theta)
+\]
+for $k=1, 2, \ldots, d$ when $n \to \infty$, almost surely.
+
+Assume that as a vector valued function made
+of first $d$ moments, $\mu(\theta)$ ``inversely continuous''
+a term we invent on spot: for any fixed $\theta^*$
+and dynamic $\theta$,
+\[
+\| \mu(\theta) - \mu(\theta^*)\| \to 0\
+\]
+only if $\theta \to \theta^*$.
+Then, $\mu_k(\hat \theta) \to \mu_k(\theta)$
+almost surely implies $\hat \theta \to \theta$ almost
+surely. 
+
+We omit the discussion of asymptotic normality here.
+
+\section{Maximum likelihood estimation}
+If one can find a $\sigma$-finite measure such that each distribution in
+$\cF$ has a density function $f(x)$. Then the likelihood function is
+given by (not defined as)
+\[
+L( F) = f(x)
+\]
+which is a function of $F$ on $\cF$. To remove the mystic notion of
+$\cF$, under parametric model, the likelihood becomes
+\[
+L(\theta) = f(x; \theta)
+\]
+because we can use $\theta$ to represent each $F$ in $\cF$.
+If $\hat \theta$ is a value in $\Theta$ such that
+\[
+L(\hat \theta) = \sup_{\theta} L(\theta)
+\]
+then it is a maximum likelihood estimate (estimator) of $\theta$.
+If we can find a sequence $\{\theta_m\}_{m=1}^\infty$ such that
+\[
+\lim_{m \to \infty} L(\theta_m) = \sup_{\theta} L(\theta)
+\]
+and $\lim \theta_m = \hat \theta$ exists, then
+we also call $\hat \theta$ a maximum likelihood estimate (estimator) of $\theta$.
+
+The observation $x$ includes the situation where it is a vector.
+The common \iid\ situation is a special case where $x$ is made of
+$n$ \iid\ observations from a distribution family $\cF$.
+In this case, the likelihood function is given by the product of $n$ densities
+evaluated at $x_1, \ldots, x_n$ respectively. It remains a function
+of parameter $\theta$.
+
+The probability mass function, when $x$ is discrete, is also regarded as a density
+function. This remark looks after discrete models.
+In general, the likelihood function is defined as follows.
+
+\begin{defi}
+The likelihood function on a model $\cF$ based on observed
+values of $X$ is proportional to 
+\[
+P(X = x; F)
+\]
+where the probability is computed when $X$ has distribution $F$.
+\end{defi}
+
+When $F$ is a continuous distribution, the probability is computed
+as the probability of the event ``when $X$ belongs to a 
+small neighbourhood of $x$''. The argument of ``proportionality'' leads to
+the joint density function $f(x)$ or $f(x; \theta)$ in general.
+{\it The proportionality is a property in terms of $F$. 
+The likelihood function is a function of $F$}.
+
+The phrase ``proportional to'' in the definition implies the likelihood
+function is not unique. If $L(\theta)$ is a likelihood function based
+on some data, then $c L(\theta)$ for any $c>0$ is also a likelihood
+function based on the same data.
+
+\section{Estimating equation}
+The MLE of a parameter is often obtained by solving a score equation:
+\[
+\frac{ \partial L_n(\theta) }{\partial \theta} = 0.
+\]
+It is generally true that
+\[
+\bbE \left [ \frac{ \partial \log L_n(\theta) }{\partial \theta} ; \theta \right ] = 0
+\]
+where the expectation is computed when the parameter value
+(of the distribution of the data) is given by $\theta$.
+Because of this, the MLE is often regarded as a solution to
+\[ 
+\frac{ \partial \log L_n(\theta) }{\partial \theta} =0.
+\]
+It appears that whether or not $\partial \log L_n(\theta)/\partial \theta$
+is the derivative function of the log likelihood function matters very
+little. This leads to the following consideration.
+
+In applications, we have reasons to justify that a parameter $\theta$
+solves equation
+\[
+\bbE \{ g(X; \theta) \} = 0.
+\]
+Given an set of \iid\ observations in $X$, we may solve
+\[
+\sum_{i=1}^n g(x_i; \theta)= 0
+\]
+and use its solution as an estimate of 
+$\theta$ (or estimator if $x_i$'s are replaced by $X_i$).
+
+Clearly, such estimators are sensible and may be preferred when completely
+specifying a model for $X$ is at great risk of misspecification.
+
+\begin{example}
+Suppose $(\bx_i, y_i), i=1, 2, \ldots, n$ is a set of \iid\ observations from some
+$\cF$ such that $\bbE(Y_i| \bX_i = \bx_i) = \bx_i^\tau \bbeta$.
+
+We may estimate $\bbeta$ by the solution to
+\[
+\sum_{i=1}^n \bx_i^\tau (y_i - \bx_i^\tau \bbeta) = 0.
+\]
+The solution is given by
+\[
+\hat \bbeta = \{ \sum_{i=1}^n \bx_i \bx_i^\tau\}^{-1} \{ \sum_{i=1}^n \bx_i y_i\}
+\]
+which is the well known least squares estimator.
+
+The spirit of this example is: we do not explicitly spell out any distributional
+assumptions on $(\bX, Y)$ other than the form of the conditional expectation.
+\end{example}
+
+\section{M-Estimation}
+Motivated from a similar consideration, one may
+replace $L_n(\theta)$ by some other functions in some applications.
+Let $\varphi(x; \theta)$ be a function of data and $\theta$ but we
+mostly interested in its functional side in $\theta$ after $x$ is given.
+In the \iid\ case, we may maximize
+\[
+M_n(\theta) = \sum_{i=1}^n \varphi(x_i; \theta)
+\]
+use its solution as an estimate of $\theta$ (or estimator if $x_i$'s are replaced by $X_i$).
+In this situation, parameter $\theta$ is defined as
+the solution to the minimum point of $\bbE\{ \varphi(X; \xi); F\}$
+in $\xi$ where $F$ is the true distribution of $X$.
+
+\begin{example}
+Suppose $(\bx_i, y_i), i=1, 2, \ldots, n$ is a set of \iid\ observations from some
+$\cF$ such that $\bbE(Y_i| \bX_i = \bx_i) = \bx_i^\tau \bbeta$.
+
+We may estimate $\bbeta$ by the solution to 
+the minimization/optimization problem:
+\[
+\min_{\bbeta}  \Big \{ \sum_{i=1}^n (y_i - \bx_i^\tau \bbeta)^2 \}.
+\]
+In this case, $\varphi(x, y; \bbeta) = (y - \bx^\tau \bbeta)^2$.
+The solution is again given by
+\[
+\hat \bbeta = \{ \sum_{i=1}^n \bx_i \bx_i^\tau\}^{-1} \{ \sum_{i=1}^n \bx_i y_i\}
+\]
+which is the well known least squares estimator.
+
+In some applications, the data set may contain a few observations
+whose $y$ values are much much larger than the rest of observations.
+Their presence makes the other observed values have almost no
+influence on the fitted regression coefficient $\hat \bbeta$. Hence,
+Huber suggested to use 
+\[
+\varphi(x, y; \bbeta) 
+=
+\left \{
+\begin{array}{ll}
+ (y - \bx^\tau \bbeta)^2 & |y - \bx^\tau \bbeta| \leq k\\
+k(y - \bx^\tau \bbeta) &  y - \bx^\tau \bbeta > k\\
+- k(y - \bx^\tau \bbeta) &  y - \bx^\tau \bbeta < - k
+\end{array}
+\right .
+\]
+for some selected constant $k$ instead.
+
+This choice limits the influences of observations with
+huge values. Sometimes, such abnormal values, often referred
+to as outliers, are caused by recording errors.
+\end{example}
+
+\section{L-estimator}
+Suppose we have a set of univariate \iid\ observations and
+and it is simple to record them in terms of sizes such that
+$X_{(1)} \leq X_{(2)} \leq \cdots \leq X_{(n)}$. We call them
+order statistics. To avoid the influence of outliers, one may
+estimate the population mean by a trimmed mean:
+\[
+(n-2)^{-1} \sum_{i=2}^{n-1} X_{(i)}.
+\]
+This practice is used on Olympic games though theirs
+are not estimators. One can certainly remove more observations
+from consideration and make the estimator more robust.
+The extreme case is to use the sample median to
+estimate the population mean. In this case, the estimator
+makes sense only if the mean and median are the
+same parameters under the model assumption.
+
+In general, an L-estimator is any linear combination of
+these order statistics. The coefficients are required to
+be non-random and naturally do not depend on unknown parameters.
+
+\section{Assignment problems}
+
+\begin{enumerate}
+\item 
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid\ sample from the Uniform distribution 
+$ \mathrm{Unif} (0, \theta) $. 
+Define $ \hat \theta_{n} = \max \{ X_{1}, X_{2}, \ldots, X_{n} \} $, 
+which is often denoted as $ X_{ (n) } $ and called order statistic.  
+
+Find the limiting distribution of $ n ( \theta - \hat \theta_{n} ) $ as $ n \to \infty $. 
+
+Is $\hat \theta$ asymptotically unbiased at rate $\sqrt{n}$, at rate $n$?
+
+
+\item 
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random sample from 
+Poisson $ (\theta) $, and let $ \eta = \exp ( - \theta ) $. 
+From the previous assignment, we find that the UMVUE for $ \eta $ is given by 
+\[ 
+\hat \eta = (1 - 1/n)^{ n \bar X }. \\ 
+\] 
+
+(a) Follow the Definition \ref{??} as given in the Lecture Notes, 
+prove that $ \hat \eta $ is weakly consistent, i.e., prove that,
+for any $ \varepsilon > 0 \text { and } \theta > 0 $, 
+\[ 
+P ( | \hat \eta - \eta | > \varepsilon; \eta ) \to 0, 
+\] 
+as $ n \to \infty $. 
+
+(b) Conduct a simulation study to find the probability in part (a). 
+Let $\epsilon = 0.01, \eta = \exp(-1)$ and repeat
+the simulation with sample sizes $n=100$ and 1000, with $N=20000$
+repetitions.
+Report your findings. 
+
+
+\item
+Let  $ X_{1}, X_{2}, ... , X_{n} $ be an \iid\ sample 
+from the following mixture model, with density function 
+\[ 
+f(x; \lambda, \pi) 
+= (1 - \pi) \exp( - x ) + \pi \lambda^{ - 1 } \exp ( - x/\lambda ), 
+~~~ x > 0. 
+\]  
+
+Suppose we observe the sample data 
+
+\begin{verbatim}
+0.61683384, 0.49301343, 0.08751571, 6.32112518, 1.46224603, 
+0.17420356, 1.07460011, 0.18795447, 2.01524287, 0.83013365, 
+0.04476622, 2.01365679, 1.63824658, 0.01627277, 5.71925356, 
+3.85095169, 0.75024996, 1.26231923, 0.70529060, 1.66594757
+\end{verbatim}
+
+(a)
+Derive an analytical expression for moment estimate of  
+the parameters $ \lambda \text { and } \pi $ and
+
+(b)  obtain their numerical values.
+
+
+
+\item 
+Given a positive constant $k$, let us define a function for the purpose
+of M-estimation:
+\[ 
+\varphi(x; \theta) = 
+\begin{cases} 
+(x - \theta)^{2} 
+&, \text { if } | x - \theta | \leq k; \\ 
+k^{2} 
+&, \text { if } | x - \theta | > k. 
+\end{cases} 
+\] 
+ 
+(a) The M-Estimator $ \hat \theta \text { of } \theta $ is the value at which
+$ M_{n} ( \theta ) = \sum_{i=1}^{n} \varphi ( X_{i}, \theta ) $ is minimized. 
+
+Assume that none of $i$ makes $ | X_{i} - \hat \theta | = k $
+where $\hat \theta$ is the solution to the optimization problem. 
+
+Show that $\hat \theta$ is the mean of $X_{i}$ such that
+$ | X_{i} - \hat \theta | < k $. 
+
+(b) Given the sample data 
+
+\begin{verbatim}
+1.551 -1.170 -0.201 1.143 0.138 3.103 1.455 -2.121 -1.672 6.150
+\end{verbatim}
+
+and that $ k = 2.0 $, calculate the value of the M-Estimate
+defined in part (a). 
+
+\item
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random sample 
+from the Exponential distribution 
+Exp $(\theta ) $ with mean $ \theta $ 
+(the density is $ f (x; \theta) = \theta^{ - 1 } \exp ( - x/\theta ) $). 
+
+Denote by $ X_{ (1) }, X_{ (2) }, \ldots, X_{ (n) } $ 
+the corresponding order statistics for this random sample. 
+Then, $ W_{k} = X_{ (k+1) } - X_{ (k) }, 1 \leq k \leq n - 1 $ 
+are called the {\em spacings } of the order statistics. 
+By convention, define $ W_{0} = X_{ (1) } $, the first order statistic. 
+
+
+(a) It is known that $ W_{0}, W_{1}, ... , W_{n - 1} $ 
+are independent to each other, with 
+\[ 
+W_{k} \sim \mbox{Exp} ( \frac { \theta } { n - k } ),  
+\]  
+for $ k = 0, 1, \ldots, n - 1 $. 
+
+Verify this Theorem for the case when $ n = 2 $. 
+
+(b) Let 
+\[
+ T_{n} = X_{ (1) } + X_{ (2) } + \cdots + X_{ (k) } + (n - k) X_{ (k) }. 
+ \]
+When $ n = 10, k = 8 $, find the mean and variance for this statistic $ T_{n} $. 
+
+(c) Suppose $ n = 10, k = 8 $, and use on your result from part (b), 
+give an unbiased L-Estimator for the parameter $ \theta $. 
+
+\end{enumerate}
+

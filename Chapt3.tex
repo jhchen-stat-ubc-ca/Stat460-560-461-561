@@ -1,0 +1,320 @@
+\chapter{Exponential distribution families}
+
+In mathematical statistics, the normal distribution
+family plays a very important role for its simplicity and for the
+reason that many distributions are well approximated by
+a normal distribution. We have also seen many useful other
+distributions are derived from normal distributions.
+
+There are many other commonly used distribution families
+in mathematical statistics. Many of them have density
+functions conform to a specific algebraic structure.
+The algebraic structure further
+enables simple statistical conclusions in data analysis.
+Hence, it is often useful to have this structure discussed
+in mathematical statistics.
+
+
+\section{One parameter exponential distribution family}
+
+Consider a one parameter distribution family whose
+probability distributions have a density function with
+respect to a common $\sigma$-finite measure.
+That is, the family is made of
+\[
+\{ f(x; \theta) : \theta \in \Theta \subset \cR \}
+\]
+with $\Theta$ being its parameter space.
+
+\begin{defi}
+Suppose there exist real valued functions $\eta(\theta)$, $T(x)$,
+$A(\theta)$ and $h(x)$ such that
+\be
+\label{expFamily}
+f(x; \theta) = \exp \{ \eta(\theta) T(x) - A(\theta)\} h(x).
+\ee
+We say $\{ f(x; \theta) : \theta \in \Theta \subset \cR\}$
+is a one-parameter exponential family.
+\end{defi}
+
+
+The definition does not give much insight on the
+specific algebraic form is of interest. 
+Let us build some intuition from several examples.
+
+\begin{example}
+Suppose $X_1, \ldots, X_n$ are \iid\ from Binomial ($m, \theta$).
+Their joint density (probability mass) function is given by
+\[
+f(x_1, \ldots, x_n; \theta)
+=
+\prod_{i=1}^n \left [
+{m \choose x_i} \theta^{x_i} (1- \theta) ^{m-x_i}
+\right ].
+\]
+Let 
+\[
+T(X) = \sum X_i, ~~\mbox{and~~~} T(x) = \sum x_i
+\]
+and
+\[
+h(x) =  \prod_{i=1}^n {m \choose x_i}.
+\]
+Then we find
+\bea
+f(x_1, \ldots, x_n; \theta)
+&=&
+\exp\{ T(x) \log \theta + (nm-T(x)) \log (1-\theta) \} h(x)\\
+&=&
+\exp \{ \log \{\theta/(1-\theta)\} T(x) + nm\log(1-\theta)\} h(x).
+\eea
+This conforms the definition of one parameter family with
+\[
+\eta = \log \{\theta/(1-\theta)\} 
+\]
+and
+\[
+A(\theta) = nm\log(1-\theta).
+\]
+\end{example}
+
+As an exercise, you can follow this example to show that
+both Negative Binomial, Poisson distributions are one-parameter
+exponential families. 
+
+In the above example, $\eta$ is call log-odds because
+$\theta/(1-\theta)$ is the odds of success compared to failure
+in typical binary experiments. It is equally useful to ``label''
+Binomial distribution family by log-odds.
+Note that
+\[
+\theta = \frac{ \exp(\eta)}{1 + \exp(\eta)}.
+\]
+Hence, we may equivalently state that the joint density
+function of $X$ is given by
+\[
+g(x_1, \ldots, x_n; \theta)
+=
+\exp \{ \eta T(x) - nm\log (1+ \exp(\eta)) \} h(x).
+\]
+This form also confirms the definition of the one-parameter
+exponential family.
+
+\begin{defi}
+Let $X$ be a random variable or vector. The support of $X$
+of that of its distribution is the set of all $x$ such that
+for any $\delta > 0$,
+\[
+P\{ X \in (x-\delta, x+\delta) \} > 0.
+\]
+\end{defi}
+
+For the sake of accuracy, a definition sometimes has to be abstract.
+The support of $X$ is intuitively the set of $x$ such that
+$X=x$ is a ``possible event''. When $Z$ is $N(0, 1)$, we
+have $P(Z = z) = 0$. Hence, we cannot interpret ``possible
+event'' as a positive probability event. The above definition
+first expands $x$ and then judges its ``possibility''.
+Hence, the support contains all $x$ at which the density
+function is positive and continuous.
+
+We do not ask you to memorize this definition. Rather, we
+merely point out that if two distributions belong the same one-parameter
+exponential family, then they have the same support.
+In comparison, a standard exponential distribution has
+support $[0, \infty)$ and a standard normal distribution
+has support $\cR$.
+Let us now show you another interesting property.
+
+\begin{example}
+Let us now consider the natural form of the one-parameter
+exponential family:
+\[
+f(x_1, \ldots, x_n; \eta)
+=
+\exp \{ \eta T(x) - A(\eta) \} h(x)
+\]
+with $\eta$ being a real value whose parameter space
+is an interval.
+The moment generating function of $T(x)$ is given by
+\[
+M_T(s) = \bbE \exp \{ s T(X)\}
+= \exp\{ A(\eta+s) - A(\eta) \}.
+\]
+This implies that
+\[
+\bbE\{T\} = M'_T(0) = A'(\eta).
+\]
+and
+\[
+\bbE\{T^2\} = M''_T(0) = A''(\eta) + \{A'(\eta)\}^2.
+\]
+Hence,
+\[
+\var(T) = A''(\eta).
+\]
+\end{example}
+
+This example shows that the exponential families have
+some neat properties which make them an interest
+object to study.
+
+\section{The multiparameter case}
+
+We can practically copy the previous definition without any changes.
+
+\begin{defi}
+Suppose there exist real-vector valued functions $\eta(\btheta)$, $\bT(x)$,
+and real valued functions $A(\btheta)$ and $h(x)$ such that
+\be
+\label{MexpFamily}
+f(x; \btheta) = \exp \{ \eta^\tau(\btheta) \bT(x) - A(\btheta)\} h(x).
+\ee
+We say $\{ f(x; \theta) : \theta \in \Theta \subset \cR^d\}$
+is a multi-parameter exponential family.
+\end{defi}
+
+Without the above expansion, the exponential family does not
+even include normal distribution. 
+\begin{example}
+Let $X_1, X_2, \ldots, X_n$ be \iid\ with distribution $N(\mu, \sigma^2)$.
+Their joint density function
+\bea
+\phi(x_1, \ldots, x_n; \mu, \sigma^2)
+&=&
+(2 \pi)^{-n/2} \sigma^{-n} \exp \{ - \frac{\sum_{i=1}^n (x_i - \mu)^2}{2 \sigma^2} \}\\
+&=&
+(2 \pi)^{-n/2}
+\exp \{\frac{\mu}{\sigma^2} \sum_{i=1}^n x_i
+- \frac{1}{2 \sigma^2}  \sum_{i=1}^n x^2_i
+- \frac{n \mu^2}{2 \sigma^2} 
+- n \log \sigma \}.
+\eea
+We now  regard $\btheta$ as a vector made of $\mu$ and $\sigma$.
+The above density function fits into the definition \eqref{MexpFamily}
+with the following functions:
+\bea
+\eta(\btheta) 
+&=& \left ( \frac{\mu}{\sigma^2}, - \frac{1}{2 \sigma^2} \right )^\tau, \\
+\bT(x) &=& (\sum x_i, \sum x_i^2)^\tau,\\
+A(\btheta) &=& - \frac{n \mu^2}{2 \sigma^2} - n \log \sigma,\\
+h(x) &=& (2 \pi)^{-n/2}.
+\eea
+\end{example}
+
+Recall the Binomial distribution example. We had
+joint density function given by
+\[
+f(x_1, \ldots, x_n; \theta)
+=
+\exp\{ T(x) \log \theta + (nm-T(x)) \log (1-\theta) \} h(x).
+\]
+It  can also be regarded as a multi-parameter exponential family
+with $d=2$ and
+\[
+\eta = (\log \theta, \log (1-\theta))^\tau; ~~~
+\bT_{new}(x) = (T(x), nm-T(x))^\tau.
+\]
+The parameter space in terms of values of $\eta$ is a curve
+in $\cR^2$ which does not contain any open (non-empty)
+subset of $\cR^2$. We generally avoid having a distribution
+families with degenerate parameter spaces.
+
+As an exercise, one can verify that two-parameter Gamma
+distribution family is a multiple parameter exponential family.
+
+\section{Other properties}
+
+Suppose $X_1$ and $X_2$ both have distributions
+belonging to some exponential families and they are independent.
+Then their joint distribution also belongs to an exponential
+family.
+
+By factorization theorem, $\bT(X)$ in exponential family
+is a sufficient statistic. It is also a complete statistic when
+the family does not degenerate.
+
+The distribution of $\bT$ belongs to an exponential family.
+
+\begin{defi}
+Let $\bT$ be a k-dimensional vector valued function
+and $h$ be a real value function. The canonical k-dimensional
+exponential family generated by $\bT$ and $h$ is 
+\[
+g(x; \eta) 
+=
+\exp\{ \eta^\tau T(x) - A(\eta) \} h(x).
+\]
+The parameter space for $\eta$ is all $\eta \in \cR^k$ such
+that $\exp\{\eta^\tau T(x)\} h(x)$ has finite integration with
+respect to the corresponding $\sigma$-finite measure.
+
+We call the parameter space, $\cE$, the natural parameter
+space. We call $\bT$ and $h$ generators.
+\end{defi}
+
+Because the integration of a density function equals 1,
+the integration of $\exp\{ \eta^\tau T(x)\} h(x)$ equals
+$\exp(A(\eta)$ if it is finite. Hence, the natural parameter
+space $\cE$ contains all $\eta$ at which $A(\cdot)$ is well-defined.
+
+\begin{defi}
+We say that an exponential family $\cF$ is of rank $k$ if and only
+if the generating statistic $\bT$ is k-dimensional and 
+$1, T_1, \ldots, T_k$ are linearly independent with positive
+probability. That is,
+\[
+P( a_0 + \sum_{j=1}^k a_j T_j =0; \eta) < 1
+\]
+for some $\eta$ unless all non-random coefficients
+$a_0 = a_1 = \cdots = a_k = 0$.
+\end{defi}
+
+In the above definition, we only need to verify the probability
+inequality for one $\eta$ value. If it is satisfied for one $\eta$
+value, then it is satisfied for any other $\eta$ value.
+
+\begin{theorem}
+Suppose $\cF = \{g(x; \eta): \eta \in \cE \}$ is a canonical
+exponential family generated by $(\bT, h)$ with natural
+parameter space $\cE$ such that $\cE$ is open.
+Then the following are equivalent:
+\begin{itemize}
+\item
+[(a)] $\cF$ is of rank $k$.
+
+\item
+[(b)] $\var(\bT; \eta)$ is positive definite.
+
+\item
+[(c)] $\eta$ is identifiable: $g(x; \eta_1) \equiv g(x; \eta_2)$
+for all $x$ implies $\eta_1 = \eta_2$.
+\end{itemize}
+\end{theorem}
+
+These discussions on exponential family suffice for the moment
+so we move to the next topic.
+
+\section{Assignment problems}
+
+\begin{enumerate}
+\item
+Show that both Negative Binomial and Poisson distributions 
+are one-parameter exponential families. 
+
+\item
+Show that the family of uniform distributions
+\[
+f(x; \theta) = \theta^{-1} \ind(0 < x < \theta)
+\]
+over $\theta \in \cR^+$ is not a one-parameter exponential family.
+
+\item
+(a) Show that two-parameter Gamma distribution family is a multiple parameter exponential family, 
+and select a $ \boldsymbol{T} $ so that $ \var (\boldsymbol{T}; \eta) $ is positive definite. 
+
+(b) Show that multinomial distribution family with fixed number of trials 
+$ n $ is a multiple parameter exponential family, 
+and select a $ \boldsymbol{T} $ such that $ \var (\boldsymbol{T}; \eta) $ is positive definite.
+\end{enumerate}
+

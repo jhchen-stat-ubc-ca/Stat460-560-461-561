@@ -1,0 +1,719 @@
+\chapter{ Confidence intervals or regions}
+
+Suppose we have a sample $X$ from a distribution that belongs to $\cF$.
+Under parametric setting, the distributions in $\cF$ are labeled by $\theta$ and
+the ``true'' distribution of $X$ is the distribution with label $\theta = \theta_0$, a value
+conceptually exists but unknown to us.
+
+We generally do not bother to use a special single $\theta_0$ to denote the true 
+parameter value unless it becomes ambiguous otherwise. 
+Most often, we simply declare that the parameter of the distribution of $X$ is
+$\theta$ and its range or the parameter space is $\Theta$. Furthermore,
+we implicitly assume that $\Theta$ is a subset of $R^d$ with all mathematical
+properties needed such as being open, convex and so on.
+In addition, the distribution of $X$ depends on the value of $\theta$ in a
+continuous fashion.
+
+Based on the realized value of $X$, one {\it can} estimate
+$\theta$ using any preferred methods. This is called point estimation.
+One may also make a judgement on whether or not $\theta$ is a member of
+an elite subset $H_0$ by conducting a hypothesis test.
+The third option is to specify a subset $\Theta_0$ of $\Theta$ so
+that we are confident that $\theta \in \Theta_0$.
+When $d = 1$, we usually prefer that $\Theta_0$ is an interval in
+$\Theta$. When $d > 1$, $\Theta_0$ will be called a confidence region. 
+It is preferable that $\Theta$ is connected and it does not contain holes. 
+More often than not, convex set is most appealing.
+
+We require that $\Theta_0$ is decided by the value of $X$, and
+it does not depend on any unknown parameters. Thus, it is a {\bf random}
+set. The characteristic of its randomness is dependent on the distribution of $X$.
+Just like a statistic is a function of exclusively data,
+the confidence region is also a set-valued function of exclusively data. 
+
+In Bayesian data analysis, the distribution of $X$ is regarded as
+a realized distribution from a ``super-population''. The super-population
+is specified by a prior distribution which is regarded as known. 
+In parametric setting in Bayes analysis, the distribution of $X$
+is $f(x; \theta_0)$ such that $\theta_0$ is a realized but not observed value
+of a random variable $\theta$ whose distribution is the prior distribution 
+and {\bf known}.
+The prior distribution is often denoted as $\pi(\theta)$ 
+which also stands for its density function. The corresponding
+cumulative distribution function is often denoted as $\Pi(\theta)$.
+The conditional distribution of $\theta$ given $X$ called posterior distribution
+and it is derived via Bayes formula.
+A $\theta$ region on which posterior distribution has
+high density is referred to as a credible region. 
+The topic of credible region will be discussed later.
+
+Constructing a confidence interval or region is easy. 
+The real challenge is to construct an interval with desirable properties. 
+We should specify what properties such an interval estimation should have, 
+and how we construct intervals with these properties.
+
+\begin{defi}
+\label{defi12.1}
+An interval/region $C(x)$ as a function of the realized value of $X$ is a
+confidence interval/region of $\theta$ at level $1 - \alpha$ for some
+$\alpha \in (0, 1)$, if
+\[
+\inf_{\theta} \pr \{\theta \in C(X); \theta \} = 1 - \alpha.
+\]
+\end{defi}
+
+Probability calculation in this definition is done by regarding
+$\theta$ as the true parameter value of the distribution of $X$.
+The value of $\theta$ is not random in the definition of the
+{\bf  frequentist confidence region}. 
+The interval $C(X)$ is random due to the randomness of $X$. 
+In comparison, when $\theta$ is regarded as a random variable in Bayes analysis,
+a similar notion is needed and must be defined separately.
+Corresponding to confidence region, the Bayes version is called ``credible region''. 
+There is no specific shape requirement on a confidence/credible region in their definitions.
+Yet we have preferences.
+
+The probability that $C(X)$ covers $\theta$ generally depends on
+what value $\theta$ takes in this specific case.
+It is desirable to have the coverage probability not dependent on this specific value of $\theta$. 
+If this is achieved, the infimum operation in the above definition becomes redundant. 
+
+The models in real world applications are often too complex to
+find a sensible $C(X)$ that meets the standard of Definition \ref{defi12.1}. 
+Often, people implicitly use the following {\bf convention} which is wrong in strict sense. 
+To make a distinction, we call it asymptotic confidence region and place a formal
+definition here.
+
+\begin{defi}
+\label{defi12.2}
+Suppose the observation $X$ from a distribution, which is a member of
+distribution family, is regarded as member in an imaginary sequence 
+$X_1, X_2, \ldots, X_n, \ldots$ from a corresponding imaginary population 
+sequence so that the parameter $\theta$ remains interpretable throughout.
+
+An interval/region $C_n(x_n)$ as a function of the current realized value of $X_n$ is an asymptotic
+confidence interval/region of $\theta$ at level $1 - \alpha$ for some $\alpha \in (0, 1)$, if
+\[
+\inf_{\theta} \lim_{n \to \infty} \pr \{\theta \in C_n(X_n); \theta \} = 1 - \alpha.
+\]
+\end{defi}
+
+The $n$ in the above definition usually stands for the sample size 
+and $C_n$ is a confidence region derived based on a principled procedure 
+applicable to any sample size $n$ (or other dynamic index).
+The relevance of this definition largely depends on the
+the sensibility of the population sequence and the
+principled approach at constructing $C_n(X_n)$. In addition,
+the sample size $n$ in application should be large enough
+so that the value of $\pr\{\theta \in C_n(X_n); \theta \}$
+is not far off from its limit when $\theta$ is within  the anticipated region.
+
+Although the preamble of the definition is long, it does not hurt
+much to simply omit it in this definition. We should regard $\theta$
+as a functional of distribution $F$ which is a member of $\cF$.
+The definition needs additional polish:
+the infimum should be over the range of all distributions in $\cF$
+such that $\theta(F) = \theta$.
+
+Similar to the optimality notion in hypothesis test, comparison
+between different confidence regions are possible only if they
+are lined up by their confidence levels.
+If two confident intervals (or two construction procedures)
+have the same confidence level, the one having
+a shorter average/expected length is preferred. 
+One may in addition prefer that
+the variation in the length of the interval is low.
+
+Suppose $C(X)= [-2, 2]$ is a confidence interval for the population mean.
+If this interval is sensibly constructed,
+it is generally true that the most likely value of $\theta$ is located
+at the centre of this interval.  Namely, $[-1, 1]$ is more likely
+to contain $\theta$ than $[-2, -1]\cup [1, 2]$ does.
+Yet this belief is not supported by nor is the part of the formal
+definition of the confidence interval. 
+
+Unlike the theory for hypothesis test, there seem to be fewer
+solid mathematical criteria for the optimality of confidence
+regions. Confidence regions are often derived from other
+well--known procedures. If these procedures have optimal
+properties in the sense of their original purpose, statisticians seem to feel comfortable
+to recommend the corresponding confidence regions. 
+There are some optimality criteria  in classical textbooks
+though they are not convenient to use and generally ignored
+in contemporary textbooks.
+
+We now give a few generally recommended approaches
+for constructing confidence intervals. 
+
+\section{Confidence intervals/regions based on hypothesis test}
+Assume a test $\phi(x; \theta)$ of size-$\alpha$ is
+given for each simple null hypothesis $H_0: \theta = \theta_0$
+against a composite alternative hypothesis $H_1: \theta \neq \theta_0$.
+To be more concrete, let the test be denoted as $\phi(x; \theta_0)$. 
+Thus, $\theta_0$ is rejected when $\phi(x; \theta_0) = 1$, assuming no randomization
+is involved.
+That is, we consider only the case where $\phi(x; \theta_0)$ can take a value either 0 or 1.
+
+Based on this test $\phi(x; \theta)$ where $\theta$ is generic, we define
+\[
+C(x) = \{ \theta: \phi(x; \theta) < 1 \}.
+\]
+It is easy to see that
+\[
+\pr\{ \theta \in C(x); \theta \}
+=
+\pr\{ \phi(X; \theta) < 1; \theta \}
+\geq
+1 - \bbE \{ \phi(X; \theta): \theta\}
+\geq 
+1 - \alpha.
+\]
+for all $\theta \in \Theta$. Thus, $C(x)$ is a $1-\alpha$ level confidence region. 
+In most cases, $C(x)$ obtained this way for one dimensional $\theta$
+is an interval though it does not have to be an interval. 
+Clearly, the coverage probability may exceed $1-\alpha$ at some $\theta$ values.
+At the same time, the coverage probability is never below $1-\alpha$.
+
+\begin{example}
+Suppose we have a random sample from $N(\theta, \sigma^2)$.
+We hope to construct a confidence interval for $\theta$.
+One approach is to use likelihood ratio test for each
+$H_0: \theta = \theta_0$. The test statistic can be simplified
+to 
+\[
+T(x; \theta_0) = \frac{ \sqrt{n}|\bar X - \theta_0|}{s_n}.
+\]
+The rejection region for each $\theta_0$ is given by
+\[
+\{ x : T(x; \theta_0 ) \geq t_{n-1}(1 - \alpha/2) \}.
+\]
+Consequently, the confidence interval based on this test is
+\[
+\{ \theta_0: T(x; \theta_0 ) \leq t_{n-1}(1 - \alpha/2) \}
+\]
+or 
+\[
+[ \bar x -  t_{n-1}(1 - \alpha/2) s_n/\sqrt{n}, 
+\bar x +  t_{n-1}(1 - \alpha/2) s_n/\sqrt{n}].
+\]
+It is nice to see that the outcome is indeed an interval.
+\end{example}
+
+\section{Confidence intervals/regions by pivotal quantities}}
+A pivot is a function of both data and unknown parameter
+such that it has a distribution not dependent on unknown parameters.
+Suppose $q(x; \theta)$ is a pivot. 
+Then there is a quantity, say $q_\alpha$ such that
+\[
+P\{ q(X; \theta) > q_\alpha; \theta \} = \alpha
+\]
+when $q(X; \theta)$ has a continuous distribution. 
+The existence of $q_\alpha$ is ensured because
+the distribution of $q(X; \theta)$ does not
+depend on the unknown value $\theta$.
+If $q(X; \theta)$ has a discrete distribution, some
+continuity corrections may be used.
+
+Let
+\[
+C(x) = \{ \theta: q(x; \theta) < q_\alpha \}.
+\]
+It is easily seen that $C(x)$ is a $1-\alpha$-level confidence
+region of $\theta$.
+
+Examples of pivotal quantity are most readily available
+in location-scale families.
+
+\begin{example}
+Suppose we have a random sample of size $n$ from $N(\theta, \sigma^2)$.
+Let us construct a confidence interval for $\sigma^2$.
+
+It is well known that
+\[
+q(x; \sigma^2) = \frac{ \sum (x_i - \bar x)^2}{\sigma^2}
+\]
+has chisquare distribution with $n-1$ degrees of freedom.
+Thus, it is a pivot.
+
+Let $\chi^2_{n-1}(0.95)$ be the 95th percentile of the chisquare
+distribution with $n-1$ degrees of freedom. Then, 
+\[
+\big \{ \sigma^2:  \frac{\sum (x_i - \bar x)^2}{\sigma^2} < \chi^2_{n-1}(0.95) \big \}
+=
+\big [~~  \frac{\sum (x_i - \bar x)^2}{\chi^2_{n-1}(0.95)} , ~~\infty \Big )
+\]
+is a 95\% confidence interval for $\sigma^2$.
+
+If a two-sided confidence interval is asked, then
+\ba
+&&\hspace{-5em}
+\big \{ \sigma^2:  \frac{\sum (x_i - \bar x)^2}{\sigma^2} \in 
+(\chi^2_{n-1}(0.025), \chi^2_{n-1}(0.975) \big \} \\
+&=&
+\big [ ~~ \frac{\sum (x_i - \bar x)^2}{\chi^2_{n-1}(0.975)}, ~~
+\frac{\sum (x_i - \bar x)^2}{\chi^2_{n-1}(0.025)} ~~
+\big ]
+\ea
+is a choice with 95\% confidence level.
+\end{example}
+
+It is natural for us to use $0.025$ and $0.975$ quantiles
+in the above example. However, using $0.02$ and $0.98$
+quantiles will also give us a 95\% two--sided confidence
+interval.  Which one is better? Should we have a look
+of their average lengths?
+
+In applications, some function of both data and parameter
+has a distribution not dependent on the ``true'' parameter
+value in asymptotic sense. In this case, one may activate
+Definition \ref{defi12.2} to justify asymptotic confidence
+regions.
+
+
+
+\section{Likelihood intervals}
+By the definition, a confidence region is characterized by its level of confidence. 
+Yet the interval makes more sense if a parameter value within
+the region is more ``likely'' than a parameter value outside of the region,
+to be the ``true'' value of the parameter.  This is particularly the case in
+the confidence interval for $\sigma^2$ in the last example.
+The notion of likelihood interval or related Bayesian approach
+seem to be an improvement in this direction.
+
+Suppose we have a random sample of size $n$ from a parametric
+family $\{ f(x; \theta): \theta \in R^d\}$. Consider the problem of constructing
+a confidence interval/region for $\theta$.
+Since by ``definition'', the maximum likelihood estimator is the
+most ``likely'' value of the parameter, the interval should contain
+the MLE $\hat \theta$. In addition, if the likelihood value at $\theta'$ is
+almost as large as the likelihood value as $\hat \theta$, it is also a good
+candidate to be included into the interval.
+
+This notion quickly deduces to a likelihood region/interval in the form of
+\[
+C(X) = \{ \theta:  L(\theta)/L(\hat \theta) \geq c \}
+\]
+where $L(\theta)$ is the likelihood function,
+$\hat \theta$ is the MLE, and $c$ is a positive constant to be chosen.
+
+By Definition \ref{defi12.1},
+to make a likelihood interval into a confidence interval, all we need is
+to choose $c$ such that
+\[
+P \{ \theta \in C(X); \theta\} \geq 1 - \alpha
+\]
+is true for any $\theta$, when the pre-specified level is $1 - \alpha$.
+
+There may not exist such a meaningful constant $c$ 
+such that the coverage probability is no less than $1-\alpha$ under all $\theta$.
+However, when the sample size $n$ is large and the model is regular,
+it is possible to find a $c_n$ such that the coverage probability
+is approximately $1- \alpha$ for {\bf each} $\btheta$. That is, the difference is an quantity
+converges to 0 when $n\to \infty$, whichever $\theta$ is the true value.
+This is an asymptotic confidence region at $(1-\alpha)$-level
+by Definition \ref{defi12.2}.
+
+To students with rigorous mathematics background, you may notice
+that the asymptotic notion is not uniformly in $\theta$. We only required
+the convergence point-wise, not uniformly over the parameter space.
+
+\begin{example}
+Consider the situation where we have an \iid sample
+of size $n$ from an exponential
+distribution parameterized by its mean $\theta$. A confidence interval
+for $\theta$ is desired.
+
+Let $\bar X_n$ be the sample mean and regard it as a random variable.
+It is also the MLE of $\theta$.
+The log likelihood function is given by
+\[
+\ell_n(\theta) = - n \log \theta - n \theta^{-1} \bar X_n.
+\]
+The likelihood ratio statistic is given by
+\[
+R_n(\theta) = 2 n \{ -\log (\bar X_n/\theta) - 1 + (\bar X_n/\theta)\}
+\]
+which is convex in $\bar X_n/\theta$.
+Hence, a likelihood interval for $\theta$ has the form
+\[
+C(X) = \{   c_1 \bar X_n \leq \theta \leq c_2 \bar X_n \}
+\]
+for some $c_1 < c_2$ such that
+\[
+R_n(c_1\bar X_n)  = R_n(c_2\bar X_n)  
+\]
+and 
+\[
+P\{  \bar X_n/\theta \in (1/c_2, 1/c_1) \} = 1- \alpha
+\]
+where $1-\alpha$ is the pre-specified confidence level.
+\end{example}
+
+Suppose one would like to construct a confidence interval for
+the rate parameter $\lambda = 1/\theta$ in this example.
+It is easily seen that the confidence interval based
+on likelihood approach would simply be
+\[
+C'(X) = \{   (c_2 \bar X_n)^{-1} \leq \lambda \leq (c_1 \bar X_n)^{-1} \}
+\]
+where $c_1$ and $c_2$ are the same constants in the example.
+Note that
+\[
+\theta \in C(X)
+\]
+if and only if
+\[
+1/\theta = \lambda \in C'(X).
+\]
+We say that the likelihood intervals are equi-variant, just like its
+counterpart, MLE. This property is not shared by all other
+methods such as the one to be introduced.
+
+\section{Intervals based on asymptotic distribution of $\hat \theta$}
+
+It is arguable whether or not this is a new method. We might call it
+Wald's method, yet it has too many moving parts to be solidly called
+as this method. 
+Often, we can find an estimator of $\theta$ such that
+$\sqrt{n}(\hat \theta - \theta)$ is asymptotic normal with limiting
+variance $\sigma^2$. When $\sigma^2$ is known, then
+\[
+q(X; \theta) = \frac{\sqrt{n}(\hat \theta - \theta)}{\sigma}
+\]
+is an approximate pivotal quantity. 
+Because of this, an approximate 2-sided $1-\alpha$ confidence interval of
+region of $\theta$ is given by
+\[
+\hat \theta \pm z_{1-\alpha/2} \sigma /\sqrt{n}.
+\]
+
+If $\sigma$ is unknown but a consistent estimator $\hat \sigma$
+is available, then a substitution is given by
+\[
+\hat \theta \pm z_{1-\alpha/2} \hat{ \sigma}/\sqrt{n}.
+\]
+It might be more convenient to write the above as
+\[
+\hat \theta \pm z_{1-\alpha/2} \sqrt{\widehat{\var}(\hat \theta)}.
+\]
+The meaning of the above notation is obvious.
+
+\begin{example}
+Let $X_1, \ldots, X_n$ be an \iid sample from Poisson distribution with
+mean parameter denoted as $\theta$. The MLE of $\theta$ is given by
+$\hat \theta = \bar X_n$, the sample mean.
+Construct a 95\% CI for $\theta$.
+\end{example}
+
+\noindent
+{\bf Solutions}:
+It is well known that $\sqrt{n}( \hat \theta - \theta) \cd N(0, \theta)$.
+In addition, the sample mean $\bar X_n$  is consistent for $\theta$.
+Thus, a 95\% CI for $\theta$ is given by
+\[
+\bar X_n \pm 1.96 \sqrt{\bar X_n/n}.
+\]
+When $1.96 \sqrt{\bar X_n/n} > \bar X_n$, one must set
+lower confidence limit(bound) to 0.
+
+It is equally appropriate to notice that
+\[
+\sqrt{n}( \sqrt{\hat \theta} - \sqrt{ \theta}) \cd N(0, 1/4).
+\]
+Hence, one may construct a 95\% CI based on
+\[
+\sqrt{n}| \sqrt{\hat \theta} - \sqrt{ \theta}| \leq 1.96/2.
+\]
+Solving this inequality, we get
+\[
+[ \{\sqrt{ \bar X_n} - 1.96/2\sqrt{n} \}^+]^2 < \theta < \{ \sqrt{\bar X_n} + 1.96/2\sqrt{n} \}^2.
+\]
+
+The third choice is to work with
+\[
+\frac{\sqrt{n}({\hat \theta} - { \theta})}{\sqrt{\theta}} \cd N(0, 1).
+\]
+With this asymptotic pivotal quantity, the CI has lower and upper limits
+\[
+\bar X_n +  \frac{1.96^2}{2n} -\sqrt{ \frac{1.96^4}{4n^2} + \frac{1.96^2\bar X}{n}}
+\]
+and
+\[
+\bar X_n +  \frac{1.96^2}{2n} +\sqrt{ \frac{1.96^4}{4n^2} + \frac{1.96^2\bar X}{n}}.
+\]
+\qed
+
+\vs\vs
+
+Many students have natural tendency to ask the following question.
+Which of the above confidence intervals is {\bf correct}? The answer is: none of
+them. The reason is: the critical value 1.96 is based on the limiting distribution
+of $\hat \theta$ in every case. Hence, none of them have exact 95\%
+coverage probability (even if the rounding-off is not taken into account).
+
+If the above answer is unsatisfactory to you, then you need to think hard
+about what it means by ``correct''. If approximate 95\% CIs are acceptable,
+all three are {\bf fine}. 
+
+The real question in your mind might be: which one is the best? 
+Answering this question needs an optimality criterion. We do not have one
+at the moment.
+Now it boils down to a weak question: what are their relative merits?
+
+The first one is analytically simple. If the sample size $n$ is not very large,
+the normal approximation can be poor. The CI may even have a negative
+lower bound. Chop-off the segment of the CI containing the negative values
+is a mathematical must but somewhat unnatural.  
+The interval is otherwise always symmetric with respect to 
+$\hat \theta = \bar X_n$.
+This is somewhat unattractive. I would use this one when $n$ and $\bar X_n$
+are both large. How large is large? I do not have an absolute standard.
+
+The second one is nice in one way: after transforming $ \theta$ into 
+$g(\hat \theta)=\sqrt{\theta}$,
+the limiting distribution of $g(\hat \theta)$ has a constant 
+variance. For this reason, this type of transformation is called 
+{\it variance stabilization transformation}.
+Since the limiting distribution does not depend on unknown parameter values,
+this interval is truly based on approximate pivotal.
+If $n$ is not large, this is a good choice.
+
+The third one has its own merit. Scaling $\hat \theta - \theta$ by a function
+of $\theta$ creates a more complex pivotal. This often leads to more naturally
+shaped confidence regions (intervals). While I have intuitions for this approach,
+I cannot come up with concrete evidences for this preference.
+
+Recall that testing hypothesis on $\theta$ value based on the limiting
+distribution of the MLE $\hat \theta$ is called Wald's method. I am not sure
+if this group of intervals should be credited to Wald, but I feel it is natural
+to call it Wald's interval/region.
+
+{\it 
+Topics we do not have time to go over:
+Multi-parameter; Binomial example; Odds ratio; Intervals for quantiles.}
+
+\section{Bayes Interval}
+
+Under Bayesian setup, the parameter $\theta$ is a sample from some
+prior distribution. Thus, its value itself is a realization of random variable.
+Constructing a confidence interval for a random quantity is a different topic.
+However, we may combine our prior information,
+if any, with data from $f(x; \theta)$, to take a guess about this realized value of $\theta$.
+It is generally concluded that
+the information about $\theta$ is completely summarized in the posterior distribution of $\theta$.
+If one must take a guess on a region in which this $\theta$ has been
+located based on Bayesian setup, she would select the region with
+the highest posterior density.
+
+\begin{defi}
+Let $\pi(\cdot | x)$ denote the posterior density function of parameter $\theta$
+given $X = x$. Then
+\[
+C_k = \{ \theta:~ \pi(\cdot | x) \geq k\}
+\]
+is called a {\bf level $1-\alpha$ credible region} for $\theta$ if
+$\pr(\theta \in C_k | x) \geq 1 - \alpha$
+for some $\alpha \in (0, 1)$.
+\end{defi}
+
+Note that $\pr(\cdot | x)$ is used for posterior distribution of $\theta$.
+If one can credibly regard $\theta$ as an outcome from a prior distribution,
+then the above credible region has a very strong appeal.
+
+If $\theta$ is not a vector but a real value, then we may choose to ignore
+the above definition of the credible region but insist of having a credible interval.
+\begin{defi}
+Let $\Pi(\cdot | x)$ denote the posterior cumulative distribution function of parameter $\theta$
+given $X = x$. Suppose $\bar \theta$ and $\underline{ \theta}$ are
+the largest and the smallest values satisfying
+\[
+\Pi(\underline{\theta} \leq \theta | x) \geq 1 - \alpha;~~
+\Pi(\bar{\theta} \geq \theta | x) \geq 1 - \alpha.
+\]
+Then, the $\underline{\theta}$ and $\bar{\theta}$
+are {\bf level $1-\alpha$ lower and upper credible bounds} for $\theta$.
+\end{defi}
+
+The source of these two definitions is Bickel and Doksum (2001).
+Some changes are made to avoid potential non-uniqueness. 
+The following is an example directly copied from Bickel and Doksum (2001).
+
+\begin{example}
+Suppose that given $\mu$, $X_1, \ldots, X_n$ are \iid from $N(\mu, \sigma_0^2)$ with known
+$\sigma_0^2$. The prior distribution of $\mu$ is $N(\mu_0, \tau_0^2)$ with both parameter
+values are known. Find the credible bounds and regions according to the above definitions
+\end{example}
+
+\no
+{\bf Solution}.
+The posterior distribution of $\mu$ given the sample is still normal with
+parameters
+\[
+\mu_B = \frac{ n \bar x/\sigma_0^2 + \mu_0 /\tau_0^2}{ n/\sigma_0^2 + 1 /\tau_0^2};
+\]
+and
+\[
+\sigma_B^2 = \left [ \frac{n}{\sigma_0^2} + \frac{1}{\tau_0^2} \right ]^{-1}.
+\]
+The lower and upper $1-\alpha$ credible bounds are simply
+\[
+\mu_B \pm z_{1-\alpha} \frac{\sigma_0}{\sqrt{n + \sigma_0^2/\tau_0^2}}.
+\]
+
+The $1-\alpha$ credible region is also an interval with
+lower and upper limits given by
+\[
+\mu_B \pm z_{1-\alpha/2} \frac{\sigma_0}{\sqrt{n + \sigma_0^2/\tau_0^2}}.
+\]
+\hfill{$\diamondsuit$}
+
+Note that the centre of the credible interval is shift toward $\mu_0$ compared
+with usual confidence intervals. The length is shortened too.
+
+\section{Prediction intervals}
+
+In general, the notion of confidence region is defined for unknown parameters
+of a distribution family. There are cases where we hope to predict the outcome
+of a future trial from the same probability distribution which we had taken a random sample..
+
+Suppose we have a set of \iid sample
+$X_1, X_2, \ldots, X_n$  from $\{f(x; \theta): \theta \in \Theta\}$.
+Based on this sample, we might have an estimate of $\theta$.
+If another independent sample is to be taken
+from the same distribution, what are the possible values of
+this future $X$?
+
+If the value of $\theta$ for this experiment {\bf were known}, we could
+the best choice is the high density region of $f(x; \theta)$ as 
+our prediction region.
+That is, let the prediction region be
+\[
+C(\theta) = \{ x: f(x; \theta) > c \}
+\]
+with the {\bf known value} $\theta$.
+This choice catches the true value with the lowest volume prediction region.
+We may choose $c$ such that
+\[
+\pr( X \in C(\theta) ) = 1 - \alpha
+\]
+for $1-\alpha$ coverage probability.
+Note that this region is not dependent on the random sample $X_1, \ldots, X_n$.
+
+If $\theta$ is unknown as it is the usual case, it is natural to replace $\theta$ by its estimator,
+say $\hat \theta$. Although $C(\hat \theta)$ is a very sensible prediction region
+for $X$, its coverage probability is likely lower than $1 - \alpha$ due to the
+uncertain brought in by $\hat \theta$.
+The event
+\[
+X \in C(\hat \theta)
+\]
+contains two random components: $X$ and $\hat \theta$.
+The randomness in $X$ is unaffected by how well $\theta$ is estimated,
+while the precision of $\hat \theta$ usually improves with sample size $n$.
+The limit of the improvement on the prediction interval is $C(\theta)$.
+Due to the build-in randomness in $X$, one cannot do anything
+better than $C(\theta)$ no matter what.
+
+In comparison, the precision of the confidence region for $\theta$
+usually improves with $n$. When $n \to \infty$, the size of the
+confidence region with fixed confidence level shrinks to 0.
+
+\vs
+\noindent
+{\bf Example} Suppose we have a random sample
+$X_1, \ldots, X_n$ from $N(\theta, 1)$. It is well known that
+$\hat \theta = \bar X_n$ is the MLE of $\theta$.
+
+If $X$ is the outcome of a future experiment, then
+$X - \bar X_n$ has normal distribution with mean 0 and variance 
+$1 + n^{-1}$.
+Thus, a 95\% prediction interval of $X$ is given by
+\[
+(\bar X_n - 1.96 \sqrt{1+n^{-1}}, \bar X_n + 1.96 \sqrt{1+n^{-1}}).
+\]
+Clearly, increasing the sample size does not have much
+impact on reducing the length of the prediction interval.
+
+In general, a prediction interval can be obtained via some ``pivotal''
+quantities. That is, we look for a function of the random quantity
+to be predicted, and a statistic based on observations such that
+the resulting random quantity has a distribution free from unknown
+parameters. Thus, it is possible to find a subset of its range
+such that its probability equals $1-\alpha$, the confidence level
+we hope to get. The range can often be converted to obtain
+a prediction interval or region.
+
+%%% Should have an assignment problem using linear regression
+
+\section[Hypothesis test and confidence region]{The relationship 
+between hypothesis test and confidence region}
+
+Other than textbook examples, a 95\% confidence interval may have
+a coverage probability above or below 95\%. If the formal is the case,
+we say this method is ``conservative'' while the latter is ``liberal''.
+
+Both  hypothesis test and confidence region are frequentist concept.
+The subsequent discussions are not applicable to Bayes analysis.
+
+Particularly in recent years, the use of the hypothesis test is being questioned
+in science community. At the centre of this dispute is the interpretation of the
+p-value. Even for researchers who received many years of rigorous statistical 
+training, obtaining a small p-value based on some test on some data set remains holy.
+This is bad.
+The majority of the researchers in the same group fully understand the 
+non-equivalence of ``statistical significance'' and ``scientific significance''.
+The motivation outside of scientific consideration can simply be too strong 
+to take the non-equivalence seriously.
+
+Here is a fictionally example based on linear regression. How should we judge
+the importance of explanatory variables? One may find the p-value of one variable
+is $10^{-5}$, extremely small and much lower than the commonly used nominal
+level $0.05$. The p-value for another is, say $0.04$, just small enough to declare
+its statistical significance. Which one is more important?
+
+If it were us, we should first ask what hypotheses are under test? Mostly likely,
+the hypotheses are that their coefficients are zero in the regression relationship.
+Nevertheless, I prefer to have them explicitly stated.
+I would then ask what the purpose of this regression analysis is.
+If predicting the response value at a future experiment is the goal,
+then it is best to examine how much variation in the response is
+explained by the variation of each of these two explanatory variables.
+The large one is more important. The size of p-value merely tell us
+how sure we are about the conclusion that its effect is non-zero.
+
+One way to avoid such confusion is to make use of confidence interval,
+suggested by many. We feel that this alternative is not necessarily fool-proof nor
+always feasible. Let the regression coefficients be denoted as $\beta_1$
+and $\beta_2$ for two regression coefficients under consideration. 
+Suppose two-sided 95\% confidence intervals of these variables are [0.1, 1] and [1, 10]
+respectively. Suppose these two variables have been standardized,
+the second explanatory variable is more important in determining the
+size of the response variable.
+
+The foundation of replacing hypothesis test with a confidence interval/region
+construction is their equivalence: one may reject every null hypothesis
+which does not contain any parameter values in the confidence region; 
+one may construct a confidence region made of all parameter values
+that is not rejected by a chosen hypothesis test procedure when the
+specific value form a null hypothesis.
+This foundation does not always work.
+Consider the example of Wilcoxon rank test which is often used as a 
+nonparametric method for two-sample problem. 
+In this case, there is not a meaningful parameter whose confidence
+interval can be constructed based on this test. The goodness-of-fit test
+is another one. In these cases, hypothesis test is indispensable
+in spite of its deficiency. The only defence against the abuse of
+statistical inference procedure is to uphold the statistical
+principle: a small p-value based on a valid hypothesis test procedure implies
+statistical significance. It does not imply scientific significance.
+
+Let us end this chapter with another trivial example. It is definitely
+statistically significant that those who buy 10 lottery tickets
+has higher chance to win than those who buy only 1 lottery ticket.
+Yet, multiplying a number practically zero by 10 does not lead to
+a meaningfully sized chance. For the same reason,we do not take the
+advice such as ``drinking 10 cup of water a day will reduce
+your risk of cancer by a factor of 10''. We will drink water when
+we are thirsty, not to reduce the risk of cancer.
+
+

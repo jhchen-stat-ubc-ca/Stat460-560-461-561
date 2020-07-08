@@ -1,0 +1,909 @@
+\chapter{Monte Carlo and MCMC}
+
+Recall that a statistical model is a distribution family, at least
+this is what we suggest. 
+Let us first focus on parametric models: $\{f(x; \theta): \theta \in \Theta\}$. 
+In this case, $\theta$ is generally a real valued vector and $\Theta$ is a
+subset of Euclidean space with nice properties such as convex, open and so on.
+After placing a prior distribution on $\theta$, we have created a Bayes model. 
+We do not seem to have an explicit consensus on a definition of and
+a notation for Bayes model,
+even though statisticians are not shy at using this terminology. 
+Based on our understanding, we define a Bayes model as a system
+with two necessary components: a family of distributions, and a prior
+distribution on the space of this distribution family:
+\[
+\mbox{Bayes Model}
+= [\{f(x; \theta): \theta \in \Theta\}, \pi(\theta)].
+\]
+When $\Theta$ is a subset of Euclidean space, we generally
+regard $\pi(\cdot)$ a density function with respect to Lesbesgue
+measure on $\Theta$. For an abstract $\{f(x; \theta): \theta \in \Theta\}$,
+$\pi(\cdot)$ represents an abstract distribution.
+
+Logically, a Bayes model is not the same as Bayes analysis.
+Bayes analysis is generally carried out based on the posterior distribution.
+Yet there is no formal requirement on this rule. Frequentists often
+take likelihood function as the basis for inference, yet they may design
+inference procedures in any way they like. In my opinion, this includes 
+procedures based on posterior distributions.
+
+
+Suppose a $\theta$ value is generated according to $\pi(\cdot)$, and
+subsequently, a data set $\bX$ is generated from {\bf THIS} $f(x; \theta)$.
+Here we implicitly assume that $\bX$ is accurately measured and
+available to use for the purpose of inference, and the value of
+$\theta$ is hidden from us. The inference target is
+$\theta$ based on data from this experiment.
+Any decision about the possible value of $\theta$ in Bayes analysis
+is generally based on the posterior density of $\theta$ given $\bX$. 
+We use notation $f_p(\theta | \bX)$ for posterior distribution (density).
+It is conceptually straightforward to define and derive the posterior
+distribution. Hence, there are not much left for a statistician to do.
+
+Bayes analysis makes a decision based on posterior distribution.
+Research on Bayesis methods includes: (a) most suitable
+prior distributions in specific applications; (b) the influence of the
+choice of prior distribution to the final decision; (c) numerical or
+theoretical methods for determining the posterior distribution; 
+(d) properties of the posterior distribution; (e) decision rule. 
+There might be more topics out there.
+This chapter is about topic (c).
+
+
+For some well paired up $f(x; \theta)$ and $\pi(\theta)$ (when $\pi(\cdot)$ is
+a conjugate prior for $f(x; \theta)$), it is
+simple to work out the analytical form of the posterior density function.
+A Bayesian needs only decide the best choices of $\pi(\theta)$ and the
+subsequent decision rule. In many real world problems, the posterior
+density is on high dimensional space and does not have a simple analytical
+form. The Bayes analysis before the contemporary computing power has
+been a serious challenge because of this formidable task. 
+This task becomes less and less an issue today. 
+We discuss a number of commonly used techniques
+in this chapter.
+
+\section{Monte Carlo Simulation}
+The content of this section is related but not limited to
+Bayes analysis. Suppose in some
+applications, we wish to compute $\bbE\{ g(X)\}$ and $X$ is known
+to have a certain distribution. This is certainly a simple task in many textbook
+examples.
+For instance, if $X$ has Poisson distribution with mean $\theta$
+and $g(x) = x(x-1)(x-2)(x-3)$, then
+\[
+\bbE\{g(X)\} = \theta^4.
+\]
+However, if $g(x) = x \log (x+1)$, the answer
+to $\bbE\{g(X)\}$ is not analytically available.
+
+Suppose we have an \iid\ sample $x_1, \ldots, x_n$ with sufficiently
+large $n$ from this distribution, then by the law of large numbers,
+\[
+\bbE\{g(X)\} \approx n^{-1} \sum_{i=1}^n x_i \log (1+x_i).
+\]
+Let us generate $n=100$ values from Poisson distribution with $\theta = 2$.
+Using a function in R-package, we get 100 values
+\begin{verbatim}
+5 2 3 4 1 2 1 2 1 1 2 3 2 2 2 3 1 2 0 4 1 2 5 1 1 
+2 3 1 1 1 2 0 2 1 1 3 0 5 1 5 1 2 1 0 2 3 5 2 6 3 
+2 4 3 1 1 2 2 1 1 2 2 5 0 2 1 3 3 1 3 1 1 2 2 3 1 
+2 1 4 0 4 2 3 0 0 2 1 3 1 0 2 1 0 3 1 3 6 1 3 3 3
+\end{verbatim}
+Based on this sample, we get an approximated value
+\[
+\bbE\{G(X)\} \approx 2.691.
+\]
+I can just as easily use $n=10,000$ and find
+$\bbE\{g(X)\} \approx 2.648$ in one try. 
+With contemporary computer, we can afford to repeat
+it as many times as we like:
+$\bbE\{g(X)\} \approx 2.642, 2.641, 2.648$. 
+It appears $\bbE\{g(X)\} = 2.645$
+would be a very accurate approximations.
+Computation based on simulated data is generally called Monte
+Carlo method.
+
+We must answer two questions before we continue. 
+The first is why do not we use a numerical approach
+if we need to compute $\bbE\{g(X)\}$. 
+Indeed, we can put up a quick R-code
+\begin{verbatim}
+{ii= 0:50; sum(ii*log(1+ii)*dpois(ii, 2))} 
+\end{verbatim}
+and get a value $2.647645$.
+This is a very accurate answer to this specific problem.
+Yet if we wish to compute 
+\[
+\bbE\{ (X_1+ \sqrt{X_2})^2 \log(1+ X_1 + X_3X_4)\},
+\]
+where $X_1, X_2, X_3, X_4$ may have a not very simple
+joint distribution,
+a neat numerical solution becomes hard.
+Since the contemporary computers are so powerful,
+the above problem is only ``slightly'' harder. Yet there are
+real world problem of this nature, but involves hundreds
+or more random variables. For these problems, the
+numerical problem quickly becomes infeasible even for
+contemporary computers.
+In comparison, the complexity of the Monte Carlo method remains
+the same even when $g(X)$ is a function of vector $X$ with
+a very high dimension.
+
+The second question is how easy is it to generate quality ``random
+samples'' from a given distribution by computer? There are two issues
+related to this question. First, the computer does not have an efficient
+way to generate random numbers. However, with some well designed
+algorithms, it can produce massive amount of data which appear
+purely random. We call them pseudo random number generators.
+We do not discuss this part of the problem in this course.
+The other issue is how to make sure these random numbers behave
+like samples from the desired distributions. 
+
+Our starting point is that it is easy to generate \iid observations
+(pseudo numbers) from uniform distribution $[0, 1]$.
+We investigate the techniques for generating  \iid observations
+from other distributions.
+
+\begin{theorem}
+Let $F(x)$ be any univariate continuous distribution function
+and $U$ be a standard uniformly distributed random variable.
+Let
+\[
+Y = \inf \{x: F(x) \geq U\}.
+\]
+Then the distribution function of $Y$ is given $F(\cdot)$.
+\end{theorem}
+
+\proof We only need to work out the \cdf\ of $Y$. If it is the
+same as $F(\cdot)$, then the theorem is proved.
+
+Routinely, we have
+\[
+\pr(Y \leq t) = 
+\pr(\inf \{x: F(x) \geq U\} \leq t)
+= 
+\pr( F(t) \geq U )
+= F(t)
+\]
+because $\pr(U \leq u) = u$ for any $u \in (0, 1)$.
+This completes the proof. \qed
+
+\vs
+Since we generally only have pseudo numbers in $U$,
+applying the above transformation will only lead to ``pseudo numbers'' in $Y$.
+
+\begin{example}
+Let $g(u)  = - \log u$. Then, $Y = g(U)$ has exponential
+distribution if $U$ has standard uniform distribution.
+
+Let $g(u) = (- \log u)^a$ for some positive constant $a$. 
+Then $Y = g (U)$ has Weilbull distribution.
+\end{example}
+
+As an exercise problem, find the function $g(\cdot)$ which makes
+$g(U)$ standard Cauchy distributed. 
+
+Here is another useful exercise problem for knowledge. 
+If $Z_1, Z_2$ are independent
+standard normally distributed random variables, then
+$r^2 = Z_1^2+Z_2^2$ are exponentially distributed.
+One should certainly know that $r^2$ is also chisquare
+distributed with 2 degrees of freedom.
+
+\begin{example}
+Let $U_1, U_2$ be two independent standard uniform random
+variables. Let 
+\bea
+g_1(s, t) &=& \sqrt{-2 \log s} \cos( 2 \pi t);\\
+g_2(s, t) &=& \sqrt{-2 \log s} \sin( 2 \pi t).
+\eea
+Then, $g_1(U_1, U_2), g_2(U_1, U_2)$ are two
+independent standard normal random variables.
+\end{example}
+
+If we can efficiently generate pseudo numbers
+from uniform distribution, then the above result enables
+us to efficiently generate pseudo numbers from
+standard normal distributions. Since general normal
+distributed random variables are merely location-scale
+shifted standard normal random variables, their generation
+can hence also be efficiently generated this way.
+
+Due to well established relationship between various distributions,
+pseudo numbers from many many classical distributions can be
+efficiently generated. Here are a few well-known results
+which were also given in the chapter about normal distributions.
+
+\begin{example}
+Let $Z_1, Z_2, \ldots$ be \iid standard normally distributed
+random variables.
+
+(a) $X_n^2 = Z_1^2 + Z_2^2 + \cdots + Z_n^2$ has chisquare
+distribution with $n$ degrees of freedom. 
+
+(b) $F_{n,m} = (X_n^2/n)/(Y_m^2/m)$ has F distribution with $n, m$
+degrees of freedom when $X^2_n, Y^2_m$ are independent.
+
+(c) $B_n = (X_n^2)/(X_n^2 + Y_m^2)$ has Beta distribution with $n, m$
+degrees of freedom when $X^2_n, Y^2_m$ are independent.
+\end{example}
+
+We can also generate multinomial pseudo numbers with
+any probabilities: $p_1, p_2, \ldots, p_m$: generate $U$ from
+uniform, then let $X = k$ for $k$ such that
+\[
+p_1+ \cdots + p_{k-1} < U \leq p_1+ \cdots + p_{k-1} + p_{k-1}.
+\]
+The left hand side is regarded as zero for $k=1$.
+
+\section{ Biased or importance sampling}
+Back to the problem of computing \bbE\{g(X)\} when $X$ has
+a distribution with density or probability mass function $f(x)$.
+If generating pseudo numbers from $f(x)$ is efficient, then
+it is a good idea to approximate this expectation by
+\[
+n^{-1} \sumin g(x_i).
+\]
+If it is more convenient to generate pseudo numbers from a different
+distribution $f_0(x)$ which has the same support as $f(x)$, then
+it is easier to approximate this expectation by
+\[
+n^{-1} \sumin \{ g(y_i)f(y_i) /f_0(y_i) \}
+\]
+where $y_1, \ldots, y_n$ observations are generated from $f_0(x)$.
+
+If $Y$ has a distribution with  density $f_0(x)$, we have
+\bea
+\bbE\{g(Y)f(Y)/g_0(Y)\}
+&=&
+\int \{g(y) f(y)/f_0(y) \} f_0(y) dy\\
+&=&
+\int g(y) f(y) dy
+=
+\bbE\{g(X)\}
+\eea
+where $X$ has distribution $f(x)$.
+Note that it is important that $f$ and $f_0$ have the same
+support so that the range of integrations remains the same.
+If $X$ has discrete distribution, the integration will be changed
+to summation. The conclusion is not affected.
+
+In sample survey, the units in the finite population often have
+different probabilities to be included in the sample due to
+various considerations. The population total
+\[
+Y = \sum_{i=1}^N y_i,
+\]
+where $N$ is the number of sample units in the finite population
+and $y_i$ is the response value of the $i$th unit,
+is often estimated by Horvath-Thompson estimator:
+\[
+\hat{Y} = \sum_{i \in s} y_i/\pi_i
+\]
+where $s$ is the set of units sampled and $\pi_i$ is the
+probability that the unit $i$ is in the sample. The role of
+$\pi_i$ is the same as $f_0(x)$ in the importance sampling
+content.
+
+In sampling practice, some units with specific properties of
+particular interest are hard to obtain in an ordinary sampling
+plan. Specific measures are often taken so that these units
+have higher probability to be included than otherwise when
+all units are treated equally. The practice may also be regarded
+as finding a specific $f_0(x)$ to replace $f(x)$ even though
+the expectation of $g(X)$ under $f(x)$ distribution is the
+final target. One such example is to obtain the proportional
+of HIV+ person in Vancouver population. A simple random
+sample may end up with a sample of all HIV- individuals giving
+lower accurate estimation of the rate of HIV+.
+The same motivation is used in numerical computation.
+If $f(x)$ has lower values in certain region of $x$, then
+a straightforward random number generator will have
+very few values generated from that region. This problem
+makes such numerical approximations inefficient.
+Searching for some $f_0(x)$ can be a good remedy to
+address this shortcoming.
+
+Here is another example. To estimate the survival time of
+cancer patient. Let us a random sample from all cancer patients
+at a specific time point. If their survive times are denoted
+as $Y_1, Y_2, \ldots, Y_n$ whose distribution is denoted
+as $f_0(y)$. The actually survival distribution would be
+different if every cancer patient is counted equally.
+This is because $f_0(y) \propto y f(y)$ where $f(y)$ is the
+``true'' survival time distribution.
+This may also be regarded as importance sampling
+created by nature.
+
+\section{Rejective sampling}
+Instead of generating data from an original target distribution $f(x)$,
+we may generate data from $f_0(x)$ and obtain more effective
+numerical approximation of $\bbE\{g(X)\}$.
+This is what we have seen in the last section.
+The same idea is at work in rejective sampling.
+The target of this game is to obtain pseudo numbers which
+may be regarded as random samples from $f(x)$.
+Of course, to make it a good tool, we must select an
+$f_0(x)$ which is easy to handle.
+
+Let $f(x)$ be the density function from which we wish to get
+random samples. Let $f_0(x)$ be a density function with the
+same support and further
+\[
+\sup_x \frac{f(x)}{f_0(x)} = \mbox{\sc u} < \infty
+\]
+Denote 
+\[
+\pi(x) = \frac{f(x)}{\mbox{\sc u} f_0(x)}.
+\]
+Apparently, $\pi(x) \leq 1$ for any $x$. In addition, if $f(x)$ is known
+up to a constant multiplication, the above calculations remain feasible.
+One potential example of such an $f(x)$ is when
+\[
+f(x) = \frac{C \exp( - x^4)}{1+x^2 + \sin^2(x)}.
+\]
+Since $f(x) > 0$ and its integration converges, we are
+sure that 
+\[
+C^{-1} = \int  \frac{\exp( - x^4)}{1+x^2 + \sin^2(x)}dx 
+\]
+is well defined. Yet we do not have its exact value.
+In this example, an accurate approximate value of $C$ 
+is not hard to get. Yet if $f(\cdot)$ is the joint density
+of many variables, even a numerical approximation is not
+feasible. Particularly in Bayes analysis, this can occur.
+If an effective way to generate ``random'' samples
+from $f(x)$ is possible, then we do not need to know $C$
+any more in many applications.
+
+Now we present the procedure of the rejective sampling method.
+\begin{enumerate}
+\item
+Generate a sequence of \iid samples $X_1, X_2, \ldots$ from $f_0(x)$.
+
+\item
+Generate a sequence of \iid samples $U_1, U_2, \ldots$  from the standard uniform
+distribution. 
+
+\item
+For $i=1, 2, \ldots$, if $U_i \leq \pi(X_i)$, let $Y_i = X_i$; otherwise, we leave $Y_i$
+undefined. 
+
+\item
+Collect the $X_i$ values not reject in the last step to form 
+a sequence of \iid sample: $Y_1, Y_2, \ldots$. 
+\end{enumerate}
+
+It is easy to see why this procedure is called rejective sampling.
+We now show that the outcome of the above procedure indeed
+produce a set of \iid sample from distribution $f(x)$.
+
+\begin{theorem}
+The output of the rejective sampling, $Y_i$, has distribution
+$F(x)$ with density function $f(x)$ for any $i$. 
+\end{theorem}
+
+\proof
+This is demonstrated as follows. First, we consider
+the case for $i=1$.
+It is seen that
+\[
+\pr\{U > \pi(X)\} 
+= \bbE\{ 1 - \pi(X)\}
+= 1 - \int \pi(x) f_0(x) dx 
+= 1 - \mbox{\sc u}^{-1}.
+\]
+Hence, the distribution of $Y_1$ is given by
+\bea
+\pr(Y_1 \leq y) 
+&=&
+\sum_{k=1}^\infty 
+\pr(U_1 > \pi(X_1), \ldots, U_{k-1} > \pi(X_{k-1}), U_k < \pi(X_k), X_k \leq y) \\
+&=&
+\sum_{k=1}^\infty 
+(1 - \mbox{\sc u}^{-1})^{k-1} 
+      \pr( U_k < \pi(X_k), X_k \leq y) \\
+&=&
+\sum_{k=1}^\infty 
+(1 - \mbox{\sc u}^{-1})^{k-1} 
+      \pr( U < \pi(X), X \leq y) \\
+&=& 
+\mbox{\sc u} \bbE\{ \pr \big (X \leq y, U \leq \pi(X) |X \big )  \}\\
+&=&
+\mbox{\sc u}  \bbE\{ \pi(X) \ind(X \leq y) \}.
+\eea
+Taking the definition of $\pi(x)$ into consideration, we
+find
+\[
+\pr(Y_1 \leq y) 
+=  \mbox{\sc u} \int_{-\infty}^y  \frac{f(x)}{\mbox{\sc u} f_0(x)} f_0(x) dx
+= F(y).
+\]
+This shows that the rejective sampling method indeed leads to random
+numbers from the target distribution.
+\qed
+
+Let us define the waiting time
+\[
+T = \min \{i:  U_i \leq \pi(X_i) \}
+\]
+which is the number of pairs of pseudo numbers in $(X, U)$
+it takes to get a pseudo observation $Y$.
+Its probability mass function is given by
+\bea
+\pr(T = k) 
+&=&
+\pr \big (U_1 > \pi(X_1), \ldots, U_{k-1} > \pi(X_{k-1}), U_k < \pi(X_k) \big )\\
+&=&
+(1- \mbox{\sc u}^{-1})^{k-1} \mbox{\sc u}^{-1}.
+\eea
+That is, $T$ has geometric distribution with mean $ \mbox{\sc u}$.
+
+If we use an $f_0(\cdot)$ which leads to
+large ${\sc u}$, the rejective sampling is numerically less efficient.
+It takes more tries on average to obtain one sample from
+the target distribution. The best choice is $f_0(\cdot) = f(\cdot)$
+in terms of computation efficiency.
+Of course, this means we are not using a rejective sampling tool
+at all.
+
+Here is an exercise problem. Suppose we can easily generate 
+random numbers from standard normal distribution whose
+density is given by $\phi(x) = (2 \pi)^{-1/2} \exp( - x^2/2)$.
+Some how, we wish to generate data from double
+exponential:
+\[
+f_0(x) = \frac{1}{2} \exp( - |x|).
+\]
+The rejective sampling is a choice.
+Compute the constant $\mbox{\sc u}$ as defined above.
+Write a code in R to implement
+the  rejective sampling method to generate $n=1000$
+observations from N(0, 1). Show the Q-Q plot of the data
+generated and report the number of pairs of
+$(X, U)$ in rejective sampling required.
+How many pairs of $(X, U)$ do you expect to be needed
+to generate $n=1000$ normally distributed random numbers
+with this method?
+
+
+\section{Markov chain Monte Carlo}
+Not an expert myself, my comments here may not be accurate.
+The rejection sample approach appears to be effective for
+generating univariate random variables (pseudo numbers). 
+In applications, we may wish to generate a large quantity of vector 
+valued observations. Markov chain Monte Carlo seems to be
+one of the solutions to this problem.
+To introduce this method, we need a dose of Markov chain.
+
+\subsection{Discrete time Markov chain}
+A Markov chain is a special type of stochastic process. 
+A stochastic process in turn is a collection of random variables.
+Yet we cannot pay equal amount of attention to all stochastic
+processes but the ones that behave themselves.  
+Markov chain is one of them.
+
+We narrow our focus even further on processes containing
+a sequence of random variables having a beginning but no end:
+\[
+X_0, X_1, X_2, \ldots.
+\]
+The subindices $\{0, 1, 2, \ldots\}$ are naturally called time.
+In addition, we consider the case where $X_n$ takes values
+in the same space with countable members for all $n$.
+Without loss of generality, we assume the space is
+\[
+{\cal S} = \{0, \pm 1, \pm 2, \ldots \}.
+\]
+We call ${\cal S}$ state space.
+For such a stochastic process, we define transition probabilities
+for $s < t$ to be
+\[
+p_{ij}(s, t) = \pr (X_t = j | X_s = i).
+\]
+
+\begin{defi}
+A discrete time Markov chain is an ordered sequence of random variables
+with discrete state space ${\cal S}$ and has Markov property:
+\[
+\pr (X_{s+t} = j | X_s = i, X_{s-1} = i_1, \ldots, X_{s - k} = i_k)
+=
+p_{ij}(s, s+t) 
+\]
+for all $i, j \in {\cal S}$ and $s, t \geq 0$.
+
+If further, all one-step transition probabilities $p_{ij}(s, s+1)$
+do not depend on $s$, we say the Markov chain is
+time homogeneous.
+\end{defi}
+
+The Markov property is often referred to as: given present, the
+future is independent of the past. In this section, we further
+restrict ourselves to homogeneous, discrete time Markov chain. 
+We will work as if ${\cal S}$ is finite and
+\[
+{\cal S} = \{1, 2, \ldots, N\}.
+\]
+The subsequent discussion does not depend on this assumption.
+Yet most conclusions are easier to understand under this assumption.
+We simplify the one step transition probability notation to
+$p_{ij} = \pr(X_1 = j| X_0 = i)$.
+
+Let $\bP$ be a matrix formed by one step transition probabilities:
+$\bP = (p_{ij})$. For finite state space Markov chain, its size is
+$N \times N$. We may also notice its row sums 
+equal to $1$. It is well known that the $t$-step transition matrix 
+\[
+\bP^{(t)} = \{ \pr(X_t = j| X_0 = i)\} = \bP^t
+\]
+for any positive integer $t$. For convenience, we may
+take 0-step transition matrix as $\bP^{0} = \bbI$, the identity matrix.
+The relationship is so simple, we do not need a specific
+notation for $t$-step transition matrix.
+
+Let $\Pi_t$ be the column vector made of $\pr(X_t = i), i=1, 2, \ldots, N$
+and $t=0, 1, \ldots$. This vector fully characterizes the distribution of $X_t$. 
+Hence, we simply call it the distribution of $X_t$.
+It is seen that
+\[
+\Pi_t^\tau  = \Pi_0^\tau  \bP^t.
+\]
+Namely, the distribution of $X_t$ in a homogeneous
+discrete time Markov chain is fully determined by the
+distribution of $X_0$ and the transition probability matrix
+$\bP$.
+
+Under some conditions, $\lim_{t \to \infty} \Pi_t$ exists. The limit itself is unique
+and is a distribution on the state space ${\cal S}$. 
+For a homogeneous discrete time Markov chain with 
+finite state space, the following conditions are sufficient:
+
+
+(a) irreducible:
+        for any $(i, j) \in {\cal S}$, there exists a $t \geq 1$ such that
+       $\pr(X_t = j| X_0 = i) > 0$. 
+       
+(b) aperiodic:
+       the greatest common factor of $\{t: \pr(X_t = i| X_0 = i) > 0\}$
+       is 1 for any $i \in  {\cal S}$.
+       
+When a Markov chain is irreducible, all states in ${\cal S}$ have
+the same period which is defined as the 
+greatest common factor of $\{t: \pr(X_t = i| X_0 = i) > 0\}$.
+
+       
+\begin{theorem}
+If a homogeneous discrete time Markov chain has finite space
+and properties (a) and (b), then for any initial distribution $\Pi_0$,
+\[
+\lim_{t \to \infty} \Pi_t = \Pi
+\]
+exists and is unique.
+\end{theorem}
+
+We call $\Pi$ in the above theorem as equilibrium distribution
+and such a Markov chain ergodic. It can be shown further that
+when these conditions are satisfied, then for any $i, j \in {\cal S}$,
+\[
+\lim_{t \to \infty} \pr(X_t = j | X_0 = i) = \pi_j
+\]
+where $\pi_j$ is the $j$th entry of the equilibrium distribution $\Pi$.
+       
+\begin{defi}
+For any homogeneous discrete time Markov chain with
+transition matrix $\bP$ and state space ${\cal S}$, if $\Pi$
+is a distribution on the state space such that
+\[
+\Pi^\tau = \Pi^\tau \bP
+\]
+when we call it a stationary distribution.
+\end{defi}
+
+It is easily seen that the equilibrium distribution is a stationary distribution.
+However, there are examples where there exist many stationary distributions
+but there is no equilibrium distribution.
+
+If a vector of probability mass function $\pi_i: i =0, 1, \ldots, N$ satisfies
+the balance equation:
+\[
+\pi_i p_{i,j} = \pi_j p_{ji}
+\]
+for any $i, j$, then it is the limiting distribution of the Markov chain.
+In other words, the balance equation serves as a criterion on whether
+$\pi_i$ is the limiting distribution of the Markov chain.
+
+
+Finally, we comment on the relevance of this section to MCMC.
+If one wishes to generate observations from a distribution $f(x)$.
+It is always possible for us to find a discrete distribution $\Pi$
+whose \pmf\ is very close that that of $f(x)$. Suppose we can further create
+a Markov chain with proper state space and transition matrix with
+$\Pi$ as its equilibrium distribution. If so, we may generate random
+numbers from this Markov chain: $x_1, x_2, \ldots$. When $t$ is
+large enough, the distribution of $X_t$ is nearly the same as the
+target distribution $\Pi$. One should be aware that $x_1, x_2, \ldots$
+are not observed values of independent and identically distributed
+random variables. By the name of Markov chain, it is most likely
+that they have the same distribution, but not independent.
+
+The Markov chain Monte Carlo also works for continuous distributions.
+However, the general theory cannot be presented without a full
+course on Markov chain. This section is helpful to provide some
+intuitive justification on the Markov chain Monte Carlo in the
+next section.
+
+\section{MCMC: Metropolis sampling algorithms}
+Sometimes, direct generation of \iid\ observations from a distribution $f(\cdot)$
+is not feasible. Rejective sampling can also be difficult because
+to find a proper $f_0(\cdot)$ is not easy.
+These happen when $f(\cdot)$ is the distribution of a
+high-dimensional random vector, or it does not have an exact analytical
+form. Markov chain Monte Carlo is regarded as a way out
+in recent literature. Yet you will see that the solution is not to
+provide \iid\ random numbers/vectors, but dependent
+with required marginal distributions.
+
+Let $X_0, X_1, X_2, \ldots$ be random variables that form a
+time-homogeneous Markov {\bf process}. 
+We use process here instead of chain to allow the
+rang of $X$ to be $\cR^d$ or something generic.
+It has all the properties we mentioned in the last section.
+We define the kernel function $K(x, y)$ be the conditional
+density function of $X_1$ given $X_0$. Roughly speaking,
+\[
+K(x, y) = \pr(X_1 = y| X_0 =x) = \frac{f(x, y)}{f_X(x)}
+\]
+which is the transition probability when the process is in fact
+a chain. We may also use
+\[
+K(x, y) = f_{1|0}(x_1 | x_0)
+\]
+as the conditional density of $X_1$ given $X_0$
+when the joint density is definitely needed.
+
+One Metropolis sampling algorithm goes as follows.
+\begin{enumerate}
+\item
+Let $t = 0$ and choose a $x_0$ value.
+
+\item
+Choose a {\it proposed kernel} $K_0(x, y)$ so that the corresponding
+Markov process is convenient to generate random numbers/vectors
+from the conditional density.
+
+\item
+Choose a function $r(x, y)$ taking values in [0, 1] and $r(x, x) = 1$.
+
+\item
+Generate a $y$ value from conditional distribution $K_0(x_{t}, y)$
+and a standard uniform random number $u$. 
+If $u < r(x_t, y)$, let $x_{t+1} = y$;
+otherwise, let $x_{t+1} = x_t$. Update $t = t+1$.
+
+\item
+Repeat Step 4 until sufficient number of random numbers
+are obtained.
+\end{enumerate}
+
+In the above algorithm, we initially generate
+random numbers from a Markov chain with transition
+probability matrix specified by $K_0(x, y)$. Due to
+a rejective sampling step, many outcomes are
+not accepted and in which cases, the previous value $x_t$ is retained.
+What have we obtained?
+
+We can easily seen that $\{x_0, x_1, \ldots \}$
+remains a Markov chain with the same state space
+in spite of rejecting many $y$ values generated according to 
+$K_0$. We use Markov {\bf chain} to illustrate the point.
+The transition probability of this Markov chain is computed as follows.
+Consider the case when $X_0 = i$ and the
+subsequent $Y$ is generated according to the conditional distribution 
+$K(i, \cdot)$.
+Let $U$ be \iid uniform [0, 1] random variables.
+For any $j \neq i \in{\cal S}$, we have
+\ba
+K(i, j) 
+&=& \pr(X_1 = j| X_0 = i) \\
+&=&
+\pr(U < r(i, Y), Y = j | X+0 = i) \\
+&=&
+r(i, j) K_0(i, j).
+\ea
+Clearly, the chance of not making a move is
+\[
+K(i, i) = 1 + K_0(i, i)  - \sum_{j=1}^\infty r(i, j) K_0(i, j).
+\]
+
+Suppose the target distribution has probability mass function
+$\Pi$. We hope to select $K_0(x, y)$ and $r(x, y)$ so that
+$\Pi$ is the equilibrium distribution of the Markov chain
+with transition matrix $K(x, y)$.
+Consider the situation where the working transition matrix
+$K_0(x, y)$ is symmetric and we choose for all $i, j$,
+\[
+r(i, j) = \min \{ 1 ,  \Pi(j)/\Pi(i) \}
+\]
+in the above so called Metropolis algorithm. One important
+property of this choice is that we need not know individual
+values of $\Pi(i)$ for each $i$ but their ratios. This is a useful
+property in Bayes method where the posterior density function
+is often known up to a constant factor. Computing the value
+of the constant factor is not a pleasant task.
+The above choice of $r(i, j)$ makes the computation unnecessary
+which is a big relief.
+
+With this choice of $r(x, y)$, we find
+\bea
+\Pi(i) K(i, j) 
+&=&
+ \min \{\Pi(i) , \Pi(j) \} K_0(i, j)\\
+&=&
+ \min \{\Pi(i) , \Pi(j) \} K_0(j, i)\\
+&=&
+\Pi(j) K(j, i).
+\eea
+This property is a sufficient condition for $\Pi$ to be the
+equilibrium distribution of the Markov chain with
+transition probabilities given by $K(i, j)$.
+Note that the existence of the equilibrium distribution
+is assumed and can be ensured by the choice
+of an appropriate $K_0(i, j)$.
+
+Although Step 4 in the Metropolis algorithm is very similar
+to the rejective sampling, they are not the same.
+In rejective sampling, if a proposed value is rejected,
+this value will be thrown out and a new candidate will be
+generated. In current Step 4, if a proposed value is rejected,
+the previous value in the Markov chain will be adopted.
+
+We presented the result for discrete time homogeneous 
+Markov chain with countable state space. The symbolic derivation for
+general state space is the same.
+
+The symmetry requirement on $K_0(x, y)$ is not absolutely
+needed to ensure the limiting distribution is given by $\Pi$.
+When $K_0(x, y)$ is not symmetric, we may instead
+choose
+\[
+r(x, y) 
+= \min \big \{ 1, \frac{f(y) K_0(y, x)}{f(x)K_0(x, y)} \big \}.
+\]
+We use $x, y$ here to reinforce the impression that
+both $x, y$ can be real values, not just integers.
+
+A toy exercise is to show that this choice also
+leads to $f(x)$ satisfying the balance equation:
+\[
+f(x) K(x, y) = f(y) K(y, x).
+\]
+
+Finally, because $f(x)$ is the density function of the
+equilibrium distribution, when $t \to \infty$, the distribution
+of $X_t$ generated from the Metropolis algorithm has density function
+$f(x)$. At the same time, the distribution of $X_t$ for
+any finite $t$ is not $f(x)$ unless that of $X_0$ is.
+However, for large enough $t$, we may regard the distribution
+of $X_t$ as $f(x)$. This is the reason why a burning
+period is needed before we use $X_t$ as random samples
+from $f(x)$ in many applications.
+
+Obviously, $X_t, X_{t+1}$ generated by this algorithm
+are not independent except for
+very special cases. However, in many applications,
+a non-\iid\ sequence suffices. For instance,
+when the Markov chain is ergodic,
+\[
+n^{-1} \sum_{t=1}^n g(X_t) \to \bbE \{ g(X)\}
+\]
+almost surely where $\bbE$ is computed with respect to the limiting
+distribution.
+
+\section{The Gibbs samplers}
+
+Gibbs samplers are another class of algorithms to generate
+random numbers based on a Markov chain.
+Suppose $X = (U, V)$ has some joint distribution with
+both $u$ and $v$ taking values as real vectors. 
+Suppose that given $U = u$ for any $u$, it is easy to generate a
+value $v$ from conditional distribution of $V|(U=u)$;
+and the opposite is also true.
+The goal is to generate number vectors with distribution
+of $U$, with distribution of $V$, or with distribution of $(U, V)$.
+We should add that directly generating random vectors $(U, V)$
+itself is not as easy a task.
+
+A Gibbs sampler as follows leads to a Markov chain/process
+whose equilibrium distribution is that of $U$.
+
+\begin{enumerate}
+\item
+Pick a value $u_0$ for $U_0$. Let $t = 0$.
+
+\item
+Generate a value $v_t$ from the conditional distribution $V| (U=u_t)$.
+
+\item
+Generate a value $u_{t+1}$ from the conditional distribution $U| (V = v_t)$.
+
+\item
+Let $t = t+1$ and go back to Step 2.
+\end{enumerate}
+
+\begin{theorem}
+The random numbers generated from the above sampler
+with joint distribution/density $f(u, v)$ form an observed sequence of a
+Markov chain/process $\{U_0, U_1, \ldots \}$.
+
+Assume the limiting distribution of the Markov chain exists and unique.
+Then, the limiting distribution of $U_t$ is the marginal distribution
+of $f(u, v)$ (assume the limiting distribution exists and unique).
+\end{theorem}
+
+\proof
+This is only a proof for discrete case.
+Let $p_{u|v}(u, v)$ be the conditional probability
+mass function of $U$ given $V$
+and similarly define $p_{v|u}(v, u)$.
+The transition probability of the Markov chain is given by
+\[
+p_{ij}
+=
+\pr(U_{t+1} = j | U_t = i)
+=
+\sum_{k} p_{u|v} (j | k) p_{v|u} (k | i).
+\]
+Let $g_u(u)$ and $g_v(v)$ be the marginal distributions of $U$
+and $V$.  Multiplying both sides by $g_u(i)$ and summing ove $i$,
+we have
+\bea
+\sum_i g_u (i) p_{ij}
+&=&
+\sum_i \big \{ \sum_{k} p_{u|v} (j | k) p_{v|u} (k | i) g_u(i) \big \}\\
+&=&
+\sum_{k} p_{u|v} (j | k) \big \{ \sum_i p_{v|u} (k | i) g_u(i) \big \}\\
+&=&
+\sum_{k} p_{u|v} (j | k) g_v(k) \\
+&=&
+g_u(j).
+\eea
+This implies that the distribution of $U$, as a column vector
+$\Pi$, satisfies the relationship
+\[
+\Pi^\tau = \Pi^\tau \bP
+\]
+where $\bP$ is the transition matrix, for the discrete Markov chain.
+\qed
+
+\vs
+Since the limiting distribution of $U_t$ is $g_u(\cdot)$ and
+the conditional distribution of $V_t$ is $p_{v|u}(\cdot)$. It is
+immediately clear that the marginal distribution of $V_t$
+in the limit is $g_v(v)$. Their joint limiting distribution
+is $f(u, v) = p_{v|u}(v|u) g_u(u)$ as desired.
+
+There are clearly many other problems with the use of
+Gibbs sampling. Not an expertise myself, it is best for me
+to not say too much here.
+
+\section{Relevance to Bayes analysis}
+As we pointed out, the basis of Bayes data analysis is the
+posterior distribution of the model parameters. However, we
+often only have the analytical form of the posterior distribution
+up to a multiplicative constant. It is seen that in Metropolis
+sampling algorithm, this is all we need to generate random
+numbers from such distributions.
+
+In the case of Gibbs samplers, the idea can be extended.
+Suppose $U = (U_1, U_2, \ldots, U_k)$ and we wish to
+obtain samples whose marginal distribution is that of $U$.
+Let $U_{-i}$ be subvector of $U$ with $U_i$ removed.
+Suppose it is efficient to generate data from the conditional
+distribution of $U_i$ given $U_{-i}$ for all $i$.
+Then one may iteratively generate $U_i$ to obtain sample
+from the distribution f $U$ using Gibbs samplers.
+
+
+
+

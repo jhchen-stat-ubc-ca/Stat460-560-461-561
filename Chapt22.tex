@@ -1,0 +1,993 @@
+\chapter{Empirical likelihood}
+
+Likelihood method for regular parametric models has many nice properties. 
+One potential problem, though, is the risk of model mis-specification. 
+If a data set is a random sample from Cauchy distribution, 
+but we use normal model in the analysis, the statistical {\bf claims}
+could be grossly false. 
+
+Of course, the problem is not always so serious. 
+If the data set is a sample from a double exponential distribution,
+but we use normal model as the basis for data analysis, 
+many statistical claims will still be asymptotically valid.
+For instance, the sample mean remains a good
+estimator of the population mean, its variance remains
+well estimated by its sample variance after scaled by the sample size.
+The efficiency of the point estimator, however, is compromised.
+
+To avoid the risk of model mis-specification, non-parametric methods are sensible
+alternatives. The empirical likelihood methodology is 
+a systematic non-parametric approach to statistical inference.
+It preserves some treasured properties of the likelihood
+approach while being nonparametric.
+
+\section{Definition of the empirical likelihood}
+
+Suppose we have a set of \iid observations $X_1, X_2, \ldots, X_n$. 
+We hope to make statistical inferences without placing restrictive assumptions 
+on their common distribution $F$. 
+Can we still make meaningful and effective inferences on $F$? 
+The answer is positive because it is widely known
+that the empirical distribution $F_n(x)$ 
+is a good estimate of $F$. This is an estimator based on no
+parametric assumptions. The empirical distribution will be seen
+a non-parametric maximum likelihood estimator of $F$
+and it has many ``optimal'' properties.
+
+Let $F(\{x_i\})= \pr(X= x_i)$, where $x_i$ is the observed value 
+of $X_i$, $i=1, 2, \ldots, n$. 
+When all $x_i$'s are distinct observations from $F$, 
+the probability of observing them is given by
+\[
+L_n(F) = \prod_{i=1}^n F(\{x_i\}).
+\]
+Recall that the likelihood function
+is a function of the parameter taking a value
+proportional to the probability of observing the observed.
+Hence, the above function is a likelihood function, with
+``parameter'' $F$. Here $F$ itself is the parameter of interest.
+Be aware, the likelihood is defined up to a multiplicative
+positive constant. By constant, we mean any non-random
+quantity whose value does not depend on parameter, that is $F$.
+The constant is allowed to be a function of $n$, for instance.
+
+Denote $p_i = F(\{x_i\})$: the probability a random variable
+with distribution $F$ taking value $x_i$. 
+This likelihood can also be written as
+\[
+L_n(F) = \prod_{i=1}^n p_i.
+\]
+Clearly, we have $0 \leq p_i \leq 1$ and $\sum_{i=1}^n p_i  \leq 1$.
+It is often more convenient to work with the log-empirical likelihood function
+\[
+\ell_n(F) = \sum_{i=1}^n \log p_i.
+\]
+If $F$ is a continuous distribution, we have $L_n(F) =0$.
+Because of this, the empirical likelihood appears insensible. 
+In its eyes, no continuous distributions are likely at all.
+Yet we will find the empirical likelihood is not boggled down by
+this deficiency. 
+
+When there are ties in the data, that is when some $x_i$ are equal, 
+$L_n(F)$ given above in terms of $p_i$ is not authentic. 
+For instance, the requirement of $\sum p_i \leq 1$ is no longer valid.
+To justify the continued use of this $L_n(F)$ via $p_i$ as a likelihood function, 
+we may add a set of independent and very small continuous noises 
+to these observed values. 
+After which, $L_n(F)$ remains a valid likelihood function but is constructed
+on a slightly different data set and of a different $F$.
+We can then proceed to whatever analysis first, 
+and then let this amount of noise go to zero. 
+In most situations, the analysis conclusions on original $F$
+remain valid. Owen (2001) contains a more rigorous 
+justification to resolve the ``philosophical issue'' caused by
+tied observations. The justification here might be regarded
+as a lazy-man's approach.
+
+It is easy to see that the likelihood is maximized when 
+$F(x) = F_n(x)$. Hence, empirical distribution
+$F_n(x)$ based on an \iid sample is also the non-parametric MLE. 
+One may note that this conclusion does not depend on 
+whether or not there are any ties in the sample.
+
+\section[profile likelihood]{Profile likelihood for population mean and the Lagrange multiplier}
+
+The empirical likelihood may seem to have limited usage. 
+The picture completely changes once we introduce the concept
+of profile likelihood.
+
+Consider inference problem related to population mean when a
+set of \iid observations from a distribution $F \in \cF$ is available.
+Naturally, we now assume that $\cF$ contains all distributions with
+finite first moment. 
+
+Let $\btheta = \int x dF(x) = \bbE(X)$ under distribution $F$. The
+empirical likelihood is a function of $F$. There are many distributions
+whose expectation equal $\btheta$. What should be the likelihood
+value of $\btheta$? We do not have a widely acceptable answer to this question. 
+Let $\cF_\theta$ be all distributions whose expectations equal $\btheta$.
+The original concept of the profile likelihood would be
+\[
+\mbox{wrong } L_n(\btheta) = \sup \{ L_n(F): F \in \cF_\theta\}.
+\]
+This definition is found not useful, however. It can be shown that
+\[
+\mbox{wrong } L_n(\btheta) = \big (\frac{1}{n}\big )^n
+\]
+for any $\btheta$. That is, the above ``profile likelihood'' lacks discriminative
+power to tell true $\btheta$-value from other values.
+
+To avoid the above dilemma, we define the profile likelihood
+by first introducing a ``distribution family'':
+\[
+\cF_{n, \btheta} 
+= 
+\{F:  F(x) = \sum_{i=1}^n p_i \ind(x_i \leq x), \sum_{i=1}^n p_i x_i = \btheta \}.
+\]
+Note that this class of distributions is data dependent. When $n$ increases,
+this family expands, and in the limit, it can approximate any distribution well
+in some sense.
+
+We now define the profile likelihood function for population mean $\btheta$
+to be
+\[
+L_n(\btheta) = \sup \{ L_n(F): F \in \cF_{n, \theta} \}.
+\]
+Note that we use $L_n(\cdot)$ for both empirical likelihood
+and for profile empirical likelihood. Mathematically, it is an abuse
+of notation but such an abuse does not seem to cause many confusions.
+The question of whose likelihood it stands for 
+is answered by whether the input is a vector $\btheta$ or a \cdf $F$. 
+As usual, it is often more
+convenient to work with the logarithm transformation of the likelihood
+function. We use $\ell_n(\cdot) = \log L_n(\cdot)$.
+
+Does the profile likelihood function of $\btheta$ works like a likelihood?
+To answer this question, we need to get some idea on the numerical
+problem comes with the empirical likelihood.
+Suppose we have $n$ observed values or vectors $x_1, \ldots, x_n$. 
+To compute the profile likelihood $\ell_n(\btheta)$, the numerical problem is:
+
+\begin{eqnarray*}
+\mbox{maximize}: &&\sum_{i=1}^n \log p_i\\
+\mbox{subject to}: && 0 < p_i < 1; ~~~i=1, 2, \ldots, n\\
+				&&\sum_{i=1}^n p_i = 1, ~~\sum_{i=1}^n p_i x_i = \btheta.
+\end{eqnarray*}
+The  method of Lagrange multiplier is very effective in solving this maximization problem 
+with restrictions. 
+Suppose that $\btheta$ is 
+{\bf an interior point of the convex hull formed by the $n$ observed values}. 
+Define 
+\[
+g(p, s, \blambda) 
+= \sum_{i=1}^n \log p_i + s(\sum_{i=1}^n p_i - 1) -n \blambda^\tau (\sum_{i=1}^n p_i x_i - \btheta)
+\]
+where $p$ represents all $p_i$,
+$s$ and $\blambda$ are Lagrange multipliers. When $x$'s are vectors, 
+$\blambda$ is also a vector and the multiplication is interpreted as the dot product.
+The method of Lagrange multiplier requires us to find the stationary points of $g(p, s, \blambda)$ 
+with respect to $p$, $s$ and $\blambda$. 
+After some routine derivations, we find the stationary point is given by
+\[
+p_i = \frac{1}{n(1 + \blambda^\tau \{x_i - \btheta\})}
+\]
+with $\blambda$ satisfying
+\be
+\sum_{i=1}^n \frac{x_i- \btheta}{1 + \blambda^\tau \{x_i - \btheta\}} = 0.
+\label{ch6.5}
+\ee
+
+In the univariate case, since all $0 < p_i < 1$, we find
+\[
+ \frac{1 - n^{-1}}{\btheta - x_{(n)} }< \blambda < \frac{1 - n^{-1}}{\btheta - x_{(1)}}
+ \]
+where $x_{(1)}$ and $x_{(n)}$ are the minimum and maximum observed values. 
+In addition, the function on the left hand side of (\ref{ch6.5}) is monotone
+decreasing function in $\blambda$. One may verify this claim by finding its
+derivative with respect to $\blambda$.
+Hence, numerical value of $\blambda$ may be easily computed.
+In the vector case, the function in (\ref{ch6.5}) is the derivative of a convex function. 
+A revised Newton's method may be designed to ensure the numerical 
+solution being obtained.
+
+Once the value of $\blambda$ is obtained, we have
+\[
+\ell_n(\btheta) = - \sum_{i=1}^n \log \{ 1 + \blambda ( x_i - \btheta) \} - n \log n
+\]
+and the corresponding $F$ has
+\[
+p_i = \frac{1}{n(1 + \blambda\{x_i - \btheta\})}.
+\]
+
+This result paves the way to study the asymptotic property of the
+profile likelihood.
+
+\section{Large sample properties}
+
+As a preparation step, we first show that the true population mean
+$\btheta_0$ is within the convex hull of the data with probability approaching 1 
+as $n \to \infty$. 
+Mathematically, this means that 
+\[ 
+\inf \{ \max\{ \aaa (x_i - \btheta_0): i=1, \ldots, n\}: \mbox{$\aaa$ is a unit vector} \} > 0.
+\]
+The reason is: viewed from $\btheta_0$ to whichever direction, 
+there should always be data located in that direction. 
+Remember that a unit vector is a vector of length one.
+We use Euclidean norm to define the length.
+A mathematical result presented in Owen (2001) is needed here. 
+
+\begin{lemma}
+Let $X$ be a $d$-dimensional random vector with mean 0 
+and finite variance-covariance matrix $V$ of full rank. We have
+\[
+\inf_{\aaa} \pr( \aaa^\tau X > 0) > 0
+\]
+where the infimum is taken over all unit $d$-dimensional vectors.
+\end{lemma}
+
+\noindent
+{\sc Proof}: Since $\Sigma$ is positive definite, there cannot be an 
+unit length vector $\aaa_0$ such that $\pr ( \aaa_0 ^\tau X > 0 ) =0$.
+We show that because of this, the lemma conclusion is true. 
+
+If the conclusion is not true, then there be a sequence $\aaa_m$ such that 
+$\pr( \aaa_m^\tau X > 0) \to 0$ as $m \to \infty$.
+Since the set of all unit $d$-dimensional vectors is compact, 
+we must be able to find a sub-sequence of $\aaa_m$ such that $\aaa_m \to \aaa_0$
+for some $\aaa_0$, also of unit length. Without loss of generality, 
+assume $\aaa_m \to \aaa_0$ as $m \to \infty$. 
+Clearly,
+\[
+\lim_{m \to \infty} \ind ( \aaa_m ^\tau X > 0) = \ind ( \aaa_0 ^\tau X > 0).
+\]
+Hence, by Fatou's lemma in real analysis, we have
+\[
+0 = \lim_{m \to \infty} \pr(\aaa_m ^\tau X > 0) \geq \pr ( \aaa_0 ^\tau X > 0 ).
+\]
+This is impossible as pointed out in the beginning.
+\qed
+
+
+\vs
+Since the empirical measure approximates the true probability measure 
+uniformly over the half space $\{ \aaa^\tau X > 0\}$. 
+This claim can be found in high level of probability theory books.
+This implies that the solution exists with probability converging to 1.
+
+By Slutsky's theorem, the limiting distribution 
+of a statistic is not affected by an event with probability going to zero. 
+We now assume that the solution exists for all data sets observed.
+This is acceptable for deriving asymptotic results, though one should not
+used it for other purposes. At least, you should be very cautious on
+activating this ``assumption''.
+
+The next lemma is to show that 
+\[
+\max_{1 \leq i \leq n}  \|X_i \| = o_p(n^{1/2}).
+\]
+This fact is helpful to determine the closeness of 
+$\hat p_i$ to $1/n$ as $n \to \infty$.
+
+\begin{lemma}
+Assume $Y_1, \ldots, Y_n$ be a set of  \iid positive random variables with 
+$E[Y_1]^2 < \infty$, then
+$Y_{(n)} = \max_i Y_i = o(n^{1/2})$.
+\end{lemma}
+
+\noindent
+{\sc Proof}: There is a simple inequality for positive valued random variables:
+\[
+\sum_{j=1}^\infty  \pr (Y_1^2  > j) \leq \bbE \{ Y_1^2\}.
+\]
+Due to the  \iid assumption, it can also be written as
+\[
+\sum_{j=1}^\infty  \pr (Y_j^2  > j) \leq \bbE \{ Y_1^2\} < \infty.
+\]
+The finiteness is the lemma condition.
+The inequality can then be easily refined to show that
+\[
+\sum_{j=1}^\infty  \pr (Y_j^2  > \epsilon j)  < \infty
+\]
+for any $\epsilon > 0$. 
+By Borel-Cantelli Lemma, it implies that 
+the 
+\[
+\pr \big \{ B_j = \{ Y_j^2 >\epsilon j \}; i.o. \} = 0.
+\]
+That is, there exists an event  $A_\epsilon$, such that $\pr(A_\epsilon) = 1$ 
+and for each $\omega \in A_\epsilon$, 
+$Y_n^2 (\omega) >\epsilon n$ for only finite number of $n$. 
+
+Let $\omega \in A_\epsilon$: it implies there exists an $M_\epsilon$ such that
+$Y_n^2 (\omega) \leq \epsilon n$ when $n > M_\epsilon$.
+Let
+\[
+N(\omega) = \epsilon^{-1} \max \{ Y_j^2(\omega): j \leq M_\epsilon \}
+\]
+which is a large but finite value.
+For all $n \geq max \{M_\epsilon, N\}$, 
+\[
+Y_{(n)}^2 
+\leq 
+\max \big [ \max \{ Y_n^2(\omega): n \leq M_\epsilon\}, \epsilon n \big ]
+\leq 
+\max \{\epsilon N, \epsilon n \}
+= \epsilon n.
+\]
+That is, $Y_{(n)}^2 \leq \epsilon n$ almost surely for all $\epsilon > 0$,
+which is the conclusion of the lemma.
+\qed
+
+\vs
+After two rather technical lemmas, we are ready to prove
+the following statistically meaningful conclusion. For simplicity,
+we use $\btheta$ for true population mean, rather than a special
+notation $\btheta_0$.
+
+\vs
+\begin{lemma}
+Under the conditions of Theorem \ref{thm12.1}, for the Lagrange multiplier
+corresponding to true population mean $\btheta$, we have
+\[
+\blambda_n = O_p(n^{-1/2}).
+\]
+Further, we have
+\[
+\blambda_n =
+[\sum_{i=1}^n (x_i-\btheta) (x_i-\btheta) ^\tau ]^{-1} \sum_{i=1}^n (x_i- \btheta)  
++ o_p(n^{-1/2})
+\]
+and
+ $\max_i | \blambda^\tau ( X_i- \btheta)| = o_p(1)$.
+\end{lemma}
+
+\noindent
+{\sc Proof}: 
+We omit subscript $n$ on $\blambda$ for simplicity.
+Let $\rho = \| \blambda \|$ and denote $\bxi = \blambda / \rho$.
+For brevity, assume $\mu = 0$ so that the equation for $\blambda$ becomes
+\[
+\sum_{i=1}^n \frac{x_i}{1 + \rho \xi^\tau x_i} = 0.
+\]
+We have
+\[
+0 =
+ \sum_{i=1}^n( \bxi^\tau x_i)- \rho \sum_{i=1}^n \frac{ \{\bxi^\tau x_i\}^2}{ 1 + \rho \bxi^\tau x_i}.
+\]
+This implies
+\[
+ \sum_{i=1}^n( \bxi^\tau x_i)= \rho \sum_{i=1}^n \frac{ \{\bxi^\tau x_i\}^2}{ 1 + \rho \bxi^\tau x_i}\geq 0.
+ \]
+ 
+Let $t_i = \bxi^\tau x_i$ and $\delta_n = \max_i | t_i|$. 
+It is known $1 + \rho t_i > 0$ for all $i$ and therefore
+$1 + \rho \delta_n \geq 0$. 
+Further, by the finiteness of the second moment of $x_i$ and
+Lemma \ref{lemma1.2} , we know $\delta_n = o(n^{1/2})$.
+This order assessment leads to
+\ba
+\sum_{i=1}^n \bxi^\tau  x_i
+&= &
+\rho \sum_{i=1}^n \frac{ \{\bxi^\tau x_i\}^2}{ 1 + \rho \bxi^\tau x_i} \\
+&\geq& 
+\rho \frac{ [\sum_{i=1}^n \{\bxi^\tau x_i\}^2 }{ 1 +  \rho \delta_n }.
+\ea
+Multiplying positive constant $1 + \rho \delta_n$ on both sides, 
+and after some simple algebra, we get
+\[
+\sum_{i=1}^n( \bxi^\tau x_i) 
+\geq 
+n \rho \big [ 
+n^{-1} \sum_{i=1}^n( \bxi^\tau x_i)^2 - n^{-1} \delta_n \sum_{i=1}^n( \bxi^\tau x_i) 
+\big ].
+\]
+By the law of large numbers,
+\[
+n^{-1} \sum_{i=1}^n x_i x_i^\tau  \to \var (X_1)
+\]
+which is a positive definite matrix. Hence, 
+$n^{-1} \sum_{i=1}^n( \bxi^\tau x_i)^2 \geq \sigma_1^2 > 0$ 
+almost surely with $\sigma_1^2$
+being the smallest eigenvalue of the covariance matrix.
+At the same time, it is clear that
+\[
+n^{-1} \delta_n \sum_{i=1}^n( \bxi^\tau x_i) = o_p(1).
+\]
+Consequently, we have shown
+\[
+\rho \leq 
+\big [\sum_{i=1}^n( \bxi^\tau x_i)^2\big ]^{-1}
+\big \{ \sum_{i=1}^n \bxi^\tau  x_i \big \} (1 + o_p(1))
+ = O_p(n^{-1/2}).
+ \]
+ This conclusion implies $\max_i | \blambda X_i| = o_p(1)$. Substituting back to 
+ \[
+\sum_{i=1}^n \frac{x_i}{1 + \blambda^\tau x_i} = 0,
+\]
+we get the expression for the expansion of $\blambda$.
+This concludes the proof.
+\qed
+ 
+ \vs
+These preparations help to establish the useful
+statistical results in the next section.
+
+\section{Likelihood ratio function}
+
+Since $L_n(F_n) > L_n(F)$ for any $F \neq F_n$, 
+it is useful to introduce the empirical likelihood ratio function
+\[
+R_n(F) = L_n(F)/L_n(F_n) = \prod_{i=1}^n (np_i).
+\]
+This function has the maximum value of 1. 
+Similarly, for population mean $\btheta$, we define
+\[
+R_n(\btheta) = L_n(\btheta)/L_n(F_n) = \prod_{i=1}^n (np_i)
+\]
+with $n p_i = \{ 1 + \blambda (x_i - \btheta)\}^{-1}$ for some
+Lagrange multiplier given earlier. 
+
+
+In parametric inference we may base hypothesis test 
+and confidence regions on the size of the likelihood ratio function. 
+When $R_n(\btheta)$ is large, then $\btheta$ is a likely value of the true parameter. 
+A confidence region hence is made of $\btheta$'s 
+such that $R_n(\btheta)$ is larger than a threshold value. 
+As in the parametric likelihood inference, we need to know
+the distribution of $R_n(\btheta)$ to define a proper threshold value.
+This value is to be selected that at least asymptotically, the
+size of the test is pre-specified $\alpha$, or the likelihood interval/
+region has coverage probability $1 - \alpha$.
+Such a threshold value can be determined based on the
+following much celebrated result.
+
+\begin{theorem}
+\label{thm12.1}
+Let $X_1, X_2, \ldots, X_n$ be a set of \iid random vectors 
+of dimension $d$
+with common distribution $F_0$. Let $\btheta_0 = \bbE[X_1]$, 
+and suppose $0 < \var(X_1) < \infty$. Then
+\[
+- 2 \log [R_n(\btheta_0)] \to \chi_d^2
+\]
+in distribution as $n \to \infty$.
+\end{theorem}
+
+Because of the above Wilks type result,
+an effective empirical likelihood based hypothesis test procedure is possible
+by rejecting $H_0: \bbE(X) = \btheta_0$ in favour of $H_0: \bbE(X) \neq \btheta_0$
+when $T_n = - 2 \log [R_n(\btheta_0)] \geq \chi_d^2(1-\alpha)$.
+Note that this $d$ is the dimension of $X$.
+
+I generally use $R_n$ for the LRT statistics which is twice of the
+difference of the log likelihood values maximized respectively 
+under the full model $\hat \btheta_1$ and under the null model $\hat \btheta_0$.
+Namely, notation $R_n$ is generally used for
+$2 \{ \ell_n(\hat \btheta_1) - \ell_n(\hat \btheta_0)\}$.
+In the context of empirical likelihood, there is a compelling reason to use
+$R_n(\btheta)$ as the straight ratio of two likelihood values.
+Hence, one has to be careful to avoid some potential confusion here.
+ 
+ \vs
+ \noindent
+ {\sc Proof of Theorem}:  
+ Because $\max \|\blambda^\tau X_i\| = o_p(1)$, let us focus on events such that
+ it is no more than $1/10$ in absolute value. For $|t| \leq 1/10$, it is simple to see that
+ \[
+| \log (1 + t) - \{ t - \frac{1}{2}t^2 \}| \leq |t|^3/2 .
+\]
+We in fact have given a big margin for the error.
+
+Without loss of generality,  $\btheta_0 = 0$. 
+With this convention, we have
+\ba
+-2 \log R_n(\btheta_0) 
+&= &
+  2 \sum_{i=1}^n \log \{ 1 + \blambda^\tau x_i \}\\
+&= &
+2\blambda^\tau  \sum_{i=1}^n  x_i - \blambda^\tau \{\sum_{i=1}^n x_i x_i^\tau\} \blambda + \epsilon_n
+\\
+&=& 
+\{ \sum_{i=1}^n x_i \}^\tau \{\sum_{i=1}^n x_i x_i^\tau\}^{-1} \{\sum_{i=1}^n x_i\} + o_p(1) + \epsilon_n.
+ \ea
+The leading term has chisquare limiting distribution. 
+We need only verify that $\epsilon_n = o_p(1)$.
+This is true as
+\[
+|\epsilon_n| \leq  \sum_{i=1}^n |\blambda^\tau x_i|^3
+\leq \max_i |\blambda^\tau x_i| \sum_{i=1}^n |\blambda^\tau x_i|^2
+= o_p(1).
+\]
+This completes the proof.
+\qed
+
+\vs
+This theorem can be used to construct confidence intervals for the population mean $\btheta$,
+or conduct hypothesis test regarding the value of population mean. For instance, an
+approximate level $1-\alpha$ confidence region for $\btheta$ is given by
+\[
+\{\btheta:  -2 \log R_n(\btheta) \leq \chi_d^2(1-\alpha) \}.
+\]
+It can be shown that the profile likelihood function $\ell_n(\btheta)$ is
+concave. Hence, the above confidence region is always convex.
+
+On top of being derived from a non-parametric procedure, 
+EL confidence regions are praised for
+having a data-shaped confidence region; for not demanding an estimated
+covariance matrix. In general, as the above region is based on the first order asymptotic result,
+it has slightly lower than nominal $1-\alpha$ coverage probability in general.
+A high-order correction can be made to achieve higher order precision: the
+actual coverage probability differs from $1-\alpha$ by a quantity of order $n^{-2}$.
+ 
+
+\section{Numerical computation}
+
+The numerical computation appears to be problematic initially. 
+We have to maximize a function with respect to $n$ variables under various linear constraints. 
+It turns out that once the value of the Lagrange multiplier $\blambda$ 
+is known, the remaining computation is very simple.
+We illustrate the numerical computation in this section.
+
+Consider the problem of computing the profile likelihood for the mean. 
+The computation is particularly simple when $x$ is a scale. In this case, we need to solve
+\[
+g(\lambda ) = \sum_{i=1}^n \frac{x_i - \theta}{1 + \lambda (x_i - \theta)} = 0
+\]
+for a given set of data, and value $\theta$.
+Our first step is to subtract $\theta$ from $x_i$ and call them $y_i$.
+Namely define $y_i = x_i - \theta$ whenever a $\theta$ value is selected.
+We then sort $y_i$ to increase order and obtain $y_{(1)}$ and $y_{(n)}$.
+If they have the same sign, there will be no solution. The numerical
+solution is mission impossible.
+
+Otherwise, the sign of $\lambda$ is the same as $\bar y_n$. If $\bar y_n > 0$,
+we search in the interval of [0, $(n^{-1} - 1)/y_{(1)}$). Otherwise, we search in the
+interval ( $(n^{-1} - 1)/y_{(n)}, 0$].
+We also note that $g(\lambda)$ is a decreasing function. Let us
+provide the following pseudo code for computing $\lambda$:
+
+\begin{enumerate}
+\item
+Compute $y_i = x_i - \theta$;
+\item
+Sort $y_i$ to get $y_{(i)}$;
+\item
+If $y_{(1)}y_{(n)} \geq 0$, stop and report ``no solution''. Otherwise, continue;
+\item
+Compute $\bar y$. If $\bar y > 0$, set $L = 0$, $U = (n^{-1} - 1)/y_{(1)}$, otherwise
+set $L = (n^{-1} -1)/y_{(n)}$, $U = 0$.
+\item
+\label{step4}
+Set $\lambda = (L+U)/2$. 
+\item
+If $g(\lambda) < 0$, set $U = \lambda$ otherwise set $L= \lambda$.
+\item
+If $U - L < \epsilon$, stop and report $\lambda = (U+L)/2$. Otherwise, go to
+Step \ref{step4}.
+\end{enumerate}
+
+\vs
+This algorithm is guaranteed to terminate. 
+The constant $\epsilon$ is the tolerance level set by the user or by default. 
+Often, it is chosen to be $10^{-8}$ or so. In applications, 
+we should take the scale of $x_i$'s into consideration. 
+If all of them are small in absolute values (after subtracting $\theta$), 
+$\lambda$ will be larger hence the above tolerance is fine. 
+If $x_i - \theta$ are in the order of $10^8$, then to 
+tolerance for $\lambda$ must be reduced substantially, say to $10^{-16}$.
+A sensible choice is to find the sample standard error $s_n$ and set the
+tolerance level at $\epsilon s_n$.
+
+To find the upper and lower limits of the confidence interval of the mean, 
+we first note that $\bar x_n$ is always included in the interval. 
+The upper and lower limits cannot exceed the smallest and the largest observed values. 
+A simple method is to bisect the interval between $\bar x_n$ and $x_{(n)}$ iteratively 
+until we find the location $\theta_U$ at which the profile likelihood ratio function equals some
+quantile of the chisquare distribution set according to the confidence level suggested by the user.
+The typical value is of course $3.841$ for one-dim problem at 95\% confidence level.
+
+When $X_i$'s are vector valued, Chen, Sitter and Wu (2002, Biometrika) 
+showed that a revised Newton-Raphson method can be used 
+for computing the profile likelihood ratio function for the mean. 
+The algorithm is guaranteed to converge when the solution exists. 
+
+\section{Empirical likelihood applied to estimating functions}
+
+In some applications, particularly in econometrics, the parameter of interest
+is defined through estimating functions. Namely, if $X$ is a  sample from a
+population of interest, the parameter vector $\btheta$ is the unique solution to
+\[
+\bbE \{ g(X; \btheta) \} = 0
+\]
+for some vector valued and smooth function $g$.
+In this setting, the distribution of $X$ is left unspecified.
+Some restrictions will be needed to permit meaningful
+discussion of some large sample properties.
+
+Let the dimension of $g$ be denoted as $m$ and the dimension of
+$\btheta$ be denoted as $d$. When $m < d$, the solution to equation 
+$\bbE \{ g(X; \btheta) \} = 0$ is likely not unique
+given a hypothetical distribution $F$ of $X$. 
+In this case, $\btheta$ is under-defined.
+When $m=d$, the same equation usually has a unique
+solution. The parameter is then just-defined.
+When $m > d$, solution to $\bbE \{ g(X; \btheta) \} = 0$ exists only for
+special $F$. The model is then over-defined.
+If an \iid sample from a distribution $F$
+is available, the corresponding estimating equation
+\[
+\sum_{i=1}^n g(x_i; \btheta) = 0
+\]
+may not have any solution in $\btheta$.
+
+\vs\vs
+\noindent
+{\bf Generalized Method of Moments.}
+In textbooks, we often postulate a linear regression
+model in which the response variable $Y$ and the p-dimensional
+covariate $X$ as assumed to be linked through
+\[
+Y = X^\tau \bbeta + \epsilon
+\]
+in which $\beta$ is a non-random regression coefficient.
+The so called error term $\epsilon$ is a random variable independent of $X$.
+It has mean zero and finite variance.
+The statistical problem to make inference about $\beta$ based
+on an \iid sample from this system. 
+
+Typically, we estimate $\beta$ by the least sum of squares. Equivalently,
+we estimate $\beta$ by the solution to the normal equation:
+\[
+\sum_{i=1}^n X_i ( Y_i - X_i^\tau \bbeta) = 0.
+\]
+This approach fits into the frame of the estimating function definition
+with $g(x, y; \bbeta) = x (y - x^\tau \bbeta)$. The system contains
+$d$ equations and $d$ parameters which is just-defined.
+
+In econometrics, however, a linear model with dependent $X$ and $\epsilon$
+is often more appropriate. One such example is the relationship between
+the earning potentials $Y$ and the number of years spend in education $X_1$
+combined with other controlling factors $X_2$. A sensible model is
+\[
+\log (Y) = \beta_0 + X_1 \beta_1 + X_2^\tau \beta_2 + \epsilon.
+\]
+It is argued that $X_1$ is probably related to unobserved factors
+such as individual cost and benefit of schooling. These unobserved
+factors in turn are likely presented in the error term $\epsilon$
+(it is hard to identify them all to be included in $X_2$).
+Hence, $X_1$ and $\epsilon$ are not independent.
+
+If one uses least sum of squares estimate for $\beta_1$ 
+and $\beta_2$ in this
+situation, then the estimator $\hat \bbeta$ is biased and in fact
+is not consistent when the sample size $n$ goes to infinite.
+To obtain a consistent estimator of $\bbeta$, one may look
+for some instrument variable(s) $Z$ such that given $Z$,
+$X$ and $\epsilon$ are independent. 
+In this case, an unbiased estimating function (means zero-expectation)
+is given by
+\[
+g(x, y,  z; \bbeta) = z ( y - x_1 \beta_1 - x_2^\tau \beta_2).
+\]
+Apparently, when the dimension of $Z$ is larger than $p$, the
+combined dimension
+of $(x_1, x_2^\tau)$, we have an over-defined system.
+
+When a system is over-defined, the sample estimating equation
+\[
+\sum_{i=1}^n g(x_i; \btheta) = 0
+\]
+generally has no solution in $\beta$. Hence, it is not viable to
+use its solution as an estimate. This scenario leads to the generalized
+method of moments (GMM) extensively discussed in econometrics.
+Let $S_n(\btheta) = \sum_{i=1}^n g(x_i; \btheta)$ and it is a kind
+of score function in the context of likelihood based method.
+Let $A_n$ be a positive definite matrix of appropriate size
+and well specified. 
+The general idea of GMM is to estimate $\btheta$
+by
+$\tilde \btheta$ that minimizes
+\[
+\{S^\tau_n (\btheta)\} A_n \{S_n(\btheta)\}.
+\]
+The GMM approach leads to an inevitable question: how do
+we choose $A_n$?
+
+One choice is to get an initial estimate of $\btheta$ such as by solving
+$\sum_{i=1}^n g_d (x_i; \btheta) = 0$ where $g_d(\cdot)$ is the first
+$d$ entries of $g(\cdot)$. Let the solution be $\hat \btheta_0$ and
+let
+\[
+A_n = n^{-1} \sum_{i=1}^n g(x_i; \hat \btheta_0) g^\tau (x_i; \hat \btheta_0).
+\]
+After which, we get $\tilde \btheta$ by GMM.
+
+The second possibility is to iterate the previous choice:
+update $A_n$ with $\hat \btheta_1 = \tilde \btheta$ to obtain a
+new $\tilde \btheta$. Continue until hopeful something converges.
+
+The third choice is to define a $\btheta$ dependent $A$:
+\[
+A_n(\btheta)  = n^{-1} \sum_{i=1}^n g(x_i; \btheta) g^\tau (x_i; \btheta).
+\]
+Estimate $\btheta$ by the minimizer of
+\[
+\{S^\tau_n (\btheta)\} A_n(\btheta) \{S_n(\btheta)\}.
+\]
+
+Three approaches are asymptotically equivalent and ``optimal'' based on
+some criterion.
+
+\vs\vs
+\noindent
+{\bf Empirical Likelihood}.
+In comparison, for each given value of $\btheta$ of dimension $d$, one may
+define a profile empirical likelihood function as
+\[
+L_n(\btheta) = \sup \{ \prod p_i : \sum_{i=1}^n p_i g(x_i; \btheta) = 0\}.
+\]
+We have omitted the requirements of $p_i > 0$ and $\sum p_i = 1$ in
+the writing but they are implicitly required.
+
+For each given $\btheta$, the computation of $L_n(\btheta)$ in
+the current case is not different from the case where $\btheta$
+is the population mean. We may also notice that the dimensions
+of $g$ and $d$ do not matter in theoretical development. 
+The optimal solution to the maximization problem is given by
+\[
+p_i = \frac{1}{ n[1 + \blambda^\tau g(x_i; \btheta)]}
+\]
+with the Lagrange multiplier $\blambda$ being the solution to
+\[
+\sum_{i=1}^n  \frac{g(x_i; \btheta)}{ n[1 + \blambda^\tau g(x_i; \btheta)]} =0.
+\]
+
+The profile empirical likelihood defined here works almost the same
+way as the parametric likelihood. Asymptotically, as long as the model
+is valid in the sense that there exists a value $\btheta^*$ such that
+$\EE \{ g(X; \btheta^*)\} = 0$ and that $\EE \{ g(X; \btheta^*)\}^2 < \infty$,
+then 
+\[
+\sum_{i=1}^n p_i g(x_i; \btheta^*) = 0
+\]
+has solution in $p_i$ with probability approaching 1 as
+$n \to \infty$. That is, 
+$\ell_n(\btheta) = \log L_n(\btheta)$ is at least well defined
+at $\btheta = \btheta^*$.
+
+\begin{theorem}
+Under the assumption that $x_1, \ldots, x_n$ 
+form a set of \iid
+observations from some distribution $F$ satisfying
+$\EE \{ g(X; \btheta)\} = 0$ for some $\btheta$.
+Assume $g(x; \btheta)$ and $F$ jointly
+satisfy some regularity conditions.
+Let $\hat \btheta$ be the maximum
+empirical likelihood estimator and $\btheta^*$ be the true
+value of the parameter. 
+Then, as $n\to \infty$, we have
+\[
+2 \{ \ell_n(\hat \btheta) - \ell_n(\btheta^*) \} \to \chi^2_{d}
+\]
+and
+\[
+2 \{- n \log n -  \ell_n(\hat \btheta) \} \to \chi^2_{m-d}.
+\]
+where $m$ is the dimension of $g$ and $d$ is the
+dimension of $\btheta$.
+\end{theorem}
+
+This theorem provides a simple way to construct a likelihood interval/region
+of $\btheta$.
+By $\ell_n(\btheta^*)$, we allow only a single value for $\btheta$.
+This effectively reduces the dimension of $\btheta$ under consideration
+to $0$.
+By $\ell_n(\hat \btheta)$, we allow any value of $\btheta$
+in the parameter space that has dimension $d$. 
+The difference in two dimensions is $d$. Hence, the
+degree of freedom in the limiting distribution is $d$,
+the same as if we work with parametric likelihood.
+
+For the second conclusion, the degree of freedom can be
+interpreted in the same fashion with different outcome.
+By $- n \log n$, we permit any $F$ in the likelihood computation. 
+This means that we have involved no constraints from $g$.
+By $\ell_n(\hat \btheta)$, we have introduced constraints
+in form of $m$ estimating equations. At the same time,
+these equations contain $d$ parameters as free variables.
+Hence, the effective number of constraints is reduced to $m - d$. 
+Consequently, the degree of freedom in the limiting distribution is $m-d$,
+the number of restrictions applied.
+
+The first result on limiting distribution concerns the difference
+in log likelihood at two parameter values. Hence, the size judges
+the fitness of a specific parameter value.
+The second result on limiting distribution concerns
+the difference between placing a set of constraints and
+placing no constraints. Hence, the size judges the
+fitness of these constraints.
+
+The maximum empirical likelihood estimator is in general
+asymptotically normally distributed. Among certain type of
+estimators, it is also known to be ``optimal''. That is, it has
+the lowest asymptotic variance in a certain class of estimators.
+
+A much liked advantage of EL method, compared with GMM,
+is that one does not need to estimate the variance of $\hat \btheta$
+in order to construct confidence intervals or regions of $\btheta$.
+
+Another valued advantage of EL is that it is ``Bartlett correctable''.
+It means that there exists a non-random constant $b_n$ such that the
+distribution of $2 b_n\{\ell_n(\hat \btheta) - \ell_n(\btheta^*)\}$
+is approximated by chisquare with a very high precision so that the
+difference decreases to 0 quickly when the sample size $n \to \infty$.
+My experience shows that this is more a nice theory, not so much
+of practical value.
+
+
+\section{Adjusted empirical likelihood}
+
+One problem with EL under the estimating function setting is that the
+solution to the maximization problem may not exist. That is,
+given a $\btheta$ value, 
+\[
+\sum_{i=1}^n p_i g(x_i; \btheta) = 0
+\]
+may not have a solution in $p_i$ such that $p_i > 0$ and $\sum p_i = 1$.
+This could happen for any $\btheta$ value. When it happens,
+the statistical literature generally refers it as `empty set' problem.
+
+The Lagrange multiplier $\blambda$ is well defined only if $0$ is
+in the convex hull of $\{ g(x_i; \btheta), i=1, \ldots, n\}$.
+Thus, for each $\btheta$ value given, one must first make sure
+$L_n(\btheta)$ is actually defined. Looking for its maximum
+point $\hat \btheta$ can only be accomplished in the second step. 
+If the set of $\btheta$, on which $L_n(\btheta)$ is well
+defined, is empty, the rest of inference strategies falls apart.
+
+In theory, if the model is correct, $g$ has finite second moment,
+then $L_n(\btheta^*)$ is well defined with probability approaching 1
+as $n \to \infty$ where $\btheta^*$ is the true value. 
+In applications, there is no guarantee we can
+locate a $\btheta$-value at which $L_n(\btheta)$ is well defined.
+In fact, it can be an issue to merely determine whether or not
+it is well defined.
+
+There have been a few remedies proposed in the literature.
+One of them is given in Chen, Variyath and Abraham (2008). 
+Let us define
+\[
+g(x_{n+1}; \btheta) = - a_n \bar g_n
+\]
+where $\bar g_n = n^{-1} \sum_{i=1}^n g(x_i; \btheta)$,
+for any $\btheta$, with a positive constant $a_n$. 
+In this definition, we do not look for a $x_{n+1}$ value at which
+the above relationship holds. We only need a $g(x_{n+1}; \btheta)$ value.
+
+Next, we define adjusted profile empirical likelihood as
+\[
+L_N(\btheta) = \sup \{ \prod p_i : \sum_{i=1}^N p_i g(x_i; \btheta) = 0\}.
+\]
+with $N = n+1$. Namely, we have added a pseudo observation
+$g(x_{n+1}; \btheta)$ into the usual definition of the original empirical
+likelihood.
+Note that the restrictions $p_i > 0$ and $\sum p_i = 1$
+are satisfied by  $ p_i = a_n /c$ for $i=1, 2, \ldots, n$ and $ p_{n+1} = n/c$
+and $c = n a_n + n$ for the expanded data set $g_1, \ldots, g_N$.
+Hence, $L_N(\btheta) $ is well defined for any value of $\btheta$.
+
+Under mild conditions, the first order asymptotic properties of
+$L_n(\btheta)$ remain valid for $L_N(\btheta)$.
+This so-called adjusted empirical likelihood is getting a lot
+of attention. Read related papers yourself if you are interested.
+
+\section{Assignment problems}
+\begin{enumerate}
+\item
+Let $x_1, \ldots, x_n$ be a set of \iid observations from a nonparametric
+distribution family $\cF$ with finite first moment.
+Let $\btheta = \int x dF(x)$ be the mean of distribution $F$.
+
+Define the profile non-empirical likelihood $\btheta$ to be
+\[
+\ell_n(\btheta) = \sup \{ \sum_{i=1}^n \log F(\{x_i\}): \int x dF(x) = \btheta, F \in \cF \}.
+\]
+Show that for any $\btheta$ value, $\ell_n(\btheta) = - n \log n$
+when all $x_i$ values are distinct.
+
+%%Remark: note that $\ell_n(\btheta)$ here is different from the one in Q2.
+
+\item
+The authentic empirical likelihood is defined differently from Q1.
+Let $x_1, \ldots, x_n$ be a set of \iid observations from a nonparametric
+distribution family $\cF$ with finite first moment.
+Let 
+\[
+\cF_n = \{ F: F(x) = \sum_{i=1}^n p_i \ind(x_i \leq x)\}.
+\]
+The profile empirical likelihood $\btheta$ is defined to be
+\[
+\ell_n(\btheta) = \sup \{ \sum_{i=1}^n \log F(\{x_i\}): \int x dF(x) = \btheta, F \in \cF_n \}.
+\]
+Show that $\ell_n(\btheta)$ is a concave function of $\btheta$.
+
+
+\item
+The following are 10 \iid observations of a random vector of dimension 2
+(every column is one vector observation):
+\begin{verbatim}
+ 20.5 28.1 27.8 27.0 28.0 25.2 25.3 27.1 20.5 31.3
+ 26.3 24.0 26.2 20.2 23.7 34.0 17.1 26.8 23.7 24.9
+\end{verbatim}
+
+(a) 
+Use some R-functions to draw the asymptotic empirical likelihood 90\% 
+confidence region of the mean.
+
+(b) 
+Do the same based on parametric likelihood: assuming they
+are bivariate normally distributed.
+
+Remark: show your code and the source of R-functions you
+located. Give sufficient interpretations.
+
+Remark: show your code and the source of certain R-functions you
+located. Give sufficient interpretations.
+
+\item
+A bivariate Gamma distributed random vector can be obtained as follows. 
+Generate $U_1, U_2$ \iid\  from beta distribution
+with density function
+$$
+\frac{\Gamma(a+b)}{\Gamma(a)\Gamma(b)}u^{a-1}(1-u)^{b-1} \ind(0 < u < 1).
+$$
+Generate $W$ from a Gamma distribution with density function
+$$
+\frac{\beta^{a+b}w^{a+b-1}\exp(-\beta w)}{\Gamma(a+b)} \ind ( 0 < w).
+$$
+Let $\bY^\tau  =W \times (U_1, U_2)$.
+The distribution of $\bY$ is then the bivariate gamma
+$BG(a, b, \beta)$ with correlation $\rho=a/(a+b)$.
+The marginal distribution of $Y_1 = U_1W$ is gamma with 
+shape parameter $a$ and rate parameter $\beta$.
+
+(a) Verify that the marginal distribution of $\bY$ is as claimed.
+
+(b) Let the sample size $n=100$ and repeat the simulation $N=20000$ times.
+Put $a = 3, b=5$ and $\beta = 0.5$. The population mean is hence
+$(6, 6)$. Put the size of the test at $\alpha = {\bf 0.08}$. Set your seed value
+as $2018\time7$.
+
+Write a simulation R-code for the EL test to obtain 
+(i) null rejection rate for  $H_0: \mu = (6, 6)$.
+(ii) obtain a QQ plot of the EL test statistic against the theoretical $\chi_2^2$ distribution.
+
+\item
+Suppose $\{0, 2, 3, 3, 12\}$ is an \iid sample from some distribution $F$.
+Let $\btheta$ be the population mean.
+
+(a) Write done the analytical expression of the profile log-likelihood function give
+this data set, allowing $\blambda$ value unspecified.
+
+(b) Compute numerically the value of
+$\ell_n(4)$ based on the illustration data: the profile log likelihood at $\btheta = 4$.
+
+(c) Compute numerically the value of
+$\ell_n(3)$ based on the illustration data: the profile log likelihood at $\btheta = 3$.
+
+(d) Plot the profile log-likelihood function over the range of $\btheta \in (2.5, 5.5)$.
+(Note required this year. Do it if you are interested).
+
+\item
+Let $\eta$ be the second moment of $F$.
+
+(a) Give the corresponding analytical form of the profile log 
+empirical likelihood function of $\eta$ with the same data given in the last
+question.
+
+(b) Over what range of $\eta$ is the profile empirical likelihood function
+well-defined?
+\end{enumerate}
+
+

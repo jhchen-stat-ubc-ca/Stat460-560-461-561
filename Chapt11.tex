@@ -1,0 +1,477 @@
+\chapter{More on asymptotic theory}
+
+Various approaches to point estimation have been discussed so far.
+An estimator is recommended when it has certain desirable properties.
+Among many things, we like to know its bias and variance
+which can be derived from its finite sample distribution. 
+Characterizing exact finite sample distributions is difficult
+in most cases. Fortunately, also in most cases, an estimator has
+a limiting distribution when the sample size increases to infinite. 
+The limiting distribution approximates the finite sample distribution
+and enables us to make inferences accordingly. 
+In this chapter, we provide additional discussions
+on asymptotic theories.
+
+\section{Modes of convergence}
+
+Let $X, X_1, X_2, \ldots$ be a sequence of random variables defined on
+some probability space ($\Omega, \bbB, P$).
+
+\begin{defi}
+\label{ConvInProb}
+We say $\{X_n\}_{n=1}^\infty$ or simply $X_n$ converges in probability
+to random variable $X$, if for every $\epsilon > 0$,
+\[ 
+\lim_{n \to \infty}
+\pr ( |X_n - X| > \epsilon ) = 0.
+\]
+We use notation $X_n \cp X$.
+\end{defi}
+
+Here is an example in which the convergence in probability 
+can be directly verified.
+
+\begin{example}
+Let $X_1, X_2, \ldots, $ be a sequence of \iid
+random variables each has exponential distribution
+with rate $\lambda > 0$. 
+Let
+\[ 
+X_{(1)} = \min \{ X_1, X_2, \ldots, X_n\}.
+\]
+Then $X_{(1)} \cp 0$.
+\end{example}
+
+\noindent
+{\bf Proof}:
+Here $0$ is considered as a random variable which takes value 0 with
+probability 1. Note that for every $\epsilon > 0$,
+\begin{eqnarray*}
+\pr ( |X_{(1)} - 0| > \epsilon) 
+&=& 
+\pr(X_{(1)} > \epsilon) \\
+&=& 
+\pr(X_1 > \epsilon, \ldots, X_n > \epsilon)\\
+&=& 
+\pr(X_1 > \epsilon) \cdots P(X_n > \epsilon)\\
+&=&
+\exp ( - n \lambda \epsilon) \to 0
+\end{eqnarray*}
+as $n \to 0$.
+Hence, by Definition~\ref{ConvInProb}, $X_{(1)} \cp 0$. \qed
+
+\begin{defi}
+We say $X_n$ converges to $X$ almost surely (or with probability 1)
+if and only if
+\[
+P\{ \omega : \lim_{n \to \infty} X_n(\omega) = X(\omega) \} =1.
+\]
+We use notation $X_n \as X$.
+\end{defi}
+
+Here is a quick example for the mode of almost sure convergence.
+
+\begin{example}
+Let $Y$ be a random variable and let $X_n = n^{-1} Y$
+for $n=1, 2, \ldots$.
+For any sample point $\omega \in \Omega$, as $n \to \infty$,
+we have
+\[
+X_n(\omega) = n^{-1} Y(\omega) \to 0.
+\]
+Hence,
+\[
+\pr( \omega: \lim X_n(\omega) = 0 ) = 1.
+\]
+Therefore $X_n \to 0$ almost surely.
+\end{example}
+
+It is natural to ask whether the two modes of convergence defined so
+far are equivalent. The following example explains that the convergence
+in probability does not imply the almost sure convergence.
+The construction is somewhat involved.  Please do not spend
+a lot of time on it.
+
+\begin{example}
+Consider a probability space ($\Omega, \bbB, P$) where
+$\Omega = [0,1]$, $\bbB$ is the usual Borel $\sigma$-algebra, 
+and the probability measure $\pr$ is the Lesbesgue measure. 
+For any event $A \in \bbB$, $\ind(A)$ is an indicator random variable.
+Define, for $k =0, 1, 2, \ldots, 2^{n-1}-1$ and $n=1, 2, \ldots$,
+\[
+X_{2^{n-1}+k} = \ind ([ \frac{k}{2^{n-1}}, \frac{k+1}{2^{n-1}}]).
+\]
+Since any positive integer $m$ can be uniquely written as ${2^{n-1}+k}$
+for some $n$ and $k$ between $0$ and $2^{n-1}-1$, 
+we have well defined $X_m$ for all positive integer $m$.
+
+On one hand, for every $\epsilon > 0$, it is seen that
+\[ 
+\pr ( |X_m - 0| > \epsilon ) \leq {2^{-(n-1)}} \to 0.
+\]
+Hence, $X_m \cp 0$. 
+
+On the other hand,  for each $\omega \in \Omega$
+and any given $n$, there is a $k$ such that
+\[
+ \frac{k-1}{2^{n}}\leq \omega <  \frac{k}{2^{n}}.
+\]
+Hence, no matter how large $N$ is, we can always
+find an $m = 2^{n-1}+k  > N$ for which
+$X_m(\omega) = 1$, and $X_{m+1}(\omega) = 0$.
+Therefore, $X_m(\omega)$ does not have a limit.
+This claim is true for any sample point in $\Omega$.
+Hence, $X_m$ does not almost surely converge to anything.
+\qed
+\end{example}
+
+The following theorem shows that the mode of almost sure
+convergence is a stronger mode of convergence.
+
+\begin{theorem}
+\label{thm11.1}
+If $X_n$ converges almost surely to $X$, then $X_n \cp X$.
+\end{theorem}
+
+Let $B_n$, $n=1, 2, \ldots$ be a sequence of events. That is, they
+are subsets of sample space $\Omega$ and members of $\bbB$.
+If a sample point belongs to infinite many $B_n$, for example it belongs
+to all $B_{2n}$, we say it occurs infinitely often. The subset
+which consists of sample points that occur infinitely often
+is denoted as 
+\[  
+\{B_n ~i.o.\} = \cap_{n=1}^\infty \cup_{i=n}^\infty B_i.
+\]
+
+\begin{theorem}
+[\bf Borel-Cantelli Lemma]
+\label{BorelCantelli}
+
+\begin{enumerate}
+\item 
+Let $\{B_n\}$ be a sequence of events. Then
+\[ 
+\sum_{n=1}^\infty \pr(B_n) < \infty
+\]
+implies
+\[
+\pr( \{B_n ~i.o.\}) = 0;
+\]
+
+\item 
+If $B_n$, $n=1, 2, \ldots$ are mutually independent, then
+\[
+\sum_{i=1}^\infty \pr (B_n) = \infty 
+\]
+implies
+\[
+\pr( \{B_n ~i.o.\}) = 1.
+\]
+\end{enumerate}
+\end{theorem}
+
+The proof of this lemma relies on the expression
+$\{B_n ~i.o.\} = \cap_{n=1}^\infty \cup_{i=n}^\infty B_i$.
+We now introduce other modes of convergence.
+
+\section{Convergence in distribution}
+The convergence in distribution is usually discussed
+together with the modes of convergence for a sequence of random
+variables. Although they are connected, convergence in
+distribution is very different from other modes of convergence
+in nature.
+
+\begin{defi}
+Let $G_1, G_2, \ldots, $ be a sequence of (univariate) cumulative distribution
+functions. Let $G$ be another cumulative distribution function.
+We say $G_n$ converges to $G$ in distribution,
+denoted as $G_n \cd G$ if
+\[ 
+\lim_{n \to \infty} G_n(x) = G(x) 
+\]
+for all points $x$ at which $G (x)$ is continuous.
+\end{defi}
+
+This definite is not based on a sequence of random variables. 
+If there is a sequence of random variables $X_1, X_2, \ldots$ and $X$
+whose distributions are given by $G_1, G_2, \ldots$ and $G$,
+we also say that $X_n \cd X$. 
+These random variables may not be defined on the same probability space.
+When we state that $X_n \cd X$,
+it means that the distributions of $X_n$ converges to the distribution
+of $X$ as $n\to \infty$.
+
+\begin{theorem}
+If $X_n \cp X$, then $X_n \cd X$.
+
+Suppose $c$ is a non-random constant.
+If $X_n \cd c$, then $X_n \cp c$.
+\end{theorem}
+
+A probability space is generally irrelevant to
+the convergence in distribution. Yet 
+we can create a shadow probability space
+for the corresponding random variables.
+
+\begin{theorem}
+[\bf Skorokhod's representation theorem]
+{\label{Skorokhod}}
+If $G_n \cd G$, then there exist a probability space $(\Omega, \bbB, P)$ 
+and random variables $Y_1, Y_2, \ldots$ and $Y$, such that
+\begin{enumerate}
+\item 
+$Y_n$ has distribution $G_n$ for $n=1, 2, \ldots$ and $Y$ has distribution $G$.
+
+\item 
+$Y_n \as Y$.
+\end{enumerate}
+\end{theorem}
+
+The following result is intuitively right
+but hard to prove unless the above theorem is applied.
+
+\begin{example}
+If $X_n \cd X$ and $g$ is a real, continuous function, then $g(X_n) \cd g(X)$.
+\end{example}
+\noindent
+
+This is a simple exercise problem.
+There is an equivalent definition of the mode of convergence in
+distribution. We state here as a theorem.
+
+\begin{theorem}
+Let $X_1, X_2, \ldots$ be a sequence of random variables.
+Then, $X_n \cd X$ if and only if $\bbE \{ g(X_n)\} \to \bbE \{g(X)\}$ 
+for all bounded, uniformly continuous real valued function $g$.
+\end{theorem}
+
+\section{Stochastic Orders}
+Random variables come with different sizes. When 
+a number of random variable sequences are involved in
+a problem, it is helpful to know their relative sizes. 
+Let $\{X_n\}_{n=1}^\infty$ be a sequence of random variables. 
+If $X_n \cp 0$, we say $X_n = o_p(1)$.
+That is, compared with constant 1, the size of $X_n$ becomes
+less and less noticeable. Naturally, we may also want to compare $X_n$
+with other sequences of numbers. 
+
+\begin{defi}
+Let $\{a_n\}$ be a sequence of positive constants.
+We say $X_n = o_p(a_n)$ if $X_n / a_n  \cp 0$ as $n \to \infty$.
+
+Let $\{Y_n\}_{n=1}^\infty$ be another sequence of random variables.
+We say $X_n = o_p(Y_n)$ if and only if 
+\[
+X_n/Y_n  = o_p(1).
+\]
+\end{defi}
+
+How do we describe that $X_n$ and $a_n$ are about
+the same magnitude? Intuitively, 
+this should be the case when ${{X_n}/{a_n}}$
+stays clear from both 0 and infinite.
+In common practice, we only exclude the latter.
+A rigorous mathematical definition is as follows:
+
+\begin{defi}
+We say $X_n = O_p(a_n)$ if and only if for every $\epsilon > 0$,
+there exist an $M_\epsilon$ such that for all $n$,
+\[
+\pr ( | X_n / a_n | \geq M_\epsilon) < \epsilon.
+\]
+\end{defi}
+
+Note that $X_n=O_p(a_n)$ only reveals that $|X_n|$ is not 
+larger compared with $a_n$.  The size of $|X_n|$ can, however, be much 
+smaller than $a_n$. 
+
+\begin{example}
+Assume $X_1, X_2, \ldots$ is a sequence of \iid standard Poisson random variables.
+Then
+\[
+\max \{ X_1, X_2, \ldots, X_n\} = O_p( \log n).
+\]
+\end{example}
+
+The next example essentially gives an equivalent definition.
+
+\begin{example}
+If for every $\epsilon > 0$,
+there exist $M_\epsilon$ such that for all $n$ large enough,
+\[
+\pr ( | X_n / a_n | \geq M_\epsilon) < \epsilon,
+\]
+then $X_n=O_p(a_n)$.
+\end{example}
+
+The following is a useful result.
+
+\begin{example}
+Suppose $X_n \to X$ in distribution, then
+$X_n=O_p(1)$.
+\end{example}
+
+
+\subsection{Application of stochastic orders}
+Stochastic order enables us to ignore 
+irrelevant details above $X_n$ and $Y_n$
+in asymptotic derivations.
+Some useful facts are as follows.
+
+\begin{lemma}
+The stochastic orders have the following properties.
+\begin{enumerate}
+\item 
+If $X_n = O_p(1)$ and $Y_n = o_p(1)$,
+then $- X_n = O_p(1)$, $ - Y_n = o_p(1)$.
+
+\item 
+If $X_n = O_p(1)$ and $Y_n = O_p(1)$,
+then $X_nY_n = O_p(1)$, $X_n + Y_n = O_p(1)$.
+
+\item 
+If $X_n = o_p(1)$ and $Y_n = o_p(1)$,
+then $X_nY_n = o_p(1)$, $X_n + Y_n = o_p(1)$.
+
+\item 
+If $X_n = o_p(1)$ and $Y_n = O_p(1)$,
+then $X_nY_n = o_p(1)$, $X_n + Y_n = O_p(1)$.
+\end{enumerate}
+\end{lemma}
+\noindent 
+
+If $X_n$ converges to $X$ in distribution and $Y_n$ differs
+from $X_n$ by a random amount of size $o_p(1)$, we expect
+that $Y_n$ also converges to $X$ in distribution. This 
+is a building block to for more complex approximation theorems.
+
+\begin{lemma}
+Assume $X_n \cd X$ and $Y_n = X_n + o_p(1)$. Then $Y_n \cd X$.
+\label{lemma11.1}
+\end{lemma}
+\noindent
+{\bf Proof}: 
+Let $x$ be a continuous point of the \cdf\ of $X$.
+Let $\epsilon> 0$ such that $x+\epsilon$ is also
+a continuous point of the \cdf\ of $X$.
+Then
+\begin{eqnarray*}
+\pr(Y_n \leq x) 
+&=& 
+\pr(Y_n \leq x, |Y_n - X_n | \leq \epsilon)
+	+ \pr( |Y_n - X_n| > \epsilon, Y_{n} < x)\\
+&\leq & 
+\pr(X_n \leq x + \epsilon) + \pr( |Y_n - X_n| > \epsilon)\\
+&\to &
+\pr(X \leq x + \epsilon).
+\end{eqnarray*}
+The second term goes to zero because
+ $Y_n-X_n= o_p(1)$. 
+
+For any given $x$, $\epsilon$ can be chosen arbitrarily small
+due to the property of the monotonicity of distribution functions.
+Thus we must have
+\[ 
+\lim \sup_{n\to \infty} \pr(Y_n \leq x) \leq \pr(X \leq x).
+\]
+Similarly, we can show
+\[ \lim \inf_{n\to \infty} \pr(Y_n \leq x)
+\geq \pr(X \leq x).
+\]
+The two inequalities together imply 
+\[
+ \pr(Y_n \leq x) \to \pr(X \leq x)
+\]
+for all $x$ at which the \cdf\ of $X$ is continuous. 
+Hence $Y_n \cd Y$. \qed
+
+\vs
+The above result makes the next lemma obvious.
+
+\begin{lemma}
+Here are some additional properties of the stochastic orders:
+
+If $a_n \to a$, $b_n \to b$,
+and $X_n \cd X$, then $a_n X_n + b_n \cd aX+b$.
+
+If $Y_n \cp a $ and $Z_n \cp b$, and $X_n \cd X$, 
+then $Y_n X_n + Z_n \cd aX+b$.
+\end{lemma}
+
+The following well-known theorem becomes
+a simple implication.
+
+\begin{theorem}[\bf Slutsky's Theorem]{\label{Slutsky}}
+Let $X_n \cd X$ and $Y_n \cp c$ where $c$ is a finite constant. Then
+\begin{enumerate}
+\item $X_n+Y_n \cd X+c$;
+
+\item $X_nY_n \cd cX$;
+
+\item ${{X_n}/{Y_n}} \cd {{X}/{c}}$ when $c \neq 0$.
+\end{enumerate}
+\end{theorem}
+
+Although the formal Slutsky's Theorem is stated as above,
+many of us regard Lemma \ref{lemma11.1} as the conclusion
+of this theorem. Each of the conclusions in the above theorem
+can be easily proved by using Lemma \ref{lemma11.1}.
+In this lecture note, we will refer Lemma \ref{lemma11.1}
+as Slutsky's Theorem.
+
+Here is another convenient theorem
+
+\begin{theorem}
+Let $a_n$ be a sequence of real values and
+$X_n$ be a sequence of random variables.
+Suppose $a_n \to \infty$ and $a_n(X_n - \mu) \cd Y$.
+If $g(x)$ is a function which has continuous derivative
+at $x = \mu$, then
+\[
+a_n\{ g(X_n) - g(\mu)\} \cd g'(\mu) Y.
+\]
+\end{theorem}
+
+The most useful result for convergence in distribution 
+is the central limit theorem. 
+
+\begin{theorem}
+[\bf Central Limit Theorem]
+Assume $X_1, X_2, \ldots$ are \iid.\ random variables with
+$\bbE (X) = 0$ and $\var (X) = 1$. Then as $n \to \infty$,
+\[
+\sqrt{n}\bar{X}_n \cd N(0,1).
+\]
+
+If, instead, $\bbE (X) = \mu$ and $\var(X) = \sigma^2$, then
+\begin{enumerate}
+\item 
+$\sqrt{n} \sigma^{-1} (\bar{X}_n - \mu) \cd N(0,1)$;
+
+\item 
+$\sqrt{n}(\bar{X}_n - \mu) \cd N(0, \sigma^2)$;
+
+\item 
+$n^{-1/2} \sum_{i=1}^n \{ (X_i - \mu)/\sigma\} \cd N(0,1)$;
+
+\item 
+$n^{-1/2} \sum_{i=1}^n (X_i - \mu) \cd N(0,\sigma^2)$.
+\end{enumerate}
+\end{theorem}
+
+It is not advised to state
+\[
+\bar X_n - \mu \cd N(0, \sigma^2/n).
+\]
+The righthand side is not a limit at all.
+
+\begin{example}
+Let $X_n, Y_n$, be a pair of independent Poisson distributed random
+variables with mean $n \lambda_1$ and $n \lambda_2$. 
+Define
+\[
+T_n = ({Y_n}/{X_n}) \ind (X_n > 0).
+\]
+Then $T_n$ is asymptotically normal.
+\end{example}
+

@@ -1,0 +1,791 @@
+\chapter{Maximum likelihood estimation}
+
+In textbooks such as here, we have plenty of examples where the
+solutions to MLE are easy to obtain. We now give some
+examples where the routine approaches do not work.
+
+\section{MLE examples}
+The simplest example is when we have \iid data
+of size $n$ from $N(\mu, \sigma^2)$ distribution (family). 
+In this case, the log-likelihood function is given by
+\[
+\ell_n(\mu, \sigma^2)
+=
+- n \log \sigma
+- 
+\frac{1}{\sigma^2} \sum_{i=1}^n (x_i - \mu)^2.
+\]
+Note that I have omitted the constant that does not depend on
+parameters. 
+Regardless of the value of $\sigma^2$, the maximum point
+in $\mu$ is $\hat \mu = \bar X_n$, the sample mean.
+Let $\tilde \sigma^2 = n^{-1} \sum_{i=1}^n (x_i - \mu)^2$
+and do not regard it as an estimator but a statistic for the
+moment. Then, we find
+\[
+\ell_n(\hat \mu, \sigma^2)
+=
+- n \log \sigma
+- 
+\frac{n \tilde \sigma^2}{\sigma^2}.
+\]
+This function is maximized at $\sigma^2 = \tilde \sigma^2$.
+Hence, the MLE of $\sigma^2$ is given by
+$\hat \sigma^2 = \tilde \sigma^2$.
+
+\vs
+\noindent
+{\bf Type I censor}.
+The next example is a bit unusual.
+In industry, it is vital to ensure that components in a product will last
+for a long time. Hence, we need to have a clear idea on their survival distributions.
+Such information can be obtained by collecting complete failure time
+data on a random sample of the components. 
+When the average survival time
+is very long, one has to terminate the experiment at some point,
+likely before all samples fail.
+Let the life time of a component be $X$ and the termination time be nonrandom $T$.
+Then, the observation may be censored and we only observe $\min(X, T)$.
+This type of censorship is commonly referred to as type I censor.
+
+Suppose the failure time data can be properly modelled by exponential
+distribution $f(x; \theta) = \theta^{-1} \exp( - x/\theta), ~~x > 0$.
+Let $x_1, x_2, \cdots, x_m$ be the observed failure times of $m$ out of
+$n$ components. The rest of $n-m$ components have not experienced
+failure at time $T$ (which is not random).
+In this case, the likelihood function would be given by
+\[
+L_n(\theta) 
+= \theta^{-m} \exp\left \{ - \theta^{-1} [ \sum_{i=1}^m x_i + (n-m) T] \right \}.
+\]
+Interpreting likelihood function based on the above
+definition makes it easier to obtained the above expression.
+
+Some mathematics behind this likelihood is as follows.
+To observe that $n-m$ components lasted longer than $T$, the probability
+of this event is given by
+\[
+{n \choose n-m} \{ \exp ( - \theta^{-1} T)\}^{n-m} \{ 1-  \exp ( - \theta^{-1} T)\}^m.
+\]
+Given $m$ components failed before time $T$, the joint distribution
+is equivalent to an \iid\ conditional exponential distribution whose density
+is given by
+\[
+\frac{ \theta ^{-1} \exp ( - \theta^{-1} x) }{1-  \exp ( - \theta^{-1} T)}.
+\]
+Hence, the joint density of $x_1, \ldots, x_m$ is given by
+\[
+\prod_{i=1}^m \left [ \frac{ \theta ^{-1} \exp ( - \theta^{-1} x_i) }{1-  \exp ( - \theta^{-1} T)}
+\right ].
+\]
+The product of two factors gives us the algebraic expression of
+$L_n(\theta)$.
+Once the likelihood function is obtained, we can find the explicit
+solution to the MLE of $\theta$ easily.
+
+There are more than one way to arrive at the above likelihood function.
+
+\vs
+\noindent
+{\bf Discrete parameter space}.
+Suppose a finite population is made of two types of units, A and B.
+The population size $N = A+B$ units where A and B also denote
+the number of types A and B units. Assume  the value of $B$ is
+known which occurs in capture-recapture experiment. 
+A sample of size $n$ is obtained by ``simple random sample without replacement'' 
+and $x$ of the sampled units are of type $B$.
+
+Based on this observation, what is the MLE of $A$?
+
+To answer this question, we notice that the likelihood
+function is given by
+\[
+L(A) = \frac{ {A \choose {n-x}} {B \choose x}}{{{A+B} \choose n}}.
+\]
+Our task is to find an expression of the MLE of A.
+Note that ``find the MLE'' is not very rigorous statement.
+
+Let us leave this problem to classroom discussion.
+
+\vs
+\noindent
+{\bf Non-smooth density functions}.
+Suppose we have an \iid\ sample of size $n$ from uniform
+distribution on $(0, \theta)$ and the parameter space is
+$\Theta = \cR^+$.
+Find the MLE of $\theta$.
+
+\section{Newton Raphson algorithm}
+Other than textbook examples, most applied problems do
+not permit an analytical solutions to the maximum likelihood
+estimation. In this case, we resort to any optimization algorithms
+that work. For illustration, we still resort to ``textbook examples.''
+
+\begin{example}
+Let $X_1, \ldots, X_n$ be \iid\ random variables from Weibull
+distribution with fixed scale parameter:
+\[
+f(x; \theta) = \theta x^{\theta - 1} \exp( - x^\theta)
+\]
+with parameter space $\Theta = \cR^+$ on support $x > 0$.
+
+Clearly, the log likelihood function of $\theta$ is given by
+\[
+\ell_n(\theta) = n \log \theta + (\theta - 1) \sumin \log x_i - \sumin x_i^\theta.
+\]
+It is seen that 
+\bea
+\ell_n'(\theta) 
+&=&
+ \frac{n}{\theta} + \sumin \log x_i - \sumin x_i^\theta \log x_i;\\
+\ell_n''(\theta) 
+&=&
+ - \frac{n}{\theta^2} - \sumin x_i^\theta \log^2 x_i < 0.
+\eea
+Therefore, the likelihood function is convex and hence has unique
+maximum in $\theta$.
+Either when $\theta \to 0_+$ and when $\theta \to \infty$,
+we have $\ell_n(\alpha) \to - \infty$.
+
+For numerical computation, we can easily locate $\theta_1 < \theta_2$ such
+that the maximum point of $\ell_n(\theta)$ is within the interval $[\theta_1, \theta_2]$.
+\end{example} 
+
+Following the above example, a bisection algorithm can be applied to
+locate the maximum point of $\ell_n(\theta)$.
+
+\begin{enumerate}
+\item
+Compute $y_1 = \ell'_n(\theta_1), y_2 = \ell'_n(\theta_2)$ and $\theta = (\theta_1 + \theta_2)/2$;
+
+\item
+If $\ell'_n(\theta) >0$, let $\theta_1 = \theta$; otherwise, $\theta_2= \theta$;
+
+\item
+Repeat the last step until $|\theta_1 - \theta_2| < \epsilon$ for a pre-specified 
+precision constant $\epsilon > 0$.
+
+\item
+Report $\theta$ as the numerical value of the MLE $\hat \theta$.
+\end{enumerate}
+
+It will be an exercise to numerically find an upper and lower bounds and
+the MLE of $\theta$ given a data set.
+
+The bisection method is easy to understand. Its convergence rate, in terms
+of how many steps it must take to get the final result is judged not high enough.
+When $\theta$ is one dimensional, our experience shows the criticism is not
+well founded. Nevertheless, it is useful to understand another standard
+method in numerical data analysis.
+
+Suppose one has an initial guess of the maximum point of the likelihood
+function, say $\theta^{(0)}$. For any $\theta$ close to this point, we have
+\[
+\ell'_n (\theta) \approx \ell'_n(\theta^{(0)}) + \ell''_n(\theta^{(0)}) (\theta - \theta^{(0)}).
+\]
+If the initial guess is pretty close to the maximum point, then the value of the
+second derivative  $\ell''_n(\theta^{(0)}) < 0$. 
+From the above approximation, we would guess that
+\[
+\theta^{(1)} = \theta^{(0)}  -  \ell'_n(\theta^{(0)})/ \ell''_n(\theta^{(0)})
+\]
+is closer to the solution of $\ell'_n(\theta) = 0$.
+This consideration leads to repeated updating:
+\[
+\theta^{(k+1)} = \theta^{(k)}  -  \ell'_n(\theta^{(k)})/ \ell''_n(\theta^{(k)}).
+\]
+Starting from $\theta^{(0)}$, we therefore obtain a sequence $\theta^{(k)}$.
+If the problem is not tricky, this sequence converges to the maximum point
+of $\ell_n(\theta)$. Once it stabilizes, we regard the outcome as the
+numerical value of the MLE.
+
+The iterative scheme is called Newton-Raphson method. Its success
+depends on a good choice of $\theta^{(0)}$ and the property of $\ell_n(\theta)$
+as a function of $\theta$. If the likelihood has many local maxima, then
+the outcome of the algorithm can be one of these local maxima. 
+For complex models and multi-dimensional $\theta$,
+the convergence is far from guaranteed. The good/lucky choice of 
+ $\theta^{(0)}$ is crucial.
+ 
+Although in theory, each iteration moves $\theta^{(k+1)}$ toward
+true maximum faster by using Newton-Raphson method,
+we pay extra cost on computing the second derivation.
+For multi-dimensional $\theta$, we need to invert a matrix which
+is not always a pleasant task.
+The implementation of this method is not always so simple.
+ 
+Implementing Newton-Raphson for a simple data example will
+be an exercise.
+
+\begin{example}
+{\bf Logistic distribution}. Let $X_1, X_2, \ldots, X_n$
+be \iid with density function
+\[
+f(x; \theta) 
+=
+\frac{ \exp \{ - (x - \theta)\}}{[1 + \exp \{ - (x-\theta) \}]^2}.
+\]
+The support of the distribution is the whole line, and
+parameter space is $\cR$. We usually call it
+a location distribution family.
+
+The log-likelihood function is give by
+\[
+\ell_n(\theta) = n\theta - n \bar x_n
+-
+2 \sumin \log [ 1 + \exp\{ - (x_i - \theta)\}].
+\]
+Its score function is
+\[
+\ell'_n(\theta) = s(\theta) 
+= n - 2 \sumin \frac{ \exp \{ - (x - \theta)\}}{1 + \exp \{ - (x-\theta) \}}.
+\]
+The MLE is a solution to $s(\theta) = 0$.
+
+One may easily find that
+\[
+\ell''_n(\theta) =
+s'(\theta) =
+- 2 \sumin
+\frac{ \exp \{ - (x_i - \theta)\}}{[1 + \exp \{ - (x_i -\theta) \}]^2}
+< 0.
+\]
+Thus, the score function is monotone in $\theta$,
+which implies the solution to $s(\theta) = 0$ is unique.
+It also implies that the solution is the maximum point of
+the likelihood, not minimum nor stationary points.
+
+It is also evident that there is no analytical solution to
+this equation, Newton-Raphson algorithm can be a good
+choice for numerically evaluate the MLE in applications. 
+\end{example}
+
+\section{EM-algorithm}
+
+Suppose we have $n$ observations from a tri-nomial
+distribution. That is, there are $n$ independent and
+independent trials each has 3 possible outcomes.
+The corresponding parameters are $p_1, p_2, p_3$.
+We summarize these observations into $n_1, n_2, n_3$.
+The log-likelihood function is
+\[
+\ell_n(p_1, p_2, p_3)
+=
+n_1 \log p_1 + n_2 \log p_2 + n_3 \log p_3.
+\]
+Using Lagrange method, we can easily show that the MLEs are
+\[
+\hat p_j = n_j / n
+\]
+for $j=1, 2, 3$.
+
+If, however, another $m$ trials were carried out
+but we know only their outcomes are not of the third
+kind. In some words, the data contains some missing information.
+
+The log-likelihood function when the additional
+data are included becomes
+\[
+\ell_n(p_1, p_2, p_3)
+=
+n_1 \log p_1 + n_2 \log p_2 + n_3 \log p_3 + m \log(p_1 + p_2).
+\]
+Working out the MLE is no longer straightforward now.
+Given specific values, there are many numerical algorithms
+can be used to compute MLE. We recommand
+EM-algorithm in this case.
+
+If we knew which of these $m$ observations were
+of type I, we would have obtained the complete
+data log-likelihood as:
+\[
+\ell_c(p_1, p_2, p_3)
+=
+(n_1+m_1) \log p_1 + (n_2+m_2) \log p_2 + n_3 \log p_3
+\]
+where $c$ stands for ``complete data''.
+Since we do not know what these $m_1$ and $m_2$ are,
+we replace them with some predictions based on what we know already.
+In this case, we use conditional expectations.
+
+\vs
+\no
+{\bf E-step}:
+If the current estimates $\hat p_1= n_1/n$ and
+$\hat p_2 = n_2 /n$ are relevant. Then, we might
+expect that out of $m$ non-type III observations,
+$\hat m_1 = m \hat p_1/(\hat p_1 + \hat p_2)$ are of type I and 
+$\hat m_2 = m \hat p_2/(\hat p_1 + \hat p_2)$ are of type II.
+That is, the conditional expectation (given
+data, and the current estimates of the
+parameter values) of $m_1$ and $m_2$
+are given by $\hat m_1$ and $\hat m_2$.
+When $m_1$ and $m_2$ are replaced by
+their conditional expectations, 
+we  get a function
+\[
+Q(p_1, p_2, p_3)
+=
+(n_1+\hat m_1) \log p_1 + (n_2+\hat m_2) \log p_2 + n_3 \log p_3.
+\]
+This is called E-stap because we
+Replace the unobserved values by their conditional
+expectations.
+
+\vs
+\no
+{\bf M-step}:
+In this step, we update unknown parameters by the maximizer of 
+$Q(p_1, p_2, p_3)$.
+The updated estimator values are
+\[
+\tilde p_1 = (n_1 + m_1)/(n+m) ~~
+\tilde p_2 = (n_2 + m_2)/(n+m), ~~
+\tilde p_3 = n_3/(n+m).
+\]
+
+If they represent a better guess of the MLE,
+then we should update the Q-function accordingly.
+After which, we should carry out the M-step again
+to obtain more satisfactory approximation to the MLE.
+We therefore iterate between the E and M steps until some
+notion of convergence.
+
+These idea is particularly useful when the data structure
+is complex.
+In most cases, the EM iteration is guaranteed to increase
+the likelihood. Thus, it should converge, and converge
+to a local maximum for the least.
+
+
+\section{EM-algorithm for finite mixture models}
+Let envisage a population made of a finite number of subpopulations, 
+each is governed by a specific distribution from some distribution family.
+Taking a random sample from a finite mixture model, we obtain
+a set of units without knowing their subpopulation identities.
+The resulting random variable has density function
+\[
+f(x; G)  = \sum_{j=1}^m \pi_j f(x; \theta_j)
+\]
+with $G$ denoting a mixing distribution on parameter space
+of $\theta$, $\Theta$, by assigning probability $\pi_j$ on $\theta_j$.
+
+Given a random sample of size $n$, $x_1, x_2, \ldots, x_n$,
+from this distribution, the log likelihood function is given by
+\be
+\label{EM.eq0}
+\ell_n(G) = \sum_{i=1}^n \log f(x_i; G).
+\ee
+Other than order $m$, we regard $\pi_j, \theta_j$ as parameters
+to be estimated.
+Computing the maximum likelihood estimate of $G$ is 
+to find the values of $m$ pairs of $\pi_j$ and $\theta_j$
+such that $\ell_n(G)$ is maximized.
+
+Taking advantage of the mixture model structure, EM-algorithm can often
+be effectively implemented to locate the location of the maximum
+point of the likelihood function.
+
+Conceptually, each observation $x$ from a mixture model is part
+of a complete vector observation $(x, \bz^\tau)$ where $\bz$ 
+is a vector of mostly $0$
+and a single $1$ of length $m$. The position of $1$ is its subpopulation identity.
+Suppose we have a set of complete observations in the form of
+$(x_i, \bz^\tau_i)$: $i=1, 2, \ldots, n$. The log likelihood function
+of the mixing distribution $G$ is given by
+\be
+\label{EM.eq1}
+\ell_c(G) 
+= 
+\sumin \sum_{j=1}^m z_{ij} \log \{ \pi_j f(x_{i}; \theta_j)\}.
+\ee
+Since for each $i$, $z_{ij}$ equals 0 except for a specific $j$ value,
+only one $\log \{ \pi_j f(x_{i}; \theta_j)\}$ actually enters
+the log likelihood function.
+
+We use $\bx$ for the vector of the $x_i$ and $\bX$ as its corresponding
+random vector and start the EM-algorithm with an initial mixing
+distribution with $m$ support points:
+\[
+G^{(0)}(\theta) = \sum_{j=1}^m \pi_j^{(0)} \ind (\theta_j^{(0)} \leq \theta).
+\]
+
+\noindent
+{\bf E-Step.} This step is to find the expected values of the missing
+data in the full data likelihood function. They are $\bz_i$ in the context
+of the finite mixture model. If the mixing distribution $G$ is given by
+$G^{(0)}$, its corresponding random variable has 
+conditional expectation given by
+\bea
+\bbE \{\bZ_{ij}|  \bX=\bx;  G^{(0)}\} 
+&=&
+\pr(\bZ_{ij} = 1| X_i = x_i; G^{(0)})\\
+&=&
+\frac{ f(x_i; \theta_j^{(0)}) \pr(\bZ_{ij} = 1; G^{(0)})}
+{\sum_{k=1}^m f(x_i; \theta_k^{(0)}) \pr(\bZ_{ik} = 1; G^{(0)})}\\
+&=&
+\frac{ \pi_j^{(0)} f(x_i; \theta_j^{(0)}) }
+{\sum_{k=1}^m \pi_k^{(0)} f(x_i; \theta_k^{(0)})}.
+\eea
+The first equality has utilized two facts: the expectation of an indicator random
+variable equals the probability of ``success''; only the $i$th observation is
+relevant to the subpopulation identity of the $i$th unit.
+The second equality comes from the standard Bayes formula.
+The third one spells out the probability of ``success'' if $G^{(0)}$
+is the true mixing distribution. The superscript ${(0)}$ reminds us
+that the corresponding quantities are from $G^{(0)}$,
+the initial mixing distribution.
+One should also note the expression is explicit and numerically
+easy to compute as long as the density function itself can be
+easily computed.
+
+We use notation $w_{ij}^{(0)}$ for $\bbE \{\bZ_{ij}|  \bX=\bx;  G^{(0)}\}$.
+Replacing $z_{ij}$ by $w_i^{(0)}$ in $\ell^c(G)$, we obtain
+a function which is usually denoted as
+\be
+\label{EM.eq1}
+Q(G; G^{(0)}) = \sum_{i=1}^n \sum_{j=1}^m w_{ij}^{(0)} \log \{ \pi_j f(x_{i}; \theta_j)\}.
+\ee
+In this expression, $Q$ is a function of $G$, and its functional form is determined by $G^{(0)}$.
+The E-Step ends at producing this function.
+
+\vs
+\noindent
+{\bf M-Step.} Given this $Q$ function, it is often simple to find a mixing distribution $G$
+having it maximized. Note that $Q$ has the following decomposition:
+\[
+Q(G; G^{(0)}) 
+= \sum_{j=1}^m \big \{ \sum_{i=1}^n w_{ij}^{(0)}\big \} \log (\pi_j)
++ 
+\sum_{j=1}^m \big \{  \sum_{i=1}^n w_{ij}^{(0)} \log f(x_{i}; \theta_j) \big \}.
+\]
+In this decomposition, two additive terms are functions of two separate
+parts of $G$.
+The first term is a function of mixing probabilities only.
+The second term is a function of subpopulation parameters only.
+Hence, we can search for the maxima of these two functions
+separately to find the overall solution.
+
+The algebraic form of the first term is identical to the log likelihood of a multinomial distribution.
+The maximization solution is given by
+\[
+\pi_j^{(1)} = n^{-1} \sum_{i=1}^n w_{ij}^{(0)}
+\]
+for $j=1, 2, \ldots, m$.
+
+The second term is further decomposed into the sum of $m$
+log likelihood functions, one for each subpopulation.
+When $f(x; \theta)$ is a member of classical parametric distribution
+family, then the maximization with respect to $\theta$ often has
+an explicit analytical solution.  With a generic $f(x; \theta)$, we cannot give
+an explicit expression but an abstract one:
+\[
+\theta_j^{(1)} = \arg \sup_\theta \{  \sum_{i=1}^n w_{ij}^{(0)} \log f(x_{i}; \theta_j) \}.
+\]
+
+The mixing distribution
+\[
+G^{(1)}(\theta) = \sum_{j=1}^m \pi_j^{(1)} \ind (\theta_j^{(1)} \leq \theta)
+\]
+ then replaces the role of $G^{(0)}$ and we go back to E-step.
+
+Iterating between E-step and M-step leads to a sequence of
+intermediate estimates of the mixing distribution: $G^{(k)}$. 
+Often, this sequence converges
+to at least a local maximum of $\ell_n(G)$.
+
+With some luck, the outcome of this limit is the global maximum.
+In most applications, one would try a number of $G^{(0)}$
+and compare the values of $\ell_n(G^{(k)})$ the EM-algorithm leads to.
+The one with the highest value will have its $G^{(k)}$ regarded
+as the maximum likelihood estimate of $G$.
+
+The algorithm stops after many iterations
+when the difference between $G^{(k)}$ and $G^{(k-1)}$ is considered
+too small to continue. Other convergence criteria may also be
+used.
+
+
+\subsection{Data Examples}
+Leroux and Puterman (1992)  and Chen and Kalbfleisch (1996)
+analyze data on the movements of a fetal lamb in each of
+240 consecutive 5-second intervals and propose a mixture of 
+Poisson distributions.
+The observations can be summarized by the following
+table.
+\[
+\begin{tabular}{ccccccccc}
+x & 0 & 1 & 2 & 3 & 4& 5& 6 & 7\\
+\mbox{freq}  & 182 & 41 & 12 & 2 &2 & 0& 0 & 1
+\end{tabular}
+\]
+%f = c(182, 41, 12, 2, 2, 0, 0 , 1)
+% x = 0:7
+
+It is easily seen that the distribution of the counts is over-dispersed.
+The sample mean is $0.358$ which is significantly
+smaller than the sample variance which is $0.658$ given that the
+sample size is $240$.
+
+A finite mixture model is very effective at explaining the
+over-dispersion. There is a general agreement that a
+finite Poisson mixture model with order $m=2$ is most
+suitable. We use this example to demonstrate the use of
+EM-algorithm for computing the MLE of the mixing
+distribution given $m=2$.
+
+Since the sample mean is $0.358$ and the data 
+contains a lot of zeros. Let us choose an initial
+mixing distribution with
+\[
+(\pi_1^{(0)}, \pi_2^{(0)}, \theta_1^{(0)}, \theta_2^{(0)})
+=
+(0.7, 0.3, 0.1, 4.0).
+\]
+We do not have more specific reasons behind the above choice.
+
+A simplistic implementation of EM-algorithm for this
+data set is as follows.
+
+\begin{verbatim}
+pp = 0.7;
+theta = c(0.1, 4.0)
+xx = c(rep(0, 182), rep(1, 41), rep(2, 12), 3, 3, 4, 4, 7)
+   #data inputted, initial mixing distribution chosen
+
+last = c(pp, theta)
+dd= 1
+while(dd > 0.000001) {
+temp1 = pp*dpois(xx, theta[1])
+temp2 = (1-pp)*dpois(xx, theta[2])
+w1 = temp1/(temp1+temp2)
+w2 = 1 - w1
+#E-step completed
+pp = mean(w1)
+theta[1] = sum(w1*xx)/sum(w1)
+theta[2] = sum(w2*xx)/sum(w2)
+#M-step completed
+updated = c(pp, theta)
+dd = sum((last - updated)^2)
+last = updated
+}
+print(updated)
+\end{verbatim}
+
+%tt = log(last[1]*dpois(xx, last[2])+(1-last[1])*dpois(xx, last[3]))
+%sum(tt)
+
+When the EM-algorithm converges, we get $\hat \pi_1 = 0.938$ and
+$\hat \theta_1 = 0.229$, $\hat \theta_2 = 2.307$. The likelihood
+value at this $\hat G$ equals $-186.99$ (based on the usual
+expression of the Poisson probability mass function).
+The fitted frequency vector is given by
+\[
+\begin{tabular}{ccccccccc}
+x & 0 & 1 & 2 & 3 & 4& 5& 6 & 7\\
+\mbox{freq}  & 182 & 41 & 12 & 2 &2 & 0& 0 & 1\\
+\mbox{fitted freq} & 180.4 & 44.5 & 8.6 & 3.4 &1.8 & 0.8& 0.3 & 0.1
+\end{tabular}
+\]
+
+
+\section{EM-algorithm for finite mixture models repeated}
+Let envisage a population made of a finite number of subpopulations, 
+each is governed by a specific distribution from some distribution family.
+Taking a random sample from a finite mixture model, we obtain
+a set of units without knowing their subpopulation identities.
+The resulting random variable has density function
+\[
+f(x; G)  = \sum_{j=1}^m \pi_j f(x; \theta_j)
+\]
+with $G$ denoting a mixing distribution on parameter space
+of $\theta$, $\Theta$, by assigning probability $\pi_j$ on $\theta_j$.
+
+Given a random sample of size $n$, $x_1, x_2, \ldots, x_n$,
+from this distribution, the log likelihood function is given by
+\be
+\label{EM.eq0}
+\ell_n(G) = \sum_{i=1}^n \log f(x_i; G).
+\ee
+Other than order $m$, we regard $\pi_j, \theta_j$ as parameters
+to be estimated.
+Computing the maximum likelihood estimate of $G$ is 
+to find the values of $m$ pairs of $\pi_j$ and $\theta_j$
+such that $\ell_n(G)$ is maximized.
+
+Taking advantage of the mixture model structure, EM-algorithm can often
+be effectively implemented to locate the location of the maximum
+point of the likelihood function.
+
+Conceptually, each observation $x$ from a mixture model is part
+of a complete vector observation $(x, z)$ where $z$ 
+takes values $j$ with probability $\pi_j$ for $j=1, 2, \ldots, m$.
+
+Suppose we have a set of complete observations in the form of
+$(x_i,z_i)$: $i=1, 2, \ldots, n$. The log likelihood function
+of the mixing distribution $G$ is given by
+\be
+\label{EM.eq1}
+\ell_c(G) 
+= 
+\sumin \sum_{j=1}^m \ind(z_i = j) \log \{ \pi_j f(x_{i}; \theta_j)\}.
+\ee
+Clearly, only one $\log \{ \pi_j f(x_{i}; \theta_j)\}$ actually enters
+the log likelihood function.
+
+We use $\bx$ for the vector of the $x_i$ and $\bX$ as its corresponding
+random vector and start the EM-algorithm with an initial mixing
+distribution with $m$ support points:
+\[
+G^{(0)}(\theta) = \sum_{j=1}^m \pi_j^{(0)} \ind (\theta_j^{(0)} \leq \theta).
+\]
+
+\noindent
+{\bf E-Step.} This step is to find the expected values of the missing
+data in the full data likelihood function.
+If the mixing distribution $G$ is given by
+$G^{(0)}$, its corresponding random variable has 
+conditional expectation given by
+\bea
+\bbE \{\ind(Z_i = j)|  \bX=\bx;  G^{(0)}\} 
+&=&
+\frac{ f(x_i; \theta_j^{(0)}) \pr(Z_i = j; G^{(0)})}
+{\sum_{k=1}^m f(x_i; \theta_k^{(0)}) \pr(Z_i = j; G^{(0)})}\\
+&=&
+\frac{ \pi_j^{(0)} f(x_i; \theta_j^{(0)}) }
+{\sum_{k=1}^m \pi_k^{(0)} f(x_i; \theta_k^{(0)})}.
+\eea
+The first equality has utilized two facts: the expectation of an indicator random
+variable equals the probability of ``success''; only the $i$th observation is
+relevant to the subpopulation identity of the $i$th unit.
+The second equality comes from the standard Bayes formula.
+The third one spells out the probability of ``success'' if $G^{(0)}$
+is the true mixing distribution. The superscript ${(0)}$ reminds us
+that the corresponding quantities are from $G^{(0)}$,
+the initial mixing distribution.
+One should also note the expression is explicit and numerically
+easy to compute as long as the density function itself can be
+easily computed.
+
+We use notation $w_{ij}^{(0)}$ for $\bbE \{\ind(Z_i = j) |  \bX=\bx;  G^{(0)}\}$.
+Replacing $\ind(Z_i = j)$ by $w_i^{(0)}$ in $\ell^c(G)$, we obtain
+a function which is usually denoted as
+\be
+\label{EM.eq1}
+Q(G; G^{(0)}) = \sum_{i=1}^n \sum_{j=1}^m w_{ij}^{(0)} \log \{ \pi_j f(x_{i}; \theta_j)\}.
+\ee
+In this expression, $Q$ is a function of $G$, 
+and its functional form is determined by $G^{(0)}$.
+The E-Step ends at producing this function.
+In other words, $Q(G; G^{(0)})$ is the conditional expectation of
+$\ell_c(G)$ when $\bX = \bx$ are given, and $G^{(0)}$ is regarded
+as the true mixing distribution behind $\bX$.
+
+\vs
+\noindent
+{\bf M-Step.} Given this $Q$ function, it is often simple to find a mixing distribution $G$
+having it maximized. Note that $Q$ has the following decomposition:
+\[
+Q(G; G^{(0)}) 
+= \sum_{j=1}^m \big \{ \sum_{i=1}^n w_{ij}^{(0)}\big \} \log (\pi_j)
++ 
+\sum_{j=1}^m \big \{  \sum_{i=1}^n w_{ij}^{(0)} \log f(x_{i}; \theta_j) \big \}.
+\]
+In this decomposition, two additive terms are functions of two separate
+parts of $G$.
+The first term is a function of mixing probabilities only.
+The second term is a function of subpopulation parameters only.
+Hence, we can search for the maxima of these two functions
+separately to find the overall solution.
+
+The algebraic form of the first term is identical to the log likelihood of 
+a multinomial distribution.
+The maximization solution is given by
+\[
+\pi_j^{(1)} = n^{-1} \sum_{i=1}^n w_{ij}^{(0)}
+\]
+for $j=1, 2, \ldots, m$.
+
+The second term is further decomposed into the sum of $m$
+log likelihood functions, one for each subpopulation.
+When $f(x; \theta)$ is a member of a classical parametric distribution
+family, then the maximization with respect to $\theta$ often has
+an explicit analytical solution.  With a generic $f(x; \theta)$, we cannot give
+an explicit expression but an abstract one:
+\[
+\theta_j^{(1)} = \arg \sup_\theta \{  \sum_{i=1}^n w_{ij}^{(0)} \log f(x_{i}; \theta_j) \}
+\]
+for $j=1, 2, \ldots, m$.
+
+The mixing distribution
+\[
+G^{(1)}(\theta) = \sum_{j=1}^m \pi_j^{(1)} \ind (\theta_j^{(1)} \leq \theta)
+\]
+is an updated estimate of $G$ from $G^{(0)}$ based on data.
+We then replace the role of $G^{(0)}$ by $G^{(1)}$ and go back to E-step.
+
+Iterating between E-step and M-step leads to a sequence of
+intermediate estimates of the mixing distribution: $G^{(k)}$. 
+Often, this sequence converges
+to at least a local maximum of $\ell_n(G)$.
+
+With some luck, the outcome of this limit is the global maximum.
+In most applications, one would try a number of $G^{(0)}$
+and compare the values of $\ell_n(G^{(k)})$ the EM-algorithm leads to.
+The one with the highest value will have its $G^{(k)}$ regarded
+as the maximum likelihood estimate of $G$.
+
+The algorithm stops after many iterations
+when the difference between $G^{(k)}$ and $G^{(k-1)}$ is considered
+too small to continue. Other convergence criteria may also be
+used.
+
+\section{Assignment problems}
+\begin{enumerate}
+\item 
+
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random variables from Weibull distribution with fixed scale parameter, whose density function is given by 
+\[ 
+f (x; \theta) = \theta x^{ \theta - 1 } \exp ( - x^{ \theta } ), \, \, \, x > 0, \theta > 0.  
+\] 
+(You may want to first go over the Example 6.1 in the Lecture Notes.) 
+
+Suppose we observe the sample data 
+
+\begin{verbatim} 
+0.6944788, 0.3285051, 0.7165376, 0.8865894, 1.0858084, 
+0.4040884, 1.0538935, 1.2487677, 1.1523552, 0.9977360, 
+0.7251880, 1.0716697, 1.0382114, 1.1535934, 0.9175693, 
+0.5537849, 0.9701821, 0.5486354, 1.0168818, 0.5193687 
+\end{verbatim} 
+
+(a) For this sample, numerically find an upper bound $ \theta_{1} $ and a lower bound $ \theta_{2} $, so that the maximum point of the likelihood function is within the interval $ [ \theta_{1}, \theta_{2} ] $.   
+
+(b) Use a bisection algorithm (as discussed in section 6.2 in Lecture Notes) to numerically find the MLE of $ \theta $ for this observed sample. 
+
+You need to attach your code, preferably in R. 
+ 
+
+\item 
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random variables from Weibull distribution with fixed scale parameter. 
+
+(a) Work out analytically the updating formulas for the parameter $ \theta $ in the 
+Newton-Raphson method (as discussed in section 6.2 in Lecture Notes). 
+
+In other words, how do you obtain the value $ \theta^{ (k + 1) } $ 
+in the $ (k + 1) $-th iterative step based on the value $ \theta^{ (k) } $. 
+
+(b) For the same observed sample as in Problem 1, numerically find the MLE of the 
+parameter $ \theta $ using the Newton-Raphson algorithm. Start from the initial value be $\theta^{(0)} = 1$ and report
+the first 5 values of the iteration.
+
+Code is part of the required solution.
+
+\item
+Let $f(x; \theta)$ be the \pmf of Poisson distribution with mean $\theta$.
+Derive the KL divergence function $K(\theta_1, \theta_2)$.
+
+Repeat this problem when $f(x; \alpha) =\{\Gamma(\alpha)\}^{-1}  x^{\alpha-1} \exp( - x)$.
+\end{enumerate}
+
+

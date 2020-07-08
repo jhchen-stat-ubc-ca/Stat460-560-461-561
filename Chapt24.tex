@@ -1,0 +1,806 @@
+\chapter{Multiple comparison}
+
+One-way ANOVA is a typical method to compare
+a number of treatments in terms of a specific 
+measurement of some experimental outcomes.
+For example, an experiment might be
+designed to compare the volumes of
+harvest when different fertilizers are used.
+
+Let the number of treatments be $k$. 
+Let $N = n_1 + n_2 + \cdots + n_k$ experimental units 
+randomly assigned to
+$k$ treatments with $n_1, n_2, \ldots, n_k$ units each.
+Let the response variable be denoted
+as $y$. Suppose the $j$th treatment is
+replicated $n_j$ times. The output of the experiment can
+be displayed as
+
+\ba
+&y_{11}, y_{12}, \ldots, y_{1n_1};\\
+&y_{21}, y_{22}, \ldots, y_{2n_2};\\
+&\ldots, \ldots\\
+&y_{k1}, y_{k2}, \ldots, y_{k n_k}.
+\ea
+
+The output $y_{ij}$ is the reading of the unit
+assigned to the $i$th treatment and the $j$th replication. 
+
+A linear model for this set up is
+\[
+y_{ij} = \eta + \tau_i + \epsilon_{ij}
+\]
+for $i= 1, 2, \ldots, k$, and $j=1, 2, \ldots, n_i$.
+We assume $\eta$ is the overall mean, 
+$\tau_i$ is the mean response from
+the $i$th treatment after subtracting the overall mean. 
+The error term $\epsilon_{ij}$
+is what cannot be explained by {\bf the treatment effect} $\tau_i$.
+The statistical analysis is often done based on the assumption that
+\[
+\epsilon_{ij} \sim N(0, \sigma^2)
+\]
+and they are assumed independent of each other. 
+The normality assumption and the equal variance assumption are the ones
+that may be violated in the real world. 
+The decomposition of the treatment means is always feasible.
+
+
+\section{Analysis of variance for one-way layout.}
+
+Let 
+\[
+\bar y_{\cdot \cdot} = N^{-1} \sum_{i=1}^k \sum_{j=1}^{n_i} y_{ij}
+\]
+be the over all sample mean.
+Let
+\[
+\bar y_{i \cdot} = n_i^{-1} \sum_{j=1}^{n_i} y_{ij}
+\]
+be the sample mean restricted to samples from the $i$th treatment.
+In general, whenever an index is replaced by a dot, the
+resulting notation represents the sample mean over the corresponding
+index. For example, $\bar y_{\cdot\, 1}$ would be the average of
+$y_{11}, y_{21}, \ldots, y_{k1}$. 
+
+Now we may decompose the response as
+\[
+y_{ij} 
+= \bar y_{\cdot \cdot} + ( \bar y_{i \cdot} - \bar y_{\cdot \cdot})
++ ( y_{i j} - \bar y_{i \cdot})
+\]
+which will also be written as
+\[
+y_{ij} = \hat \eta + \hat \tau_i + r_{ij}.
+\]
+These quantities marked with hats are estimates/estimators of the corresponding
+parameters in the linear model. 
+
+The sum of squares in $( \bar y_{i \cdot} - \bar y_{\cdot \cdot})$ represents
+the variation in the mean responses
+between different levels of the factor (or between treatments),
+while $r_{ij} = ( y_{i j} - \bar y_{i \cdot})$ represents the residual variations.
+The residual variation is the variation not explainable by the treatment effect.
+
+The analysis of variance aims to compare the relative sizes of these two
+sources of variation. The resulting ANOVA table is as follows.
+
+\vs \vs \noindent
+\begin{center}
+{\bf ANOVA for One-Way Layout} \vs\vs\\
+\begin{tabular}{ccc} \hline
+Source & D.F.& SS \\ \hline
+Treatment & $k-1$ & $\sum_{i=1}^k n_i ( \bar y_{i \cdot} - \bar y_{\cdot \cdot})^2$\\
+Residual & $N-k$ & $\sum_{i=1}^k \sum_{j=1}^{n_i} ( y_{i j} - \bar y_{i \cdot})^2$\\
+Total & $N-1$ & $\sum_{i=1}^k \sum_{j=1}^{n_i} ( y_{i j} - \bar y_{\cdot \cdot})^2$ \\
+\hline
+\end{tabular}
+\end{center}
+\vs
+
+One may notice that each sum of squares contain $N$ terms, when
+duplicating entrances are also counted. 
+Consider the test problem on the null hypothesis:
+\[
+H_0:~ \tau_1 = \tau_2 = \cdots = \tau_k.
+\]
+The alternative hypothesis is that not all population means are equal. 
+The test statistic we commonly use is 
+\[
+F 
+= 
+\frac{ (k-1)^{-1} \sum_{i=1}^k n_i ( \bar y_{i \cdot} - \bar y_{\cdot \cdot})^2}
+{(N-k)^{-1} \sum_{i=1}^k \sum_{j=1}^{n_i} ( y_{i j} - \bar y_{\cdot \cdot})^2}
+\]
+which, under normality/equal-variance and $H_0$, has F-distribution with
+$k-1$ and $N-k$ degrees of freedom. This might be an opportunity for us
+to refresh the memory on the desired properties a test statistics.
+It is also a useful exercise to refresh the memory of what a UMPU test is.
+
+If $H_0$ is true, the randomness of the test statistic $F$ is 
+completely determined and it does not depend on any external factors. 
+Hence, the following p-value computation is justified:
+\[
+p = \pr( F > F_{obs}).
+\]
+Rejecting $H_0$  when $p < 0.05$ is a common practice.
+
+\section{Multiple comparison}
+
+Once (and if) the null model is rejected, it is natural to ask: which
+pair or pairs of treatments are the culprits that lead to the rejection? 
+The rejection may be caused
+by a single treatment that has substantially different
+effect from the rest. 
+It may also be caused by smaller differences between all treatments.
+Of course, the rejection may be erroneous. 
+
+Regardless of these possibilities, let us ask the question
+on which pairs of treatments are significantly different?
+The technique used to addressing this
+question is called {\bf multiple comparison}, because
+many pairs are being compared {\bf simultaneously}.
+
+Borrowing the idea of two-sample test, we may define
+\[
+t_{ij} = \frac{ \bar y_{j \cdot} - \bar y_{i \cdot} }{\sqrt{ (1/n_i + 1/n_j) \hat \sigma^2}}
+\]
+where $\hat \sigma^2$ is the variance estimator from the ANOVA table. 
+The denominator of this t-statistic is different from the usual two-sample t-test.
+It is obtained by pooling information from all $k$-treatments. 
+Each $t_{ij}$ has t-distribution with $N-k$ degrees
+of freedom.  Hence, if a level-$\alpha$ test is desired, 
+we may reject $H_0: \mu_i= \mu_j$ when
+\[
+|t_{ij}| > t( 1-\alpha/2; N-k).
+\]
+This test has probability $\alpha$ to falsely reject the hypothesis
+that the corresponding pair of treatment means are equal.
+
+Suppose we set $\alpha = 0.05$ as in common practice and $k=5$. 
+There will be 10 such pairs of treatments. 
+Even if all pairs of treatments are not different, there will a chance about
+5\% to declare any one of them significant. 
+The chance of declaring one of them is
+significant by a simple t-test is likely much larger, 
+approaching possibly 50\%.
+Such a high probability of false rejection
+is clearly not acceptable. 
+
+\section{The Bonferroni Method}
+To address the problem of inflated type I error
+in multiple comparison, we could simply set up a high 
+standard for every pair of $i$ and $j$  such that
+the overall type I error is guaranteed to be lower than 
+pre-specified value $\alpha$.
+Let $k' = k(k-1)/2$ be the number of possible treatment pairs. 
+We may reject $H_{ij}: \mu_i = \mu_j$ only if
+\[
+|t_{ij}| > t( 1-\alpha/2k'; N-k).
+\]
+Since the probability that any pair of treatments
+wrongfully judged different is no more than
+$\alpha/k'$ (note this is a two-sided test), and there are $k'$ such pairs, it is simple
+to see that the chance that at least one pair to be declared different, when 
+none of them are difference, is controlled tightly by $100\alpha \%$.
+
+\section{Tukey Method}
+Particularly when $k$ is large (5 or more), the Bonferroni method is too conservative.
+It means that the actual type I error can be far lower than the targeted level $100\alpha\%$.
+Having a small type I error is not strictly wrong in term of being a valid test. 
+The real drawback of such a test is that this increases the type II error. 
+When $k$ is large, the statistical power of detecting any departure from
+the null hypothesis is too small if the conservative Bonferroni method is used. 
+If such a method is used as standard, scientists have to work 
+unjustifiably harder to prove their point (even if their point is valid).
+
+Let us define
+\[
+t^* = \sqrt{2} \max \{ |t_{ij}| \}.
+\]
+It is seen that $t^*$ has a distribution which does not depend on 
+any unknown parameters under the null hypothesis that all
+treatment effects are equal. However, its distribution does depend on $k$ and $N-k$, 
+and in fact, also on how $N$ units are divided and assigned to $k$
+treatments. 
+It is a test statistic with almost all desirable properties
+we specified for a pure statistical significance test.
+Unlike t-distribution, however,
+the \cdf of this distribution is not as well documented.
+When all $n_j$ are equal, the distribution might be named after Tukey.
+Let $\text{qtukey}(1- \alpha; k, N-k)$ be its upper quantile  when all $n_i$ are equal. 
+That is, under that restriction,
+\[
+P\{ t^* > \text{qtukey}(1- \alpha; k, N-k) \} = \alpha
+\]
+for any $\alpha \in (0, 1)$.
+We may reject the hypothesis 
+that the $i$ and $j$ pair of treatments have equal mean
+when $|t_{ij}| > \text{qtukey}(1- \alpha; k, N-k)/\sqrt{2}$. 
+
+The type I error of this approach is only approximate 
+when $n_1, \cdots, n_k$ are
+not all equal. In fact, it is bounded by $\alpha$ which
+is proved by someone based on my memory.
+
+My observation: Tukey's method is not so much as a new method.
+It simply requires us to use a critical value so that the
+probability of wrongfully rejecting any pair of $\tau_i = \tau_j$
+is below 100$\alpha$\%.
+
+\vs \noindent
+{\bf Pitfalls of Bonferroni and Tukey Methods}
+In the case of Bonferroni, the adjustment is too conservative.
+If we hope to test $1000$ hypotheses based on a single data
+set, then the significance level would be placed at $0.005\%$.
+If it is applied to a t-test with $n=20$ degrees of freedom,
+the critical value is $5.134$. This is to be compared to $2.09$
+if only one hypothesis is being tested.
+The actual type I error of the test is likely
+much lower (Assignment problem).
+
+As a side remark, in statistical consulting practice, we often
+look into many aspects of data. Based on what we spot,
+various hypotheses are proposed and then tested. 
+In the end, we report the p-value on the hypothesis that is below 0.05 (or several of such
+p-values). 
+The practice seriously violates the statistical principle we preach.
+Nonetheless, statisticians do it routinely and our collaborators
+will not be pleased otherwise.
+At the same time, to avoid this problem,
+scientific journals intend to go so far as prohibiting the use
+of p-value as a justification of the scientific findings.
+These problems are further compounded by the fact the p-value
+is not carefully defined in the first place.
+
+In the case of Tukey Method, I feel that it is specifically designed
+for one-way anova. I am not sure of any other situations where it is applied. 
+Regardless, my understanding is that it simply
+requires statisticians to make sure the probability of
+wrongfully rejecting even one of many hypotheses is below
+$\alpha$, the pre-specified level. 
+This principle leads to a technical issue: we may not be
+able to find even a well approximated critical value.
+
+\section{False discovery rate}
+In modern statistical applications, we are confronted with a problem
+that is radically different from the one-way anova.
+Due to bio and info technical advances, we can now
+cost-effectively and timely take measurements of
+thousands of genes expression levels from each subject.
+It is of interest to identify some genes whose expression
+levels are different on different groups of people.
+Typically, one group is made of health controls and
+another group is made of patients of a specific type
+of disease. The genes that are significantly differentially
+expressed might be related to the disease.
+
+There are two aspects of this new problem.
+
+First, if 500,000 genes are inspected on 50+50 subjects,
+even if we use $\alpha = 0.001$ to test for each hypothesis
+that a gene is significantly differentially expressed,
+and that none of them are differentially expressed,
+500 of them will likely be found statistically significant.
+This is bad.
+
+Second, suppose a handful of genes are indeed differentially
+expressed but the differences are not exceedingly large. 
+Applying Bonferroni method likely results in none of them
+judged significant. The high standard set by Bonferroni method
+may fail the researchers for this wrong reason.
+
+The dilemma seems solved by giving up the notion of
+type I error. When thousands and thousands hypotheses
+are examined simultaneously, we probably should not
+mind to have a larger probability of ``wrongfully declare a
+few genes significantly differently expressed''.
+Rather, we should probably ask: among many genes
+judged significantly differently expressed, what percentage
+of them are falsely significant?
+
+Because ``rejecting a null hypothesis'' in such context is
+regarded as a scientific discovery, the percentage
+of false significant outcomes among all declared significant
+outcomes is called ``false discovery rate''.
+In such applications, controlling the false discovery rate
+is regarded as a better principle. A widely accepted
+standard is again 5\%.
+
+In comparison, the classical practice of controlling
+the overall type I error is renamed as ``family-wise
+error rate''.
+
+There is a need to be reminded about the
+difference between ``statistical significance'' and the
+``real world'' significance here. How large a difference
+in the expression levels is scientifically significant should
+be judged by scientists. When two expression levels
+are judged statistically significantly different, it means
+that we have sufficient statistical evidence to declare that
+difference is genuine. However, the magnitude of
+the difference could be so small that it is scientifically
+meaningless. 
+
+\section{Method of Benjamini and Hochberg}
+
+We will only discuss the result of Benjamini and Hochberg
+(1995, JRSSB). There have been a lot of new developments
+and I have not followed them very closely.
+
+\vs\noindent
+{\bf False discovery rate}.
+Suppose $m$ hypotheses are being tested.
+Let $m_0$ denote the number of them that are true.
+Let $R$ the be number of hypothesis rejected. Note that
+$R$ is random.
+
+We have decomposition
+\[
+m_0 = U + V
+\]
+with $U$ of them are tested non-significant, and $V$ of them
+are tested significant.
+
+Similarly, $m-m_0 = T + S$: $T$ of them are tested non-significant, 
+and $S$ of them are tested significant.
+
+The total number of hypotheses tested significant is $R = V + S$.
+The total number of hypotheses tested non
+significant is $m - R = U + T$.
+
+When $R > 0$, the percentage of false discovery is $V/R$.
+When $R = 0$, there cannot be any false discovery.
+Thus, they propose to define
+\[
+Q = \frac{V}{V+S} \ind(V+S > 0).
+\]
+Clearly, this value is not observed and
+is random in any applications.
+
+The false discovery rate (FDR) is defined to be
+\[
+Q_e = \bbE(Q).
+\]
+In comparison, the type I error in the current situation is also called
+family-wise error rate (FWER). It measures the probability of
+having at least one hypotheses rejected when all of them
+are truthful.
+
+According to Benjamini and Hochberg (direct quote):
+
+(a) If all null hypotheses are true, the FDR is equivalent to the FWER: 
+in this case $s=0$ and $v=r$, so if $v=0$
+then $Q=0$, and if $v>0$ then $Q=1$, 
+leading to 
+\[
+\pr(V \geq 1) = \bbE(Q) = Q_e.
+\]
+Therefore control of the FDR implies the control of the FWER in the weak sense. 
+
+(b) When $m_0 < m$, the FDR is smaller than or equal to the FWER:
+ in this case, if $v>0$ then $v/r \leq 1$, leading to $\ind (V \geq 1) \geq Q$.
+ Taking expectations on both sides we obtain 
+ $\pr(V \geq 1) \geq Q_e$, and the two can be quite different. 
+ As a result, any procedure that controls the FWER also controls the FDR. 
+ However, if a procedure controls the FDR only, 
+ it is less stringent and a gain in power is expected. 
+ In particular, the larger the number of the false null hypotheses is, 
+ the larger $S$ tends to be, and so is the difference between the error rates. 
+ As a result, the potential for increase in power is larger 
+ when more of the hypotheses are untrue.
+
+\section{How to apply this principle?}
+
+Suppose the hypotheses to be tested are $H_1, H_2, \ldots, H_m$.
+Whatever methods are used, the outcome of each test is summarized
+by a p-value: $P_1, \ldots, P_m$. We assume these p-values calculated
+based on valid tests.
+Sorting these values to get $P^{(1)} \leq P^{(2)} \leq \cdots \leq P^{(m)}$.
+Their corresponding hypotheses are denoted as $H_0^{(i)}$ accordingly.
+Select an upper bound for the false discovery rate and denote it as $q^*$.
+
+\vs \noindent
+{\bf The BH procedure}:
+
+\vs\vs \noindent
+{\bf Step I}
+Let $k$ be the largest $i$ for which $P^{(i)} \leq (i/m) q^*$: namely
+\[
+k = \max \{ i:  ~P^{(i)} \leq (i/m) q^* \};
+\]
+
+\vs\vs \noindent
+{\bf Step II}
+Reject all $H_{(i)}$, $i=1, 2, \ldots, k$.
+
+
+\vs\vs\vs
+\noindent
+Numerically, the BH procedure can be carried out as follows
+
+\begin{itemize}
+\item
+If $p^{(m)} \leq q^*$, reject all null hypotheses and stop;
+
+\item
+else if $p^{(m-1)} \leq \frac{m-1}{m}q^*$, reject these $(m-1)$ null hypotheses and stop;
+
+\item
+else if $p^{(m-2)} \leq \frac{m-2}{m}q^*$, reject these $(m-2)$ null hypotheses and stop;
+
+\item
+Continue the above process until the last step: 
+if $p^{(1)} \leq (1/m)q^*$, reject $H_0^{(1)}$ step;
+
+\item
+else, reject none and terminate.
+\end{itemize}
+
+
+Moral of this procedure: for the targeted application, it is not a
+serious issue if one falsely declares 10 genes are differentially
+expressed for diabetes patients when 2 of them are not.
+We can figure out the true set subsequently. The procedure
+is more effective than to declare none of them are significantly
+differentially expressed.
+
+Suppose we choose $q^* = 0.05$. The procedure
+will have at least one gene declared significantly differentially expressed
+when
+\[
+p_{(1)} \leq 0.05/m.
+\]
+Thus, if the Bonferroni's method reject ``all $H_0$'s are true'',
+then at least one of them is rejected by the Benjamini-Hochberg
+procedure. The new procedure may rejects many
+individual $H_0$'s.
+
+For instance, the Bonferroni's method rejects $H_0^{(2)}$ only if
+\[
+p_{(1)} \leq p_{(2)} \leq 0.05/m
+\]
+but the FDR method will do so when
+\[
+p_{(1)} \leq p_{(2)} \leq (2/m) \times 0.05.
+\]
+Hence, FDR method will have more hypotheses rejected
+in long run. Rejecting both $H_0^{(1)}$ and $H_0^{(2)}$
+requires only $p_{(2)} \leq (2/m)*q^*$. 
+
+
+\section{Theory and proof}
+
+\begin{theorem}
+For independent test statistics and for any configuration of false 
+null hypotheses, the Benjamini-Hochberg procedure controls the FDR at $q^*$.
+\end{theorem}
+
+\vs
+{\bf Remark}: by ``independent test statistics'', we assume that the p-values
+are independent of each other, when they are regarded as random
+variables. When a null hypothesis is true, its corresponding p-value,
+however it is obtained as long as it is valid, has uniform [0, 1]
+distribution.
+
+\begin{lemma} 
+Consider the problem when the Benjamini-Hochberg procedure
+is applied to $m$ null hypothesis.
+For any $0 \leq m_0 \leq m$,
+independent p-values corresponding to true null hypotheses, 
+and for any values that the $m_1 = m - m_0$
+p-values corresponding to the false null hypotheses can take, 
+the Benjamini-Hochberg procedure satisfies the inequality
+\[
+\bbE \{Q| P_{m_0+1} = p_1, \ldots, P_m = p_{m_1}) \leq (m_0/m) q^*.
+\]
+\end{lemma}
+
+\vs
+\noindent
+{\bf Interpreting this lemma}:
+Suppose that $m_1$ of the hypotheses are false. 
+Whatever the joint distribution of their corresponding
+p-values, integrating inequality in the lemma
+ we obtain 
+ \[
+ \bbE(Q) \leq (m_0/m) q^* \leq q^*
+ \]
+and the FDR is controlled.
+
+Namely, the conclusion of the theorem is implied by this lemma.
+
+The independence of the test statistics corresponding to the false 
+null hypotheses is not needed for the proof of the theorem.
+
+\vs \noindent
+{\bf Proof of the Lemma}.
+Recall $m$ is the number of hypotheses; $m_0$ is
+the number of true hypotheses.
+
+Denote $H_0^{(i)}$ and $P'_{(i)}$, $i=1, 2, \ldots, m_0$ 
+the true null hypotheses and their p-values, with p-values
+in increasing order. $P'_{(i)}$, $i=1, 2, \ldots, m_0$
+are order statistics of $m_0$ iid uniform [0, 1] random
+variables. 
+
+Denote false null hypotheses as
+$H_f^{(i)}$: $i=m_0+1, m_0 + 2, \ldots, m$.
+Their p-values as random variables
+will be denoted as $P_i$, capitalized P and indexed by $i$. 
+Their realized values are denoted as $p_1 \leq p_2 \leq \ldots \leq p_{m_1}$.
+
+
+The proof is obtained by using mathematical induction.
+We work on a few simple cases first before truly starting
+the induction.
+
+\vs
+\noindent
+{\bf
+Case I}: The case $m=1$ is immediate. 
+
+(a) $m_1=1$ so that $m_0 = 0$. 
+Hence, $Q\equiv 0$ and
+\[
+\bbE(Q|P_1) = 0 \leq \frac{m_0}{m} q^*.
+\]
+
+(b) $m_1=0$ so that $m_0 = 1$.
+Hence
+\[
+Q = \ind ( P'_{(1)} < q^*).
+\]
+Thus, there is nothing to condition on. We have
+\[
+\bbE(Q) = P( P'_{(1)} < q^*) = q^* =  \frac{m_0}{m} q^*
+\]
+
+Combining (a) and (b), we find the conclusion of the lemma
+is true for the case where $m=1$.
+
+\vs
+\noindent
+{\bf Case II}: The case $m=2$.
+
+(a) $m_1=2$ so that $m_0 = 0$. 
+In this case, $Q\equiv 0$ and
+\[
+\bbE(Q |P_1, P_2) = 0 \leq \frac{m_0}{m} q^*.
+\]
+
+(b) $m_1=1$ so that $m_0 = 1$. 
+In this case, $Q$ can take values 0, 1/2, and 1.
+
+When $P_1 > q^*$, $H_f^{(2)}$ is never rejected.
+$H_0^{(1)}$ is rejected when $P'_{(1)} < 0.5 q^*$.
+Hence, we have
+\[
+\bbE(Q|P_1 > q^*) 
+=
+P( P'_{(1)} \leq 0.5 q^*) = 0.5 q^* 
+= \frac{m_0}{m} q^*;
+\]
+
+When $P_1 < q^*$, both $H_0^{(1)}$ and
+$H_f^{(2)}$ are rejected if $p_{(1)} < q^*$.
+When this happens, $Q = 0.5$;
+otherwise, $Q = 0$.
+Hence,
+\[
+\bbE(Q|P_1 < q^*) 
+=
+(0.5) P( P'_{(1)} < q^* | P_1 < q^*)
+= 0.5 q^* 
+= \frac{m_0}{m} q^*.
+\]
+
+(c) $m_1=0$ so that $m_0 = 2$. 
+In this case, any rejection leads to $Q = 1$.
+There is nothing to be conditioned on.
+Hence,
+\ba
+\bbE(Q) 
+&=&
+ P\{ P'_{(1)} < (1/2) q^* \mbox{~or~} P'_{(2)} <  (2/2) q^* \}\\
+&=&
+P\{P'_{(1)} < (1/2) q^* \} + P\{ P'_{(1)} > (1/2) q^*, P'_{(2)} <  (2/2) q^* \}\\
+&=&
+1- (1-.5 q^*)^2 + (0.5q^*)^2 \\
+&=& q^* = (m_0/m)q^*.
+\ea
+
+Combining (a), (b) and (c), we find the conclusion of the lemma
+is true for the case where $m=2$.
+
+\vs
+\noindent
+{\bf Induction assumption}
+Assume that the lemma is true for any $m \leq N-1$.
+We work on proving this lemma when $m=N$.
+
+Suppose $m_0 = 0$ so that all null hypotheses are false.
+The false discovery rate $Q \equiv 0$. Hence, 
+\[
+\bbE\{Q| P_{m_0+1} = p_1, \ldots, P_m = p_{m_1}) = 0 \leq (m_0/m) q^*.
+\]
+That is, the lemma is true when $m=k$  and $m_0 = 0$.
+
+Thus, we need only discuss the situation where
+$m$ can take any value, and $m_0 > 0$.
+
+Let $j_0$ be the largest $0 \leq j \leq m_1$ satisfying 
+\[
+p_j \leq \frac{m_0 + j}{N} q^*.
+\]
+Note that these are p-values corresponding to false null hypotheses.
+Denote 
+\[
+p'' = \frac{m_0 + j_0}{N} q^*.
+\]
+This value will be used as cut-off point.
+
+\vs
+\noindent
+{\bf The key steps of the proof start from here}
+
+\vs
+\noindent
+{\bf Step 1}
+Conditioning on $P'_{(m_0)}$, the largest p-value
+in the group of true null hypotheses, we find
+\ba
+&\hspace{-15em}
+\bbE(Q|P_{m_0+1} = p_1, \ldots, P_m = p_{m_1})\\
+&=
+\int_0^{p''}
+\bbE(Q| P'_{m_0} = p, P_{m_0+1} = p_1, \ldots, P_m = p_{m_1}) f_{m_0}(p) dp\\
+&+
+\int_{p''}^1
+\bbE(Q| P'_{m_0} = p, P_{m_0+1} = p_1, \ldots, P_m = p_{m_1}) f_{m_0}(p) dp
+\ea
+with $f_{m_0}(p) = m_0 p^{(m_0-1)}$ being the density function of $P'_{(m_0)}$.
+We will work out an upper bound for each of these two integrations.
+
+\vs
+\noindent
+{\bf Step 2}
+Analyzing the integration in two intervals:
+
+\vs
+In the {\bf first integral}, 
+we are dealing with the situation where $p \leq p''$
+because the integration is over the region $[0, p'']$.
+In this case, the BH procedure will
+have all $m_0$ true null, plus $j_0$ false hypotheses rejected. 
+The false discovery rate is hence
+\[
+Q = m_0/(m_0 + j_0).
+\]
+Substituting this value into the first integral, and noting the density function of
+$f_{m_0}(p)$, we have
+ \[
+ \int_0^{p''} \{\cdot \} dp 
+ = 
+ \{m_0/(m_0 + j_0)\} \int_0^{p''} m_0 p^{m_0-1} dp 
+ = 
+ \{m_0/(m_0 + j_0)\} (p'')^{m_0}.
+ \]
+Recall $p'' = \frac{m_0 + j_0}{N} q^*$, 
+we get
+ \[
+ \{m_0/(m_0 + j_0)\} (p'')^{m_0}
+ \leq
+ \{m_0/(m_0 + j_0)\} (p'')^{m_0-1} \left \{ \frac{m_0 + j_0}{N} q^* \right \}
+ =
+ \frac{m_0}{N} q^*(p'')^{m_0-1}.
+ \]
+ Now keep this result in this form and work on the second integral.
+ 
+ \vs
+In the {\bf the second integral}, by definition of $j_0$, the largest p-value
+corresponding true $H_0$ satisfies
+\[
+P'_{(m_0)} = p \geq p'' = \frac{m_0 + j_0}{N} q^*
+\]
+and $p_{j_0} \leq p''$.
+
+Let $j$ be the integer satisfying
+\[
+p_{j_0} < p_j \leq P'_{(m_0)} = p < p_{j+1}.
+\]
+Note that the value $p$ exceeds many more p-values of the
+false null hypothesis.
+If such a $j$ does not exist, it implies
+\[
+p_{j_0} \leq p'' < P'_{(m_0)} = p < p_{j_0+1}
+\]
+which occurs when the value $p$ is barely larger than $p'' = \frac{m_0 + j_0}{N} q^*$.
+If so, $j = j_0$.
+{\bf Now we regard $j$ as fixed and satisfies one of two above inequalities}.
+Namely, we will work on conditional probability.
+
+Because of the way by which $j_0$ and $p''$ are defined, 
+no hypothesis can be rejected as a result of the values of
+\[
+p, p_{j+1}, \ldots, p_{m_1}.
+\]
+That is, none of $H_0^{(m_0)}$, $H_f^{(m_0+j+1)}$, $H_f^{(m_0+j+2)}$, 
+$\ldots$, 
+$H_f^{(m_0+m_1)}$ are rejected.
+{\bf Reminder: $j$ is fixed value in this argument}.
+Hence, the pool of hypotheses that might be rejected is
+shrunk to
+\[
+H_0^{(i)}: ~i=1, 2, \ldots, m_0-1; ~~~ H_f^{i}: i=m_0+1, m_0+2, \ldots, m_0 + j.
+\]
+There are $m_0 + j-1 < N$ of hypotheses in this pool.
+
+In this pool of null hypotheses, whether or not a hypothesis is {\it true and false}, 
+get their p-values ordered together to obtain hypotheses
+$\tilde H_0^{(i)}$, $i=1, 2, \ldots, m+j-1$.
+A hypothesis $\tilde H_0^{(i)}$ is rejected only if there exists
+$k$, $i \leq k \leq m_0 + j - 1$,
+for which $\tilde p_{(k)} \leq \{k/(m+1)\} q^*$.
+Namely, we look for the largest $k$ such that
+\be
+\label{eq24.7}
+\frac{\tilde p_{(k)}}{p} \leq \frac{k}{m_0 + j - 1} \frac{m_0 + j - 1}{Np} q^*.
+\ee
+We now explain that this corresponding to a BH procedure
+with different $m$, $m_0$ and $q^*$ values.
+
+When conditioning on $P'_{(m_0)} = p$,
+$P_i'/p$ are iid U(0, 1) random variables (before sorting).
+Also, $\{p_i/p, ~i=1, 2, \ldots, j\}$,
+are numbers  between 0 and 1
+corresponding to false null hypotheses
+($H_f^{(m_0+1)}$, $\ldots$, $H_f^{(m_0+j)}$).
+
+Using inequality \eqref{eq24.7} to test the
+$m_0 + j - 1 = m' < N$ hypotheses is equivalent to {\bf
+the BH procedure},  with the constant 
+\[
+\tilde q^* = \frac{(m_0 + j - 1)}{N p} q^*
+\]
+taking the role of $q^*$.
+
+Applying now the induction hypothesis to this procedure
+in which the total number of hypothesis being tested is
+\[
+\tilde m = m_0 + j - 1 < N,
+\]
+we have 
+\ba
+\bbE(Q| P'_{(m_0)} = p, P_{m_0+1} = p_1, \ldots, P_m = p_{m_1})
+&\leq&
+\frac{m_0-1}{m'} \tilde q^*\\
+&=&
+\frac{m_0-1}{m_0 + j - 1} \frac{m_0 + j - 1}{Np} q^*\\
+&=&
+\frac{m_0-1}{Np} q^*.
+\ea
+The above bound depends on $p$, but not on the segment 
+$p_j < p < p_{j+1}$ for which it was evaluated.
+(That is, whichever fixed $j$ is under consideration).
+ 
+Therefore, the second integral
+ \[
+ \int_{p''}^1
+\bbE(Q| P'_{(m_0)} = p, P_{m_0+1}, \ldots, P_m) f_{m_0}(p) dp
+\leq
+ \int_{p''}^1
+\frac{m_0-1}{Np} q^* ~m_0 p^{(m_0-1)} dp
+\]
+The outcome of the integration is
+\[
+\frac{m_0}{N} q^* \int_{p''}^1 (m_0-1) p^{(m_0-2)}dp 
+=
+\frac{m_0}{N} q^* ( 1 - \{p''\}^{(m_0-1)} ).
+\]
+Adding two upper bounds on integrations 
+completes the proof of the lemma for the case of $m = N$.
+
+Now the induction is completed and the lemma is fully proved.
+\qed
+\vs

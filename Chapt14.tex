@@ -1,0 +1,576 @@
+\chapter{Pushing Neyman--Pearson Lemma Further}
+
+The famous Naymann--Pearson Lemma is established on two simple hypotheses.
+We have seen its generalization to the situation where the alternative
+hypothesis is made of an interval of parameter values and the data
+are from monotone likelihood ratio families. The null hypothesis can
+also be extended so that the resulting test is UMP: uniformly most
+power. The main purpose of this chapter is to develop tools to cover
+two-sided alternative hypothesis. We start with a statistically not so
+meaningful result. It will be the basis for something statistically
+meaningful.
+
+\begin{theorem}
+\label{thm14.1}
+Consider the situation where $H_0 = \{ f_1, f_2\}$ and $H_1 = \{f_3\}$.
+Let $\alpha_1, \alpha_2$ be constants taking values between 0 and 1.
+We use $\bbE_j$ to denote expectation operation when the data $X$
+has distribution $f_j$, $j=1, 2, 3$.
+
+Let $\cal{T}$ be the class of tests such that
+\(
+\bbE_j \{ \phi(X) \} \leq \alpha_j; ~j=1, 2.
+\)
+More formally, 
+\[
+{\cal{T} }= \{ \phi(\cdot): {\bbE}_j \{ \phi(X) \} \leq \alpha_j; ~~~j=1, 2.\}.
+\]
+Let ${\cal{T}}_0$ be a subset of $\cal{T}$ such that the above inequalities
+replaced by equalities. Namely,
+\[
+{\cal{T}}_0 = \{ \phi(\cdot): \bbE_j \{ \phi(X) \} = \alpha_j; ~~~j=1, 2.\}.
+\]
+
+Suppose there are constants $k_1$ and $k_2$ such that
+\be
+\label{eq14:a}
+\phi_*(x) =
+\left \{
+\begin{array}{ll}
+1 & f_3(x) > k_1 f_1(x) + k_2 f_2(x);\\
+0 & f_3(x) < k_1 f_1(x) + k_2 f_2(x)
+\end{array}
+\right .
+\ee
+is a member of ${\cal{T}}_0$.
+
+We have two conclusions:
+\bi
+\item[(i)]
+$\bbE_3 \{ \phi_*(X) \} \geq \bbE_3 \{ \phi(X) \}$ for any $\phi(x) \in {\cal{T}}_0$.
+
+\item[(ii)]
+If both $k_1 \geq 0$ and $k_2 \geq 0$, then
+$\bbE_3 \{ \phi_*(X)\} \geq \bbE_3 \{ \phi(X)\}$ for any $\phi(x) \in \cal{T}$.
+\ei
+\end{theorem}
+
+\vs
+\no
+{\bf Proof} 
+
+\vs\no
+(i) Simply construct function
+\[
+\{ \phi_*(x) - \phi(x) \} \{ f_3(x) - (k_1 f_1(x) + k_2 f_2(x))\} 
+\]
+which is non-negative at all $x$.
+If  both $\phi_*(x), \phi(x) \in {\cal{T}}_0$, we will find 
+$\bbE_3\{ \phi_*(X) \} \geq \bbE_3\{ \phi(X) \}$
+right away by integrating the above function.
+
+\vs\no
+(ii) If $\phi_*(x) \in {\cal{T}}_0$, it means that
+$\bbE_1 \{ \phi_*(x)\} = \alpha_1$ and $\bbE_2 \{ \phi_*(x)\} = \alpha_2$.
+When $\phi(x) \in \cal{T}$ merely, we have
+\(
+\bbE_1 \{ \phi(X)\} \leq \alpha_1; ~~ \bbE_2 \{ \phi(X)\} \leq \alpha_2
+\) by definition.
+
+Integrating $\{ \phi_*(x) - \phi(x) \} \{ f_3(x) - (k_1 f_1(x) + k_2 f_2(x))\} $ with respect the
+corresponding $\sigma$-finite measure, we find
+\bea
+\bbE_3\{ \phi_*(X)\} - \bbE_3\{ \phi(X) \}
+&\geq&
+k_1 [ \alpha_1 - \bbE_1\{ \phi(X) \}] + k_2  [ \alpha_2 - \bbE_2\{ \phi(X)\}]\\
+&\geq& 0
+\eea
+where we have used the condition that
+both $k_1$ and $k_2$ are nonnegative..
+Hence, the conclusion is verified.
+\hfill{$\diamond$}
+
+
+\vs\vs
+One should read the result this way. The most powerful test of a specific size
+becomes hard to obtain when $H_0$ is composite. There may be none.
+We have only managed to produce a result in still very simplistic situation.
+This proposition can be generalized slightly to
+situation where $H_0$ has finite number of density functions.
+Another shortcoming of this result is that it is hard to determine whether such $k_1$ and $k_2$ exist.
+Answering this question is technically involved. So I only copy the following result
+below for your reference.
+
+\begin{theorem}
+Let $f_1, f_2, f_3$ be three density functions with respect to the same $\sigma$-finite
+measure. The following two conclusions are true:
+
+(a) The set $M = \{ (\bbE_1 \{\phi(X)\}, \bbE_2 \{\phi(X)\}) : \phi \mbox{ is a test} \}$
+is convex and closed.
+
+(b) If ($\alpha_1, \alpha_2$) is an interior point of $M$, then there exist
+constants $k_1, k_2$ such that a test $\phi_*(x)$ in the form of 
+\eqref{eq14:a} with type I errors
+$\alpha_1$ and $\alpha_2$ at $f_1$ and $f_2$ exists.
+\end{theorem}
+
+
+\vs
+\no
+{\bf Discussion}: The N-P lemma gives us a UMP when both $H_0$ and $H_1$
+contains a single distribution. We have generalized
+N-P lemma to the situation where  $H_1$ contains many distributions previously.
+Theorem 4.1 expands the N-P lemma a bit further: it allows $H_0$ to contain
+two distributions when $H_1$ contains only a single distribution. 
+
+When $H_0$ is given in the form of $1 \leq \theta \leq 2$, say under
+$N(\theta, 1)$ model assumption, the distributions in $H_0$ that matter
+are the ones with $\theta=1$ and $\theta=2$. Here by ``matter'', we mean
+the type I errors and the size of a good test are determined by these
+two distributions.
+Once a UMP test is obtained for $\tilde H_0: \{\theta = 1, \theta = 2\}$, 
+this test is likely also a UMP test for $H_0$ itself.
+
+See Lehmann (Vol II, pp96) for details.
+
+\section{One parameter exponential family}
+
+The generalized N-P lemma has its targeted application
+to problems related to one parameter exponential family.
+
+\begin{theorem}
+\label{Thm4.3}
+Suppose we have an \iid sample $x_1, x_2, \ldots, x_n$ from a one--parameter
+exponential family with density function given by
+\[
+f(x; \theta) = \exp \{ \theta Y(x) - A(\theta)\} h(x).
+\]
+This family is a monotone density ratio family in $T_n(x) = \sum Y(x_i)$.
+
+Suppose we want to test for 
+$H_0: \theta \not \in (\theta_1, \theta_2)$
+versus $H_1: \theta  \in (\theta_1, \theta_2)$
+for some $\theta_1 \neq \theta_2$.
+
+\bi
+\item[(i)] 
+A UMP test of size $\alpha$ is given by
+\[
+\phi(T)
+=
+\left \{
+\begin{array}{ll}
+1  & k_1 < T_n(x)  < k_2;\\
+c_j &   T_n(x) = k_j,~~ j=1, 2;\\
+0  & T_n(x)  < k_1 \mbox{  or  } T_n(x)  > k_2
+\end{array}
+\right .
+\]
+where $k_1, k_2, c_1, c_2$ are chosen such that
+\[
+\bbE\{ \phi(X); \theta_j \} = \alpha, ~~~j=1, 2.
+\]
+(Note $ 0 < c_1, c_2 < 1 $).
+
+\item[(ii)] 
+The test given in (i) minimizes type I error
+at every $\theta \in H_0$ among the tests
+satisfying
+$\bbE \{ \phi(T); \theta_j\} = \alpha$, $j=1, 2$.
+\ei
+\end{theorem}
+
+\vs \vs \no
+{\bf Proof of this proposition}
+
+Since $T_n(x) = \sum Y(x_i)$ is sufficient for $\theta$.
+We need only work on a test defined as a function of $T_n(x)$.
+Otherwise, $\bbE\{ \phi(X)| T\}$ is a test with the same
+size and power function.
+
+(i) Next, we first work on a UMP for testing $\tilde H_0:
+\{ \theta_1, \theta_2\}$ versus $\tilde H_1: \{\theta_3\}$
+for some $\theta_3 \in (\theta_1, \theta_2)$.
+Note the structure: the alternative model is a single
+distribution within the interval; while the null models
+are two distributions at two ends.
+
+According to the generalized Neyman--Pearson lemma
+in the form of proposition, such a UMP {\bf may exist}.
+
+For any test $\phi(T)$, we denote its rejection probability
+by $\beta(\theta; \phi) = \bbE\{ \phi(T); \theta\}$.
+One candidate test for having UMP  property is proposed to be
+\[
+\phi(T) =
+\left \{
+\begin{array}{ll}
+1 & f(x; \theta_3) > k_1 f(x; \theta_1) + k_2 f(x; \theta_2);\\
+c & f(x; \theta_3) =  k_1 f(x; \theta_1) + k_2 f(x; \theta_2);\\
+0 & f(x; \theta_3) < k_1 f(x; \theta_1) + k_2 f(x; \theta_2).
+\end{array}
+\right .
+\]
+We do not elaborate but assume the existence of $c$, $k_1$ and $k_2$
+such that 
+\[
+\beta(\theta_1; \phi) = \beta(\theta_2; \phi) = \alpha.
+\]
+
+The inequality
+\[
+f(x; \theta_3) > k_1 f(x; \theta_1) + k_2 f(x; \theta_2)
+\]
+used in defining the above $\phi(T)$
+under the exponential family can be written as
+\[
+a_1 \exp( b_1 T) + a_2 \exp(b_2 T) < 1
+\]
+for some constants $a_1, a_2, b_1$ and $b_2$.
+Due to the relative sizes of $\theta_1$, $\theta_2$
+and $\theta_3$, we must have $b_1 b_2< 0$.
+
+We find the sign information about $a_1$ and $a_2$ is
+helpful and give it a careful discussion as follows:
+\bi
+\item
+[(1)] If both $a_1, a_2$ are smaller than 0, then the inequality
+holds with probability 1. That is, the size of the test would be 1.
+This is disallowed.
+
+\item
+[(2)] If $a_1 \leq 0$ but $a_2 > 0$, together with the known
+function $b_1b_2 < 0$,
+it implies that $a_1 \exp( b_1 T) + a_2 \exp(b_2 T)$ is monotone
+in $T$. That is, the inequality in the form of
+\[
+a_1 \exp( b_1 T) + a_2 \exp(b_2 T) < 1
+\]
+is equivalent to one of $T < t$ or $T > t$ for some constant $t$.
+If so, the rejection probability
+$\beta(\theta; \phi)$ would be an monotone function in $\theta$.
+This contradicts $\beta(\theta_1; \phi) = \beta(\theta_2; \phi) = \alpha$.
+
+\item
+[(3)] The only choice left is $a_1 > 0$ and $a_2 > 0$.
+Note that $a_1 \exp( b_1 T) + a_2 \exp(b_2 T)$
+is now convex in $T$. The inequality in the form of
+\[
+a_1 \exp( b_1 T) + a_2 \exp(b_2 T) < 1
+\]
+is equivalent to the one in the form of
+\[
+k_1 < T < k_2
+\]
+for another set of $k_1$ and $k_2$. 
+\ei
+
+In summary, our discussion leads to conclusion that the test
+is to reject $H_0$ when $k_1 < T < k_2$. This is in good
+agreement with our intuition. 
+Based on the generalized Neyman-Pearson together
+with  $a_1>0$ and $a_2 > 0$, this $\phi(T)$
+is UMP for testing $\tilde H_0:
+\{ \theta_1, \theta_2\}$ versus $\tilde H_1: \{\theta_3\}$
+among all tests whose type I errors at $\theta_1$ and $\theta_2$
+both equal $\alpha$.
+
+Is the test most powerful among all test of size $\alpha$?
+This is the same as asking the possibility of an test $\phi*(T)$ 
+satisfying
+\[
+\bbE_1\{\phi*(T)\} \leq \alpha,~~ \bbE_2\{\phi*(T)\} \leq \alpha
+\]
+but $\bbE_3\{\phi*(T)\} >  \bbE_3\{\phi(T)\}$, where
+the $\phi(T)$ is the test we have just constructed.
+This is not possible based on the second claim (ii) of
+Theorem \ref{thm14.1}, because our $a_1$ and $a_2$ are both positive.
+
+Because this $\phi(T)$ does not depend on the specific
+choice of $\theta_3$, the UMP conclusion
+extends to $\tilde H_0: \{ \theta_1, \theta_2\}$ versus $ H_1$.
+
+To get the full generality that $\phi(T)$ is UMP for
+testing $H_0: \theta \not \in ( \theta_1, \theta_2)$ versus $ H_1$,
+we only need to verify that
+\[
+\beta(\theta; \phi) \leq \alpha
+\]
+at every $\theta \not \in [ \theta_1, \theta_2]$.
+This is true due to the concavity of $\beta$ function. 
+
+Consider the test problem with ${\tilde H}_0: \{\theta_1, \theta_2\}$ against
+${\tilde H}_1: \{\theta_3\}$ for some $\theta_3$ in the original $H_0$.
+Consider the test $\phi^*(T) = 1 - \phi(T)$.
+It can be verified (similar to what have been done)
+that this $\phi^*(T)$ has the form specified
+in the generalized N-P lemma.
+Therefore, $\phi^*(T)$ has the best power at $\theta_3$ 
+(among those with $\beta(\theta_1) = 1 - \alpha, \beta(\theta_2) = 1 - \alpha$.
+This implies that $\phi(T)$ has the lowest type I error possible, 
+which makes it at least as low as $\alpha$. 
+
+(ii) It has been proved by the above step.
+\hfill{$\diamondsuit$}
+
+\vs\vs
+\no
+Remark: The result itself is mathematically interesting
+but it is awkward to come up with a situation in applications where it
+will be used.
+Its usefulness will be seen in the next section.
+
+\vs\vs
+\no
+For students with interest in mathematical techniques, this is a proof
+for us to gain mathematical insight.
+
+\vs\vs
+\no
+The result is stated for a one-parameter exponential family of
+distribution in a specific form. A general one-parameter exponential family 
+can usually be transformed into this form by a monotone function
+to the parameter. Hence, the conclusion is more general than
+it appears.
+
+\section{Two-sided alternatives}
+Consider the hypothesis $\theta = 1$ versus the alternative
+$H_1: \theta \neq 1$ given observations from exponential
+distribution with mean $\theta$.
+Let us separate $H_1$ into $H_{11}: \theta > 1$ and $H_{12}: \theta < 1$.
+The alternatives in the form of $H_1$ is called two-sided.
+Assume the size of the test is required to be $\alpha$.
+We now work out the test in the situation where \iid observations
+from an exponential distribution family $f(x; \theta) = (1/\theta) \exp ( - x/\theta)$
+are provided.
+
+The UMP for $H_0$ versus $H_{11}$, according to discussion
+in the last chapter, is given by
+\[
+\phi_1(x) = \ind ( \sum x_i > k_1)
+\]
+for so that $\bbE_0\{\phi_1(X) \} = \alpha$.
+
+The UMP for $H_0$ versus $H_{12}$, for the same reason,
+is given by
+\[
+\phi_2(x) = \ind ( \sum x_i < k_2)
+\]
+for so that $\bbE_0\{\phi_2(X) \} = \alpha$.
+
+Suppose a UMP test $\phi(x)$ exists for $H_0$ versus $H_1$.
+This test remains a UMP for $H_0$ versus $H_{11}$.
+Hence, we must have $\phi(x) = \phi_1(x)$ except for
+a zero-measure set of $x$.
+For the same reason, we must also have $\phi(x) = \phi_2(x)$
+except for a zero-measure set of $x$.
+Such a $\phi(x)$ clearly does not exist. Hence,
+there exist no UMP for this problem.
+
+This example is not restricted to the exponential distribution but
+true in general. Although there is no UMP test for two-sided
+alternatives, we may provide a sensible test based on the idea 
+of ``pure significance test''.
+If we define 
+\[
+T_n = \max \{ \bar x, 1/\bar x\}.
+\]
+A large value of $T_n$ (deviating from 1) is a good indication
+that $\theta=1$ is violated. Thus, we may compute
+\[
+p_0 = P( T_n \geq t_{obs} ;~~\theta=1)
+\]
+as the p-value and reject the null hypothesis of $\theta = 1$, 
+say when $p_0 < 0.05$.
+We may agree that this is a sensible test. However, we cannot
+help to ask whether this is the best we can do.
+Furthermore, in what sense that this test is best?
+We could have defined the test statistics as
+\[
+T'_n = \max \{ \bar x, 2/\bar x\}.
+\]
+A test based on $T'_n$ has the same properties.
+
+In some situations, it is possible to set up a useful standard.
+This is our next topic.
+
+\section{Unbiased test}
+
+A great person is not necessarily the best compared to
+everyone else in every respect in a large population,
+he/she might be the best in a small community or in a specific
+aspect.
+We may be disappointed to that in many situations, or in
+nearly all realistic situations, there exist no UMP tests.
+However, we may look for the best test(s) among those
+which are not weird in some respects but outsmart others
+merely in a very narrow sense.
+These words are said here to motivate us to look for
+sensible tests which are optimal in restricted class. 
+In this section, we compare tests that are unbiased
+by the following definition.
+
+\begin{defi}
+Consider the problem of testing for a null hypothesis
+denoted as $H_0$ against an alternative hypothesis denoted
+as $H_1$ based on data $X$.
+A test $\phi(X)$ of size $\alpha$ is unbiased if
+\[
+\sup_{F \in H_0} \bbE\{ \phi(X); F\} \leq \alpha;
+~~~
+\inf_{F \in H_1} \bbE\{ \phi(X); F\} \geq \alpha.
+\]
+\end{defi}
+
+\vs\no
+{\bf Justification of unbiasedness}.
+Every guilty party should be more likely to be sent to
+prison than every innocent party in a court.
+Be aware of the wording: merely more likely.
+
+One can easily show that unbiased tests always exist
+for any pair of null and alternative hypotheses.
+Be aware that most tests proposed in the literature
+under complex models are not unbiased.
+Yet it does not hurt to think about the unbiasedness
+issue. 
+
+\begin{defi}
+Consider the problem of testing for a null hypothesis
+denoted as $H_0$ against an alternative hypothesis denoted
+as $H_1$ based on data $X$.
+If a test is most power at every $F \in H_1$ within
+the class of unbiased tests of size $\alpha$,
+we say it is a Uniformly Most Powerful Unbiased (UMPU) test
+of size $\alpha$.
+\end{defi}
+
+\subsection{Existence of UMPU tests}
+The notion of unbiasedness is helpful in some typical situations.
+We only discuss this topic for a one-parameter exponential family
+with density function given by
+\[
+f(x; \theta) = \exp \{ \theta Y(x) - A(\theta)\} h(x).
+\]
+This family has monotone density ratio in $T = \sum Y(x_i)$.
+Of course, we also know that $T$ is complete and sufficient for $\theta$.
+The above parameterization is a natural one.
+
+\begin{theorem}
+\label{thm4.4}
+Suppose we want to test for $H_0: \theta \in [\theta_1, \theta_2]$
+versus $H_1: \theta \not \in [\theta_1, \theta_2]$ for
+some $\theta_1 \neq \theta_2$.
+
+A UMPU test of size $\alpha$ is given by
+\[
+\phi(T)
+=
+\left \{
+\begin{array}{ll}
+1  & T  < k_1 \mbox{  or  } T > k_2\\
+c_j &   T= k_j,~~ j=1, 2.\\
+0  & k_1 < T < k_2.
+\end{array}
+\right .
+\]
+where $k_1, k_2, c_1, c_2$ are chosen such that
+\[
+\bbE\{ \phi(T); \theta_j \} = \alpha, ~~~j=1, 2.
+\]
+(Note $ 0 < c_1, c_2 < 1 $).
+\end{theorem}
+
+\vs \no
+{\bf Proof}:
+A good test should clearly be based on $T$ as it is complete and sufficient
+for $\theta$. Thus, we will not look into other possibilities.
+
+According to Theorem \ref{Thm4.3} proved earlier, $1-\phi(T)$ for the $\phi(T)$ defined
+above is a UMP for $\tilde H_0: \theta \not \in [\theta_1, \theta_2]$ versus
+$\tilde H_1: \theta  \in [\theta_1, \theta_2]$ of size $\tilde \alpha = 1 - \alpha$.
+
+We put {\bf a side proposition} with a proof here. Under exponential family, 
+$\bbE\{ \phi(T); \theta\}$ is continuous in $\theta$ for any test $\phi(T)$.
+Because of this proposition, if $\phi(T)$ is an unbiased
+test for $H_0$ versus $H_1$, we must have
+\[
+\bbE\{ \phi(T); \theta_j \} = \alpha, ~~~j=1, 2.
+\]
+
+If another unbiased test $\phi_*(T)$ is of size 
+$\alpha$ for $H_0$ versus $H_1$ but
+has higher power at some $\theta_3 \in H_1$, we would have
+\[
+\bbE\{ \phi_*(T) ; \theta_1 \} = \bbE\{ \phi_*(T) ; \theta_2 \} = \alpha
+\]
+and
+\[
+\bbE\{ \phi_*(T) ; \theta_3 \} > \bbE\{ \phi(T) ; \theta_3 \}.
+\]
+In terms of $\tilde H_0$ and $\tilde H_1$, we find a pair of
+tests: $1 - \phi^*(T)$ and $1 - \phi(T)$ both of size $1-\alpha$,
+unbiased, but
+the type I error  of $1 - \phi^*(T)$ is lower than that
+of $1 - \phi(T)$ at $\theta_3 \in \tilde H_0$.
+This contradicts the UMP result Theorem \ref{Thm4.3}  (ii) 
+given earlier. 
+\hfill{$\diamondsuit$}
+
+\vs
+{\bf UMPU when $\theta_1 = \theta_2$}.
+Theorem \ref{thm4.4} is not directly applicable to the situation where
+$\theta_1 = \theta_2$. Direction application is not theoretical justified
+and also lead to some difficulties.
+A test of the same form would require us to
+select $k_1, k_2, c_1, c_2$ such that
+\[
+\bbE\{ \phi(T); \theta \} = \alpha
+\]
+at $\theta = \theta_1$.
+Ignore the ``continuity correction'' step of choosing constants $c_1$
+and $c_2$,
+we would have many choices of $k_1$ and $k_2$ to satisfy a
+single constraint like this one. 
+
+The solution comes from the following consideration.
+Let us apply this theorem to the situation where
+$\theta_2 = \theta_1 + \delta$ and let $\delta \downarrow 0$.
+Clearly, we would have
+\[
+\lim_{\delta \downarrow 0} \frac{\bbE\{ \phi(T); \theta_2 \} - \bbE\{ \phi(T); \theta_1 \}}{\delta} = 0.
+\]
+This implies, in the context of one-parameter exponential family,
+\[
+\bbE\{ T \phi(T); \theta_1 \} = \alpha \bbE\{ T; \theta_1 \}.
+\]
+
+Hence, a UMPU for $H_0: \theta = \theta_0$ 
+against $H_1: \theta \neq \theta_0$
+ of size $\alpha$ is given by
+\[
+\phi(T)
+=
+\left \{
+\begin{array}{ll}
+1  & T  < k_1 \mbox{  or  } T > k_2\\
+c_j &   T= k_j,~~ j=1, 2.\\
+0  & k_1 < T < k_2.
+\end{array}
+\right .
+\]
+where $k_1, k_2, c_1, c_2$ are chosen such that
+\[
+\bbE\{ \phi(T); \theta_0 \} = \alpha, ~~~\bbE\{ T \phi(T); \theta_0 \} = \alpha \bbE\{ T; \theta_0 \}.
+\]
+
+To implement this procedure, one may resort to numerical approximations
+to find these constants. Constants $c_1, c_2$ serve the purpose of ensuring
+the equality requirements are met exactly. They have little relevance in terms
+of statistical practice.
+
+\section{UMPU for normal models}
+The normal distribution has two parameters. Thus, what
+we have discussed do not allow us even to show the
+optimality of most famous t-test. We will have this topic picked up later.
+

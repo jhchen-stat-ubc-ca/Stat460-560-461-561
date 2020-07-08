@@ -1,0 +1,827 @@
+\chapter{Likelihood with vector parameters}
+Consider the situation where we have a set of \iid observations
+from a parametric family $\{f(x; \theta): \theta \in \Theta \subset R^{d}\}$
+for some positive integer $d$. The log likelihood function
+remains the same as
+\[
+\ell_n(\theta) = \sum_{i=1}^n \log f(x_i; \theta).
+\]
+Note that the dimension of $X$ is not an issue here.
+The score function is still
+\[
+S_n(\theta; x) = \sum_{i=1}^n \frac{\partial \{ \log f(x_i; \theta)\}}{\partial \theta}
+\]
+but we should regard it as a vector.
+Having $n$ observations in \iid setting will be assumed in this chapter in general.
+
+The regularity conditions are the same though sometimes we should interpret them
+as ``element wise''.
+In addition, the regularity conditions
+are required for both $\{f(x; \theta): \theta \in H_0\}$ and  $\{f(x; \theta): \theta \in \Theta\}$. 
+
+\begin{itemize}
+\item[R0] 
+the parameter space of $\theta$ is an open set of $\mathbb{R}^{m}$ or $\mathbb{R}^{m+d}$
+
+\item[R1]  
+$f(x; \theta)$ is differentiable to order three with respect to $\theta$ at all $x$.
+
+\item[R2]  
+For each $\theta_0 \in \Theta$, there exist functions
+$g(x)$, $H(x)$ such that for all $\theta$ in a neighborhood $N(\theta_0)$,
+\ba
+&(i) &\left | \frac{\partial f(x; \theta)}{\partial \theta} \right | \leq g(x);\\
+&(ii) & \left | \frac{\partial^2 f(x; \theta)}{\partial \theta^2} \right | \leq g(x);\\
+&(iii) & 
+\left | \frac{\partial^3 \log f(x; \theta)}{\partial \theta^3} \right | \leq H(x)
+\ea
+hold for all $x$, and
+\[
+\int g(x) dx < \infty; ~~\bbE_0 \{ H(X)\} < \infty.
+\]
+We have used $\bbE_0$ for the expectation calculated at $\theta_0$
+
+\item[R3] 
+For each $\theta \in \Theta$,
+\[
+0 < \bbE_\theta \left \{ \frac{\partial \log f(x; \theta)}{\partial \theta}  \right \}^2 < \infty.
+\]
+This inequality is interpreted as positive-definite.
+\end{itemize}
+
+Although the integration is stated as with respect to $dx$, 
+the results we are going to state remain valid if it is replaced by some
+$\sigma$-finite measure.
+
+All conditions are stated as if required at all $x$. Exception over a 0-measure set
+(with respect to $f(x; \theta_0)$) of $x$ is allowed.
+
+\begin{lemma}
+(1) Under regularity conditions, we have
+\[
+\bbE_\theta \left \{ \frac{\partial \log f(x; \theta)}{\partial \theta} \right \} = 0.
+\]
+
+(2)  Under regularity conditions, we also have
+\[
+\bbE_\theta 
+\left [
+\left \{ \frac{\partial \log f(x; \theta)}{\partial \theta} \right \} \left \{ \frac{\partial \log f(x; \theta)}{\partial \theta} \right \}^\tau
+\right ]
+=
+-
+\bbE_\theta \left \{ \frac{\partial^2 \log f(x; \theta)}{\partial \theta \partial \theta^\tau } \right \}.
+\]
+\end{lemma}
+
+
+The proof of the above lemma remains the same as the one for one-dim $\theta$.
+The second identity in this lemma is called Bartlett identity in the literature.
+ 
+ 
+\begin{theorem}
+Suppose $\theta_0$ is the true parameter value.
+Under Conditions R0-R3, there exists an $\hat \theta_n$ sequence
+such that
+
+(i) $S_n(\hat \theta_n) =0$ almost surely; 
+
+(ii) $\hat \theta_n \to \theta_0$ almost surely.
+\end{theorem}
+
+\vs\no
+{\bf Proof}. 
+
+(i) Let $\epsilon$ be a small enough positive number. 
+Consider a $\theta^*$ value such that $\| \theta^* - \theta_0\| = \epsilon$.
+That is, $\theta^*$ is on the ball centred at $\theta_0$ with radius $\epsilon$.
+We aim to show that almost surely,
+\be
+\label{eqn7.1}
+\ell_n(\theta^*) < \ell_n(\theta_0)
+\ee
+simultaneously for all such $\theta$.
+
+If \eqref{eqn7.1} is true, it implies that $\ell_n(\theta)$ has a local maximum
+within this ball. Because the likelihood function is smooth, the
+derivative at this local maximum is 0. Hence, conclusion
+(i) is true. 
+
+Is \eqref{eqn7.1} true? By Taylor's series, we have
+\[
+\ell_n(\theta^*) 
+=
+\ell_n(\theta_0) + \{ \ell_n'(\theta_0)\}^T (\theta^* - \theta_0)
++ \frac{1}{2} (\theta^* - \theta_0)^T \ell_n''(\tilde \theta) (\theta^* - \theta_0)
+\]
+for some $\tilde \theta$ in the $\epsilon$-ball.
+
+It is known that $ \ell_n'(\theta_0) = O_p(n^{1/2})$.
+In addition, we have
+\[
+n^{-1}  \ell_n''(\theta_0) \to - \bbI(\theta_0)
+\]
+almost surely. Here $\bbI(\theta_0)$ is the Fisher Information
+which is positive definite by R3.
+Activating R2(iii), it is easy to show that almost surely,
+\[
+\sup_{\theta^*} n^{-1} | \ell_n''(\tilde \theta) -  \ell_n''(\theta_0)|
+\leq  \epsilon C
+\]
+in some norm
+for some $C$ not random nor dependent on $\theta^*$ and so on.
+
+These assessments lead to 
+\[
+\ell_n(\theta^*) - \ell_n(\theta_0)
+=
+\{ \ell_n'(\theta_0)\}^T (\theta^* - \theta_0)
+- \frac{n}{2} (\theta^* - \theta_0)^T \bbI (\theta_0) (\theta^* - \theta_0)
++ \epsilon^3 O(n).
+\]
+Roughly, the first term is of size $n^{1/2}\epsilon$, the second is $-n \epsilon^2$
+and the remainder is $n \epsilon^3$. Thus, the over all size
+is determined by $- n \epsilon^2$ which is negative.
+This completes the proof of (i).
+
+The order assessments can be made rigorously but will not be given here.
+
+(ii) is a direct consequence of (i).
+\qed
+
+
+\vs
+This result is not equivalent to the consistency of MLE even
+for this special case. 
+There exists a proof of the consistency of MLE based on
+much more relaxed conditions. However, the proof 
+is too complex to be explained clearly in this course.
+
+\section{Asymptotic normality of MLE after the consistency is established}
+
+Under the assumption that $f(x; \theta)$ is smooth, and
+$\hat \theta$ is a consistent estimator of $\theta$, we must
+have
+\[
+S_n(\hat \theta) = 0.
+\]
+By the mean-value theorem in mathematical analysis, we have
+\[
+S_n( \theta_0 ) 
+= 
+S_n(\hat \theta) + S'_n(\tilde \theta) (\theta_0 - \hat \theta)
+\]
+where $\tilde \theta$ is a parameter value between $\theta_0$
+and $\hat \theta$. This claim is not exactly true but somehow accepted
+by most. A more rigorous proof will be very similar conceptually but
+can be tedious to look after all details.
+
+By one of the lemmas proved previously, we have 
+\[
+n^{-1} S'_n(\tilde \theta) \to - \bbI(\theta_0)
+\]
+the Fisher information almost surely.
+In addition, the classical multivariate central limit theorem can be applied
+to obtain
+\[
+n^{-1/2} S_n( \theta_0 ) \to N(0, \bbI(\theta_0)).
+\]
+Thus, by Slutzky's theorem, we find
+\[
+\sqrt{n} (\hat \theta - \theta_0) 
+= n^{-1/2} \bbI^{-1}(\theta_0) S_n( \theta_0 ) + o_p(1)
+\to N(0, \bbI^{-1}(\theta_0))
+\]
+in distribution as $n \to \infty$.
+
+
+\section{Asymptotic chisquare of LRT for composite hypotheses}
+
+Let us still consider the simplest case when $H_0 = \{ \theta_0 \}$
+that  is an interior point of $\Theta$ and $\Theta$ has dimension $d$. 
+The alternative is $\theta \neq \theta_0$.
+Assume the regularity conditions are satisfied by the full model
+$\{f(x; \theta): \theta \in \Theta\}$.
+
+
+In this case, the LRT statistic
+\[
+R_n = 2 \{ \ell_n(\hat \theta) - \ell_n(\theta_0)\}.
+\]
+Remember, we work on the case in which the MLE consistent.
+Thus, it is within an infinitesimal neighborhood of $\theta_0$.
+
+Applying Taylor's expansion, we have
+\[
+\ell_n(\theta_0) 
+=  
+\ell_n(\hat \theta) +  \{\ell_n'(\hat \theta)\}^T(\theta_0 - \hat \theta)
++ (1/2)  (\theta_0 - \hat \theta)^T \{\ell_n''(\tilde \theta)\}(\theta_0 - \hat \theta).
+\]
+However, being MLE, $\hat \theta$ makes  $\ell_n'(\hat \theta) = 0$.
+In addition, with $\hat \theta$ being consistent, we find
+\[
+n^{-1} \ell_n''(\tilde \theta)
+=
+n^{-1} \ell_n''(\theta_0) + o_p(1)
+= - \bbI(\theta_0) + o_p(1).
+\]
+Hence, we find
+\[
+R_n = 2 \{ \ell_n(\hat \theta) - \ell_n(\theta_0)\}
+=
+n (\theta_0 - \hat \theta)^T \{\bbI(\theta_0) + o_p(1) \}(\theta_0 - \hat \theta).
+\]
+Recall that
+\[
+\sqrt{n}(\hat \theta - \theta_0) 
+= n^{-1/2} \bbI^{-1} (\theta_0) S_n( \theta_0 )+ o_p(1)
+\]
+we get
+\[
+R_n
+= n^{-1} S_n^T(\theta_0) \bbI^{-1}(\theta_0) S_n( \theta_0 )  + o_p(1).
+\]
+Because $n^{-1/2} S_n( \theta_0 ) \to N(0, \bbI(\theta_0))$,
+we find
+\[
+R_n \to \chi_d^2
+\]
+in distribution.
+
+\vs
+Remark: $d$ is the dimension difference between $H_0$ and $H_1$.
+
+\vs\vs \noindent
+{\bf Counter Example.}
+Suppose that we have an iid sample of size $n$ from
+\[
+(1-\gamma) N(0, 1) + \gamma N(2, 1)
+\]
+where $\gamma$ is the mixing proportion.
+
+We would like to test the hypothesis $H_0: \gamma = 0$
+versus $H_1: \gamma > 0$. 
+
+The log likelihood function is given by
+\[
+\ell_n(\gamma) = \sum_{i=1}^n \log \{ 1 + \gamma [ \exp( - 2 (x_i - 2)) - 1]\}.
+\]
+We have
+\[
+\ell_n'(\gamma) = \sum_{i=1}^n 
+\frac{\exp( - 2 (x_i - 2)) - 1}{1 + \gamma [ \exp( - 2 (x_i - 2)) - 1]}.
+\]
+
+At $\gamma = 0$, we find
+\[
+\ell_n'( 0 ) = \sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}
+\]
+which has 0-expectation under $H_0$.
+According to CLT, we find
+\[
+P( \ell_n'( 0 ) > 0 ) \to 0.5
+\]
+as $n \to \infty$.
+It is clear that $\ell_n'(\gamma)$ is a decreasing function over $\gamma > 0$.
+Thus, when $ \ell_n'( 0 ) < 0$, we get $\ell_n'(\gamma)< 0$.
+
+Two facts imply that if the data are generated from $H_0$, and
+we look for MLE in general, we would find
+\[
+P(\hat \gamma = 0) \to 0.5.
+\]
+
+Case I: when $\ell_n'( 0 ) \leq 0$, we have $\hat \gamma = 0$.
+This further leads to
+\[
+R_n = 2 \{ \ell_n(\hat \gamma) - \ell_n(0) \} = 0.
+\]
+
+Case II: when $\ell_n'( 0 ) > 0$, we have $\hat \gamma > 0$.
+It solves the equation
+\[
+\sum_{i=1}^n 
+\frac{\exp( - 2 (x_i - 2)) - 1}{1 + \gamma [ \exp( - 2 (x_i - 2)) - 1]}=0.
+\]
+For brevity, let us assume the solution is at a small neighborhood
+of $\gamma = 0$.
+Thus, the above equation is approximated by
+\[
+\sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}
+- \gamma \sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}^2 + o_p(n)=0.
+\]
+This leads to
+\[
+\hat \gamma 
+= 
+\frac{\sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}}
+{\gamma \sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}^2}
++ o_p(n^{-1/2}).
+\]
+Consequently,
+\[
+\ell_n(\hat \gamma) = \frac{[\sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}]^2}
+{\gamma \sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}^2} + o_p(1).
+\]
+
+Combining two cases, we can unify the expansion to
+\[
+\ell_n(\hat \gamma) 
+= \frac{\{[\sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}]^+\}^2}
+{\gamma \sum_{i=1}^n \{ \exp( - 2 (x_i - 2)) - 1\}^2} + o_p(1).
+\]
+As $n \to \infty$, the limiting distribution is given by that
+of
+\[
+(Z^+)^2
+\]
+which is often denoted as 
+\[
+0.5 \chi_0^2 + 0.5 \chi_1^2.
+\]
+
+\vs
+{\bf Morale of this example}: The full model has parameter space
+$\Theta = [0, 1]$. The null model has parameter space $\{0\}$.
+The parameter space under the full model is not an open set of $\mathbb{R}$.  
+This invalidates the result obtained under regularity condition.
+Most people will tell you the reason for not having a chisquare
+limiting distribution is that the true value $\gamma = 0$ is not
+an interior point of $\Theta$. This is a reasonable explanation but
+does not survive serious scrutiny. 
+
+\vs\vs
+In many applications, the \iid assumption is violated.
+The regularity conditions are no-longer sensible. 
+Yet particularly in biostatistics applications, the users
+still regard the MLEs asymptotically normal, and
+the likelihood ratio statistics asymptotically chisquare. 
+Often, they are not wrong. At the
+same time, it is a worry-some trend that our scientific
+claims are built on a less and less solid foundation.
+
+I hope that these lectures help you to get a sense
+of when the ``chisquare'' distribution is valid.
+In addition, you are able to rigorously establish
+whatever conclusions needed in various applications
+rather than merely have an impression that some claims are true.
+
+
+\section{Asymptotic chisquare of LRT: one-step further}
+
+Write $\theta^T = (\theta_1^T, \theta_2^T)$ so that $\theta_1$ is a
+vector of length $d$ and $\theta_2$ is a vector of length $k$.
+The superscript $T$ is to make all vectors column vector.
+
+Consider the composite null hypothesis $H_0$ that 
+\[
+\theta_1 = 0
+\]
+in vector sense. The alternative is $H_1: \theta_1 \neq 0$.
+The full model has $\theta$ a vector of length $m+d$, while
+the null model has $\theta$ living in a subspace of length $m$.
+Both spaces are open subsets of their corresponding
+Euclid spaces $\mathbb{R}^{m+d}$ and $\mathbb{R}^m$.
+
+In this section, we denote $\theta_0^T = (\theta^T_{10}, \theta^T_{20})$ 
+as the true vector value of the
+parameter whose corresponding distribution generated the data $x_1, \ldots, x_n$.
+In addition, this $\theta_0$ is one of the parameter vectors in $H_0$.
+We assume that $\theta_0$ is an interior point of the parameter space
+of $H_0$ as usual. 
+{\bf This is part of the regularity conditions} to ensure the validity
+of the asymptotic result to be introduced.
+
+We use $\hat \theta$ as the MLE of $\theta$ without placing
+any restrictions on the range of $\theta$. We use $\hat \theta_0$
+as the MLE or the maximum point of $\theta$ in the space of $H_0$. 
+The consistency results discussed before ensure that
+both $\hat \theta$ and $\hat \theta_0$ almost surely
+converge to $\theta_0$ when $H_0$ is true. 
+When notationally necessary, they will be partitioned into $(\hat \theta^T_1, \hat \theta^T_2)^T$
+and $(\hat \theta^T_{01}, \hat \theta^T_{02})^T$ respectively.
+Of course, we have $\hat \theta_{01} = 0$ under the null hypothesis.
+
+\subsection{Some notational preparations}
+
+The Fisher information with respect to $\theta$ is now a matrix.
+We denote
+\[
+\bbI (\theta) 
+= \bbE \left [ \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \} 
+\left \{ \frac{\partial \log f(X; \theta)}{\partial \theta} \right \}^T \right ]
+=
+- \bbE \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta \partial \theta^T} \right \}
+\]
+The expectation is also computed regarding the distribution of $X$
+is given by $f(x; \theta)$: the same $\theta$ inside out.
+This matrix can be partitioned into 4 blocks:
+\[
+\bbI_{ij} (\theta) = 
+\bbE \left [ \left \{ \frac{\partial \log f(X; \theta)}{\partial \theta_i} \right \} 
+\left \{ \frac{\partial \log f(X; \theta)}{\partial \theta_j} \right \}^T \right ]
+=
+- \bbE \left \{ \frac{\partial^2 \log f(X; \theta)}{\partial \theta_i \partial \theta_j^T} \right \}.
+\]
+for $i,  j = 1, 2$.
+In other words, we have
+\[
+\bbI(\theta) = 
+\left \{
+\begin{array}{cc}
+\bbI_{11}(\theta) & \bbI_{12} (\theta)\\
+\bbI_{21}(\theta) & \bbI_{22}(\theta)
+\end{array}
+\right \}
+\]
+The regularity conditions make $\bbI(\theta)$ positive definite which implies
+both $\bbI_{11}$ and $\bbI_{22}$ are positive definite. The expectations are
+understood as taken with the distribution of $X$ is given by $f(x; \theta)$.
+Namely, the same parameter value for operation $\bbE$ and the
+subject.
+
+The score function is now also a vector. Let us write
+\[
+S^T_n(\theta) = (S^T_{n1}, S^T_{n2})
+ = 
+ \sum_{i=1}^n \left ( \frac{\partial \log f(X; \theta)}{\partial \theta^T_1}, 
+ \frac{\partial \log f(X; \theta)}{\partial \theta^T_2} \right ).
+\]
+The subscripts stand for transpose and they make every vector a row vector.
+They do not have other practical purposes.
+
+\vs
+{\bf Matrix result}.  Let $\bbI_{11,2} = \bbI_{11}- \bbI_{12} \bbI_{22}^{-1} \bbI_{21}$.
+It is laborious to verify that 
+\[
+\bbI^{-1}(\theta) =
+\left (
+\begin{array}{cc}
+I & 0\\
+-\bbI_{22}^{-1}\bbI_{21} & I
+\end{array} \right )
+\left (
+\begin{array}{cc}
+\bbI^{-1}_{11,2} & 0\\
+0& \bbI_{22}^{-1}
+\end{array} \right )
+\left (
+\begin{array}{cc}
+I & -\bbI_{12} \bbI_{22}^{-1}\\
+0 & I
+\end{array} \right )
+\]
+where $I$ itself is an identity matrix of proper size.
+We allow the same $I$ to be identity matrices of
+different sizes here if it does not cause confusion.
+
+Based on matrix theory, or by direct verification, we have
+\[
+x^T \bbI^{-1} x  
+= (x^T_1- x_2^T \bbI_{22}^{-1} \bbI_{21}) \bbI^{-1}_{11,2}  (x_1- \bbI_{12} \bbI^{-1}_{22} x_2) 
++ x^T_2 \bbI_{22}^{-1} x_2 
+\]
+for any vector $x$ of proper length and partition.
+Applying this matrix result to $S_n$ and $\bbI$, we find
+\[
+S_n^T \bbI^{-1}(\theta) S_n=
+(S^T_{n1} - S^T_{n2}\bbI_{22}^{-1} \bbI_{21}) \bbI_{11,2}^{-1} (S_{n1} -\bbI_{12} \bbI^{-1}_{22} S_{n2})
++
+S^T_{n2} \bbI_{22}^{-1} S_{n2}.
+\]
+It is known that $n^{-1/2}S_n$ is asymptotically normal with covariance matrix
+given by $\bbI(\theta)$. This implies that
+\[
+n^{-1/2} (S_{n1} -\bbI_{12} \bbI^{-1}_{22} S_{n2})
+\]
+is asymptotically normal with covariance matrix
+$\bbI_{11,2}$.
+Hence, the first term
+\[
+n^{-1}(S^T_{n1} - S^T_{n2}\bbI_{22}^{-1} \bbI_{12}) \bbI_{11,2}^{-1} (S_{n1} -\bbI_{12} \bbI^{-1}_{22} S_{n2})
+\to 
+\chi_d^2
+\]
+where $d$ is the dimension of $\theta_1$.
+
+\vs
+\noindent
+{\bf Let us now use these results to prove the claim of the theorem}.
+The LRT statistic now becomes
+\[
+R_n 
+= 2 \{ \ell_n(\hat \theta) - \ell_n(\hat \theta_0)\}
+= 2 \{ \ell_n(\hat \theta) - \ell_n( \theta_0)\}
+-
+2 \{ \ell_n(\hat \theta_0) - \ell_n(\theta_0)\}.
+\]
+For the first one, we apparently have
+\[
+R_{n1}
+= n^{-1} S_n^T(\theta_0) \{\bbI^{-1}(\theta_0)\} S_n( \theta_0 )  + o_p(1).
+\]
+Based on the same principle, we have
+\[
+R_{n2}
+=
+n^{-1} S_{n2}^T(\theta_0) \{\bbI^{-1}_{22}(\theta_0)\} S_{n2}( \theta_0 )+ o_p(1).
+\]
+Combining two expansions, we find
+\[
+R_n
+=
+n^{-1} [
+S_n^T(\theta_0) \{\bbI^{-1}(\theta_0)\}S_n( \theta_0 )
+-
+S_{n2}^T(\theta_0) \{\bbI^{-1}_{22}(\theta_0)\} S_{n2}( \theta_0 )]
++
+o_p(1).
+\]
+With all the preparation results already established, we have
+\[
+R_n \to \chi_d^2
+\]
+in distribution as $n \to \infty$.
+\hfill{$\diamondsuit$}
+
+\vs
+Final remark on {\bf regularity conditions}:
+The regularity conditions by the first look are placed on
+the full distribution family under consideration. 
+A second look reveals that $H_0$
+forms a sub distribution family. We require the
+listed regularity conditions are satisfied by
+the model formed by $H_0$.
+The conditions on finite Fisher information and so on ensure
+the use of the Law of Large Numbers, Central Limit Theorem,
+and to ensure that the remainder terms in Taylor's expansion
+are high order terms. They do not have influence on the
+existence nor the form of the limiting distributions at various stages of
+the proof.
+
+
+
+\section{ The most general case: final step}
+
+To highlight the fact that $\theta$ is a parameter vector,
+we use boldface $\btheta$ in this section.
+The null hypothesis discussed in the last section can be expressed as
+\[
+H_0:   A \btheta = 0
+\]
+with specific matrix $A = \mbox{diag} \{1, 1, \ldots, 1, 0, 0,\ldots, 0\}$.
+Denote the number of 1's as $d$ and number of 0's as $k$.
+
+We can easily generalize this result to be applicable to any matrix $A$
+of rank $d$ and $\btheta$ of length $m+d$.
+It is well known in linear algebra that the solution set of $A \theta = 0$
+forms a linear space of dimension $m$.
+There exist $m+d$ linearly independent vectors $\xi_1, \xi_2, \ldots, \xi_{d+m}$
+such that all solutions to $A \theta = 0$ can be expressed as
+\[
+\btheta = \lambda_1 \xi_1 + \cdots \lambda_m \xi_m.
+\]
+Namely, in the space of $\blambda$, $H_0$ becomes
+\[
+\blambda = (\lambda_1, \cdots, \lambda_m, \lambda_{m+1}=0, \ldots, \lambda_{m+d}=0)
+\]
+which is the same as the special case we have discussed.
+Namely, the conclusion
+$
+R_n \to \chi_d^2
+$
+remains solid.
+
+Most generally, assume the parameter space is a subset of
+$R^{d+m}$.  The composite hypothesis is either expressed as
+\[
+R(\btheta) = 0 \mbox{~~~~ {\it Hypothesis form I}}
+\]
+for a continuously differentiable vector valued function $R$,
+or expressed as
+\[
+\btheta = g(\blambda)   \mbox{~~~~{\it Hypothesis form II}}
+\]
+for a continuously differentiable $g(\cdot)$.
+
+When it is in form I, denote the rank of the differential matrix
+at $\btheta_0$ as $d$. Hence, it puts $d$ constraints on
+the parameter in a small neighborhood of $\btheta_0$.
+After which,  based on inverse function theorem, there exists a
+smooth function $g$ such that the solution to $R(\btheta) = 0$
+can be written as $\btheta = g(\blambda)$ where 
+the dimension of $\blambda$ is $m$, in a neighborhood of $\btheta_0$.
+
+In both cases, we may interpret that
+the null hypothesis sets $d$ elements in $\btheta$ to $0$
+and leave $m$ of them free. 
+The same proof presented earlier makes
+$
+R_n \to \chi_d^2
+$
+in distribution.
+
+\vs
+The regularity conditions must be applicable to
+the distribution family formed by parameters
+as solution of $R(\btheta) = 0$.
+
+\begin{itemize}
+
+\item
+ true parameter value $\btheta_0$ is
+an interior point of $\Theta$ and an interior point 
+of the solution space of $R(\btheta) = 0$. 
+
+\item
+There is a neighborhood of $\btheta_0$ in terms of
+$\Theta$, over which $R(\btheta) = 0$ admits
+a smooth solution $\btheta = g(\blambda)$.
+
+\item
+There are neighborhoods of $\blambda_0$ and $\btheta_0$ respectively
+such that $g(\blambda)$ is differentiable with full rank derivative matrix.
+\end{itemize}
+
+\section{Statistical application of these results}
+
+The whole purpose of proving $R_n \to \chi_d^2$ is to test hypothesis
+in applications.
+
+As the size of $R_n$ represents the departure from the null model,
+the test based on likelihood ratio is mathematically given by
+\[
+\phi(x) = \ind(R_n \geq c)
+\]
+and this $c$ will be chosen as $\chi^2_d(1-\alpha)$ for a size-$\alpha$ test.
+
+\begin{example}
+Suppose we have an \iid sample from a trinomial distribution.
+That is, each outcome of a trial is one of three types.
+Let the corresponding probabilities of occurrence be $p_1, p_2, p_3$.
+Clearly, $p_1 + p_2 + p_3 = 1$.
+
+After $n$ trials, we have $n_1, n_2, n_3$ observations of three types.
+The log likelihood function is given by
+\[
+\ell_n(p_1, p_2, p_3) 
+=
+n_1 \log p_1 + n_2 \log p_2 + n_3 \log p_3.
+\]
+The maximum likelihood estimator of these parameters are given by
+\[
+\hat p_j = n_j/n
+\]
+for 
+$j=1, 2, 3$.
+
+\vs
+(i) Consider the test for $p_j = p_{j0} \neq 0$, $j=1, 2, 3$ versus 
+$p_j \neq p_{j0}$ for at least one of $j=1, 2, 3$.
+The likelihood ratio test statistic is apparently given by
+\ba
+R_n 
+&=&
+ 2 n_1 \log (\hat p_1/p_{10}) + 2 n_2 \log (\hat p_2/p_{20}) 
++2 n_3 \log (\hat p_3/p_{30}) \\
+&=&
+2n \sum \hat p_j \log (\hat p_j/p_{j0}).
+\ea
+According to our theorem on the LRT, when $n \to \infty$,
+$R_n$ is approximately $\chi_2^2$ distributed under
+the null model.
+
+The MLEs under this model are consistent and 
+asymptotically normal. We have  $\hat p_j = p_{j0} + O_p(n^{-1/2})$.
+Therefore, we have
+\ba
+\log (\hat p_j/p_{j0}) 
+&=&
+ - \log \{ 1 - (\hat p_j - p_{j0})/\hat p_{j}\}\\
+&=&
+(\hat p_j - p_{j0})/\hat p_{j} + (1/2) (\hat p_j - p_{j0})^2/{\hat p}^2_{j}
++ O_p(n^{-3/2}).
+\ea
+Hence,
+\ba
+R_n 
+&=&
+ n \sum_j   (\hat p_j - p_{j0})^2/{\hat p_j} + O_p(n^{-1/2})\\
+&=&
+ n \sum_j  (\hat p_j - p_{j0})^2/p_{j0} + O_p(n^{-1/2}).
+\ea
+Note that the change from $\hat p_j$ to $\hat p_{j0}$ in the second
+equality leads to a discrepancy of size $O_p(n^{-1/2})$.
+This discrepancy is understood as having been absorbed into the
+the remainder term $ O_p(n^{-1/2})$.
+
+The leading term is the famous Pearson's chisquare test statistics.
+It is often used for ``goodness--of--fit'' test.
+\end{example}
+
+Another version of this test will be used as an assignment problem.
+The result remains similar if there are more than 3 categories.
+For the purpose of assignment, we do not require rigorous justification
+on why these $O_p(n^{-1/2})$ terms are indeed $O_p(n^{-1/2})$.
+
+\section{Assignment Problems}
+
+
+\begin{enumerate}
+\item
+Suppose that $X_1, \ldots, X_n$ are \iid from the Weibull distribution with pdf
+\[
+f(x; \theta, \gamma) = \theta^{-1} \gamma x^{\gamma - 1} \exp( - x^\gamma /\theta)
+\]
+with the range of $x$ being $x > 0$. 
+The parameter space is $\gamma > 0$ and $\theta > 0$.
+Consider the problem of testing $H_0: \gamma = 1$ versus $H_1 \neq 1$.
+
+(a) Go over the regularity conditions one by one and confirm 
+if they are satisfied or not.
+
+(b) Find the expression of the likelihood ratio test statistics
+as a function of $\hat \gamma$, the MLE of $\gamma$ under $H_1$. 
+
+Remark: a full analytical solution may not be possible.
+
+(c) Generate a data set from the null model with $\theta = 1.5$ and $\gamma = 1$. 
+Compute the value of $R_n$.
+\begin{verbatim}
+set.seed(2014561)
+y = rweibull(120, 1, 1.5)
+\end{verbatim}
+
+Whoever is interested in this problem, obtain a histogram of $R_n$ based
+on 2000 repetitions and a qq-plot against $\chi_1^2$ distribution. 
+
+\item
+Let $X_1, \ldots, X_n$ be \iid from $N(\mu, \sigma^2)$.
+
+(a) Suppose that $\sigma^2 = \gamma \mu^2$ with unknown 
+$\gamma > 0$ and $\mu \in R$.
+Find the likelihood ratio test for $H_0: \gamma = 1$ versus $H_1: \gamma \neq 1$.
+
+(b) Repeat (a) when $\sigma^2 = \gamma \mu$ with unknown $\gamma > 0$ and $\mu > 0$.
+
+(c) Are the regularity conditions satisfied (for chi-square limiting distribution of the LRT)?
+
+
+\item
+Consider the $2\times 3$ table that is often encountered in
+many applications. The outcomes of $n$ objects are often
+been summarized as
+\begin{center}
+\begin{tabular}{|c|c|c|c|}
+\hline
+counts & I & II&  III \\
+\hline 
+a&$n_{11}$&$n_{12}$& $n_{13}$ \\
+b&$n_{21}$&$n_{22}$& $n_{23}$ \\
+\hline
+\end{tabular}
+\end{center}
+The problem of interest is to see whether the attribute in terms of being
+a or b is independent of the attribute in terms of category I, II and III.
+
+Let $p_{ij}$ be the probability that a random subject falls into cell $(i, j)$.
+
+(i) Derive the likelihood ratio test statistic for the null hypothesis 
+$p_{ij} = p_{i\cdot}p_{\cdot j}$
+where $p_{i\cdot}$ and $p_{\cdot j}$ are marginal probabilities 
+against the alternative that $ p_{ij} \neq p_{i\cdot}p_{\cdot j} $.
+Identify (rather than prove) the limiting distribution of this statistic as $n = \sum_{ij} n_{ij} \to \infty$.
+
+(ii) Show that this statistic is {\bf asymptotically equivalent}
+ to the Pearson's chisquare test statistic:
+\[
+n \sum_{i, j}  \frac{ (\hat p_{ij} - \hat p_{i\cdot}\hat p_{\cdot j})^2}{\hat p_{ij}}
+\]
+where $ \hat{p}_{i\cdot} = \sum_j n_{ij}/n  $, $ \hat{p}_{\cdot j} = \sum_i n_{ij}/n  $ and
+$ \hat{p}_{i j} = n_{ij}/n  $. That is, the difference between two statistics has limit $0$ under $ H_0 $.  
+  
+ \item 
+ Let's perform a simulation study to check the conclusion of Q4. 
+ Let $ n=300 $ and repeatedly simulating the table $ N=10,000 $ times. \\
+
+(a) Simulate from 
+$$
+p_{ij} = \{ (0.3, 0.7) \times (0.2, 0.35, 0.45) \}
+$$    
+and obtain the value of the likelihood ratio test statistic $ R_n $. 
+Record all $ R_n $ values and draw a QQ plot against the null limiting distribution. 
+Report the simulated rejection rate for the size 0.05 likelihood ratio test. 
+
+(b)  Simulate from 
+$$
+(p_{11}, p_{12}, p_{13}, p_{21}, p_{22}, p_{23})  = \{ (0.1, 0.15, 0.4, 0.2, 0.1, 0.05) \}
+$$    
+and obtain the value of the likelihood ratio test statistic $ R_n $. 
+Record all $ R_n $ values and draw a QQ plot against the null limiting distribution. 
+Report the simulated rejection rate for the size 0.05 likelihood ratio test. \\
+
+
+
+\end{enumerate}
+

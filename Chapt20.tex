@@ -1,0 +1,689 @@
+\chapter{Non-parametric tests}
+
+The methods we have discussed so
+far are based on the assumption that the data are generated \iid from 
+a distribution which is a member of some regular parametric models. 
+These methods become either inapplicable, or inferior if the data do not listen
+to our command: ``assume they have this or that distribution''.
+
+Strictly speaking, the tests designed under a ``parametric assumption''
+can be carried out smoothly, whether or not the model assumption is
+violated or not.
+The real issue is: these tests may not have the prescribed size
+nor have reasonable power to detect the departure of the underlying
+distribution from the null hypothesis in specific aspect we are interested.
+For instance, suppose we have \iid bivariate observations ($x_i, y_i$) 
+from some distribution.
+We wish to test if the two component random variables $X, Y$ are
+independent. 
+If the joint distribution is bivariate normal, we may simply test the
+null hypothesis that their correlation is $0$. The likelihood ratio test
+is a valid choice.
+However, if the joint distribution is not normal, the test will not be
+able to detect the violation of the independence hypothesis when
+$X, Y$ are not independent but have 0 correlation.
+It can also happen that $X, Y$ are independent, but the normality
+assumption based likelihood ratio test statistics has a very different
+limiting distribution from chisquare. If so, the null hypothesis can be
+rejected with much higher type I error.
+
+In other examples, the performance of a test can still be respectable.
+In two sample problem, the typical null hypothesis of interest is
+that two populations have the same mean. In this case,
+the two-sample t-test is very hard to beat in terms of 
+having both accurate type-I error and good power. 
+One has to subject
+this test to very weird data sets to make it look bad.
+
+Even though some parametric tests are rather robust,
+there is a need of tests whose validity is not heavily dependent
+on the correctness of the model assumption.
+
+%Some tests to be introduced are generally referred as
+%Wilcoxon test and similar. I need to do more research on the
+%common conventions on the names of these tests.
+
+
+\section{One-sample sign test.}
+
+Suppose we have an \iid sample from some distribution 
+whose \cdf is given by $F(x)$ which is a member of $\cF$. 
+The family $\cF$ that $F$ belongs
+is not very important so we do not carefully specify it.
+In some applications, we do not know much about this
+family other than it is very broad.
+
+The one-sample sign test is designed for the following null hypothesis
+\[
+H_0: p = F(u) \leq p_0
+\]
+versus 
+$
+H_1: p= F(u) > p_0
+$ 
+for some user-specified $u$ and $p_0$.
+
+Let $x_i, i=1, 2, \ldots, n$ be the observed values.
+Apparently, the key information from a single observation
+in this problem is whether $x_i > u$ or $x_i \leq u$.
+Consequently, we define
+\[
+\Delta_i = \ind( x_i - u \leq 0)
+\]
+for $i=1, \ldots, n$.
+
+If $\Delta_i$, $i=1, \ldots, n$ are the only data we observe,
+then $Y = \sum_{i=1}^n \Delta_i$ is sufficient for the
+probability of success $p$, the unknown value of $F(u)$.
+The UMP test for $H_0$ versus $H_1$ has the form
+\[
+\phi(Y) = \ind(Y > k) + c \ind(Y = k)
+\]
+with proper choices of $k$ and $c$ for the sake of
+the test to have a pre-given size.
+
+When $n$ is large, the distribution of $Y$ is well--approximated
+by a normal distribution. Hence, the usefulness of having
+an $c$ to ensure exact size of the test disappears.
+For this reason, we give up the effort of determining
+the value of $c$ explicitly.
+
+If $n$ is not extremely large and let the observed
+value of $Y$ be $y_0$, numerical value of
+\[
+\pr ( Y \geq y_0)
+\]
+can be obtained via many standard statistical software packages.
+So one may simply compute the p-value of the test.
+One may also activate the continuity correction 
+if it deems necessary: computing
+$(1/2) \pr ( Y = y_0) + \pr ( Y  > y_0)$ instead.
+
+This test does not depend on the specific form of $F$,
+that is, we do not have to specify a parametric model $\{f(x; \theta): \theta \in \Theta\}$
+for $F$. For this reason, this test is referred to as non-parametric. 
+The statistic $Y$ is the number of observations with $x_i - u \leq 0$, 
+which is the number of observations
+where the quantity has negative/positive sign. 
+This test $\phi(Y)$ is subsequently called sign-test.
+
+This test is UMP in general, rather than merely in the
+restricted sense as specified above. However, it may
+not be so interesting to seriously prove this claim.
+In the literature, the one-sample sign test may refer to the
+special case where $p_0 = 0.5$.
+
+\section{Sign test for paired observations.}
+
+Suppose a pair of observations of the same nature are obtained on
+$n$ experimental units (more commonly sampling units).
+One wishes to test whether or not the two observations
+have the same distribution.
+
+Let the observations be denoted as $(x_i, y_i), i=1, 2, \ldots, n$.
+Assume independence between pairs.
+Define
+\[
+\Delta_i = \ind( y_i > x_i)
+\]
+and $Y = \sum \Delta_i$. If two marginal distributions
+$F$ and $G$ are identical, then it has conditional binomial distribution with
+probability of success $p_0 = 0.5$ given $n' = \sum  \ind( y_i \neq x_i)$.
+
+The sign test recommended in the literature
+rejects the null hypothesis $H_0: F(x) \equiv G(x)$
+when $Y$ exceeds $k$, a critical value decided by 
+the conditional distribution of $Y$ given $n'$ and the desired
+size of test $\alpha$. The presumed alternative hypothesis
+is $H_1: F < G$ in some stochastic sense. 
+Apparently, there are many distribution pairs
+$F \neq G$ at which this test has rejection probability
+smaller than $\alpha$, a violation of the usual
+requirement of the test: unbiasedness.
+
+One need not be overly alarmed. In most applications
+where the sign-test is used, one looks for evidences
+of $F < G$ from a specific angle. Unable to reject
+all possible violation of $H_0: F(x) \equiv G(x)$
+with a good power is not so much a concern.
+Nevertheless, as a statistician, she or he should 
+be aware of this issue.
+
+As a reminder, a paired example t-test will be used if the data are from paired
+experiment and the normality is not in serious doubt.
+
+\section{Wilcoxon signed-rank test}
+
+The tests in the last two sections do not take the magnitude
+of the difference into account. Hence, one may explore this
+fact and comes up with superior tests in some way.
+
+Consider the paired-experiment first.
+Let $n'$ being the number of observations in which
+$x_i \neq y_i$ and remove the sample units
+for which $x_i = y_i$ from the sample. For simplicity, we 
+assume $x_i \neq y_i$ in the first place and use $n$ for $n'$.
+Define
+\[
+\delta_i = \left \{
+\begin{array}{rl}
+1 & \mbox{if  } { y_i > x_i}\\
+-1 & \mbox{if  } { y_i < x_i}
+\end{array}
+\right .
+\]
+and $\Delta_i = | y_i - x_i|$ for $i=1, 2, \ldots, n$.
+Let
+\[
+R_i = \sum_{j=1}^{n} \ind ( \Delta_j < \Delta_i) 
++  (1/2) \sum_{j=1}^{n} \ind ( \Delta_j = \Delta_i) + 1/2.
+\]
+Do not be fooled by the above seemingly complex formula.
+It merely counts the rank of $\Delta_i$ among all absolute
+differences $\Delta_j$. When $\Delta_i = \Delta_j$, then
+we only count that only one half of the pair $j$ has lower
+value than $\Delta_i$.
+Finally, Wilconxon signed-rank test is defined to be
+\[
+W = \sum_{i=1}^n \delta_i R_i.
+\]
+
+Note that $W$ looks into the sign $\delta_i$ and the rank $R_i$ for each
+paired observation.
+Because of this, if a sample has a large observed difference,
+its rank $R_i$ is higher and therefore contributes more
+in terms of increasing the size of $W$.
+
+The distribution of $W$ under the null hypothesis
+stays the same as long as the marginal distributions
+$F \equiv G$, given the number of unequal-pairs $n$.
+When $ F < G$ in some sense, we expect $W$
+better reflects
+the degree of departure from $H_0$ in favour of this
+type of departure than the pure signed test. 
+Hence, a signed-rank test is designed to reject $H_0$ when $W$ is large.
+
+One may numerically evaluate $\pr (W > w_0)$ and use it
+as p-value of the test.
+
+The distribution of $W$ is also asymptotically normal.
+When the population distributions are continuous so that
+there cannot be any ties in rank, the mean of $W$ is $0$ 
+and its variance is given by
+\[
+\var (W) = \frac{1}{6} \{ n (n+1) (2n+1)\}.
+\]
+When $n$ is large, the test reject $H_0$
+if
+\[
+W > \sqrt{\var (W)}\ z_{1-\alpha}
+\]
+for one-sided alternative.
+
+This is the Wilcoxon signed-rank test for paired experiment.
+
+When there are ties in $|y_i - x_i|$, the variance of $W$ is more complex.
+We do not go over that case.
+
+In most books, this statistic is defined as the total rank of positive
+$y_i - x_i$. Since the rank total is non-random, the test based on our $W$
+is the same as the test based on those statistics.
+
+There is also a Wilcoxon signed-rank test for one sample problem.
+We do not discuss it here.
+
+\section{Two-sample permutation test.}
+
+Consider a situation where we have one random sample $x_1, \ldots, x_m$
+from $F$ and another random sample $y_1, \ldots, y_n$ from $G$.
+It is of interest to test for $H_0: F = G$ versus $H_1: F \neq G$.
+Note that this problem is different from the one in the last section:
+for instance, $x_1$ and $y_1$ are not linked here unlike the paired-experiment.
+
+To have a meaningful discussion, assume both $F$ and $G$ are continuous.
+That is, the model space contains all continuous distribution functions.
+Denote the pooled sample as 
+$z = \{ x_1, \ldots, x_m, \}\cup \{y_1, \ldots, y_n\}$.
+We first regard $z$ as a set in the above, then we turn it into a vector of length $m+n$
+for the subsequent discussion.
+
+Define a set of vectors to be
+\[
+\sPi(z) 
+= 
+\{ (z_{i_1}, z_{i_2}, \ldots, z_{i_{m+n}}): (i_1, \ldots, i_{m+n}) 
+\mbox{ is a permutation of }
+(1, 2, \ldots, m+n)\}.
+\]
+That is, $\sPi(z)$ contains all vectors of length $m+n$ 
+that are permutations of each other. The entries of the vectors
+are observed values from two samples.
+We denote the members of $\sPi(z)$ by $\pi(z)$.
+
+Let $\phi(X, Y)$ be a test, namely a function taking values between 0 and 1, 
+such that 
+\[
+\frac{1}{(m+n)!} \sum_{(x, y) \in \sPi(z)} \phi(x, y) = \alpha.
+\]
+In the above expression, we write $(x, y)$ instead of $z$ in places
+to remind us the connections. 
+The above test is called a permutation test for a given significance level $\alpha$.
+
+At a first look, this definition does not make much sense.
+Suppose that the observed values are all different.
+That is, $x_i \neq x_j$, $y_i \neq y_j$ for any $i \neq j$;
+and $x_i \neq y_j$ for any $i$ and $j$.
+In this case, once the pooled sample $z$ is specified,
+$\sPi(z)$ contains $(m+n)!$ different valued vectors.
+Suppose the test function $\phi(x, y)$ does not involve randomization. 
+Then this function decides which of these $(m+n)!$ vectors are in the rejection region.
+Under the null hypothesis of $F = G$ and both $F$ and $G$ distributions
+are continuous, given {\bf the set $\mathbf z$}, every member
+of $\sPi(z)$ has probability $1/(m+n)!$ to occur.
+Hence, if no randomization is involved,
+the permutation test selects 5\% of $(m+n)!$ possible outcomes of $z$
+to form the rejection region of a test of size $\alpha = 0.05$. 
+
+The name of the test is now sensible as the rejection region is formed
+by permuted observed vectors. The size of the test is computed
+based on the promise that the null distribution on $\sPi(z)$ is uniform
+conditional on the set of values in $z$.
+
+The key issue left in a permutation test is: which 5\% permutations in $(m+n)!$ 
+should be placed in the rejection region?
+In applications, we introduce a function $T_{m+n}$ defined on
+$\sPi(z)$. This function can take at most $(m+n)!$ different values.
+We reject $H_0$ if the observed $T_{m+n}$ is among the top
+$(100\alpha)\%$ values. We now give two specific choices of $T_{m+n}$.
+
+
+\vs
+\noindent
+{\bf Difference in two sample means}.
+
+The question of which 50 depends on the ``optimality requirement''
+and the potential alternative hypothesis. What direction of the
+departure do we care? Without such a direction, we can always find
+two samples differ significantly in one way or in another.
+One should review the notion of two desired properties of a test
+statistics now.
+
+Consider the situation where the alternative is $H_1: G(x) = F(x - \delta)$
+for some $\delta > 0$. In statistics, we say $G(x)$ is obtained from $F$
+by a location shift in this case. Under this alternative hypothesis, 
+the samples from $G$ are stochastically larger than the samples from $F$.
+Any statistics which tend to take larger values under $H_1$ is
+a suitable candidate.
+
+Suppose $x_1, \ldots, x_m$ and $y_1, \ldots, y_n$ are two
+random samples respectively. 
+Let
+\[
+T_{m+n} = n^{-1} \sum_{j=1}^n y_j - m^{-1} \sum_{i=1}^m x_i
+=
+\bar y_n - \bar x_m.
+\]
+
+For each permuted $x_1, \ldots, x_m; ~y_1, \ldots, y_n.$,
+\[
+x_1', \ldots, x_m'; ~~y_1', \ldots, y_n'
+\]
+we compute
+\[
+T'_{m+n} = n^{-1} \sum_{j=1}^n y'_j - m^{-1} \sum_{i=1}^m x'_i
+=
+\bar y'_n - \bar x'_m.
+\]
+
+The observed $T_{m+n}$ is one of $(m+n) \choose n$ possible outcomes
+denoted as $T'_{m+n}$.
+It makes sense to select the permutations which results in
+the largest values of $T'_{m+n}$ to form the rejection region.
+ 
+To carry out this test, we compute all $(m+n) \choose n$ possible
+values of $T'_{m+n}$. One of them is the observed value
+$T_{m+n}$. If the observed value is among the top $100\alpha\%$,
+we reject $H_0$ in favour of $H_1: G(x) = F(x - \delta)$
+for some $\delta > 0$.
+
+In applications, if $(m+n)$ is large, computing all possible values
+in ``finite time'' is not feasible. 
+Computer simulation may be used to compute only
+a random subset of them and get an accurate enough rank of
+$T_{m+n}$.
+
+If $(m+n)$ is small, some $T'_{m+n}$ may equal $T_{m+n}$.
+Continuity correction is often used. That is, each equaling
+$T'_{m+n}$ value is counted as half is larger, another half
+is smaller than $T_{m+n}$.
+
+Under mild conditions, this test is asymptotically equivalent to t-test.
+That is, two tests will give very close p-values over a wide
+range of p-values.
+
+One may check against the definition to verify that this
+test is a permutation test.
+
+\vs
+\noindent
+{\bf Difference in ranks}.
+
+Consider the same alternative $H_1: G(x) = F(x - \delta)$
+for some $\delta > 0$. Instead of examining the size of
+the difference in sample means $\bar y - \bar x$,
+we may first replace each observed value by its rank
+in the set of all observed values.
+
+Define
+\[
+r(x) = \sum_{j=1}^m \ind (x_j \leq x) + \sum_{k=1}^n \ind (y_k \leq x).
+\]
+Thus, $r(y_j)$ is the number of observations in the pooled
+sample that are smaller than to equal to $y_j$. 
+Suppose both $F$ and $G$ are continuous.
+In this case, we do not need to look into the possibility of tied observations.
+Remedies to handle data with equal observed values are given in
+various places. Our focus is on conceptual issues.
+Let
+\[
+T_{m+n} = \sum_{j=1}^n r(y_j).
+\]
+The largest possible value of $T_{m+n}$ is when
+$x_i \leq y_j$ for every pair of $(i, j)$. A large observed
+value of $T_{m+n}$ is indicative of departure from $H_0$
+in favour of $H_1$. 
+Thus, a rank based permutation test is to reject $H_0$
+when the observed $T_{m+n}$ is among the
+top $100\alpha\%$ values. 
+
+If $H_0$ holds, then $T_{m+n}$ has same distribution
+as the sample total of a simple random sample 
+of size $n$ without replacement
+from a population made of $\{1, 2, \ldots, N\}$ with $N = m+n$.
+Hence, by some simple calculations, we have
+\[
+\bbE \{T_{m+n}\} = \frac{1}{2}n (m+n+1)
+\]
+and
+\[
+\var ( T_{m+n}) 
+=
+\frac{1}{12} nm(n+m+1).
+\]
+It can be proved that 
+\[
+\frac{ T_{m+n} - \bbE \{T_{m+n}\}}{\sqrt{\var ( T_{m+n}) }} \to N(0, 1)
+\]
+in distribution,
+as both $n, m \to \infty$ and $n/(n+m)$ has a limit in (0, 1).
+An approximate one-sided rejection region can be determined
+by using this limiting distribution.
+
+This test is called Wilcoxon two-sample rank-sum test.
+It is also called Mann-Whitney U test, Mann-Whitney-Wilconxon, 
+Wilcoxon-Mann-Whitney test.
+I am among those who is really confused with these names.
+
+Note that $T_{m+n}$ is related to $\sum_i \sum_j \ind (x_i < y_j)$
+which is a U-statistic. See certain references for U-statistic.
+This might be the reason behind the name U test.
+
+None of the above two tests are uniformly most powerful.
+The test based on ranks are nonparametric. Such tests are valued
+because their validity is free from model mis-specifications.
+
+Another additional remark is about the alternative model.
+The formulation is clearly geared for one-sided alternative.
+However, a two-sided Wilcoxon two sample rank test
+can be built based on the same principle. We reject the null
+hypothesis when $T_{m+n}$ is extremely large or extremely
+smaller among $T'_{m+n}$.
+I leave it to you to decide a way to define the p-value.
+Clearly, we do not truly have a principle of what quality
+should be called p-value.
+
+\section{Kolmogorov-Smirnov and Cram\'er-von Mises tests}
+
+Let $x_1, x_2, \ldots, x_n$ be a set of \iid observations
+from a continuous distribution $F$. The model under consideration
+is ${\cal F}$: all continuous univariate distributions 
+
+Without any additional knowledge about the specific $F$ from
+which we obtained the sample, one estimator of the
+cumulative distribution function $F$ is given by
+the empirical distribution
+\[
+F_n(x) = n^{-1} \sum_{i=1}^n \ind (x_i \leq x).
+\]
+When $x_i$'s are all different, it is a uniform distribution on $x_1, \ldots, x_n$.
+We may not be too happy as this estimator is not a continuous
+\cdf while the model $\cF$ is made of continuous distributions.
+Nevertheless, $F_n$ is a good estimator of $F$ in many ways.
+
+Let
+\[
+D_n(F) = \sup_x | F_n(x) - F(x) |.
+\]
+By the famous Glivenko-Cantelli theorem, $D_n(F) \to 0$ almost surely as $n \to \infty$
+when $F$ is the true distribution.
+
+Suppose we want to test for $H_0: F = F_0$ versus $H_1: F \neq F_0$.
+It is sensible to reject $H_0$ when $D_n(F_0)$ is large.
+The test in the form of
+\[
+\phi(x) = \ind ( D_n(F_0) > k )
+\]
+for some $k > 0$ is called Kolmogorov-Smirnov test.
+
+In applications, we would like to choose $k$ so that the test has
+some pre-specified size. This is possible only if we have an easy to
+computer expression of
+\[
+\pr\{ D_n(F_0) > k \}.
+\]
+This is likely a mission impossible. However, Kolmogorov
+proved that
+\[
+P\{ \sqrt{n} D_n(F_0) \leq t \} \to 1 - 2 \sum_{j=1}^\infty (-1)^{j-1} \exp(- 2 j^2 t^2)
+\]
+as $n \to \infty$. Thus, when $n$ is large, we may use the right hand
+side to pick a value of $t$ so that
+\[
+2 \sum_{j=1}^\infty (-1)^{j-1} \exp(- 2 j^2 t^2) = \alpha
+\]
+and reject $H_0$ when $ \sqrt{n} D_n(F_0) > t$.
+The expression is certainly easy to use to compute an
+approximate P-value.
+
+How large this $n$ has to be in order for the approximation
+to have satisfactory accuracy? I do not have an answer but it exists somewhere.
+I will not try to give a proof. All I can say that this
+large sample result is crazily elegant!
+
+Kolmogorov-Smirnov test measures the maximum discrepancy between
+$F_n$ and $F$. It might be more helpful to examine the average
+difference. The Cram\'er-von Mises test works in this fashion:
+\[
+C_n(F) = \int \{ F_n(x) - F(x)  \}^2 dF(x).
+\]
+Under null distribution $F_0$, it has been shown that
+\[
+n C_n(F_0) \to \sum_{j=1}^\infty \lambda_j \chi^2_{1j},
+\]
+where $\lambda_j = j^{-2} \pi^{-2}$
+and $\chi^2_{1j}$, $j= 1, 2, \ldots$ are independent chisquare random variables
+with one degree of freedom.
+The sum of the coefficients is $1/6$ and this is right.
+
+There can certainly be many other ways to examine
+the difference between $F_n$ and $F(x)$.
+By the latest checking, there is a R-cran function which is designed
+to carry out the Kolmogorov-Smirnov test.
+See the help file if you are interested in how the p-value is
+numerically computed for various ranges of the sample size $n$,
+
+\section{Pearson's goodness-of-fit test}
+Suppose the observations are naturally categoried into $K$ groups.
+At the same time, these $n$ observations are believed \iid\  Let $p_k$ be the
+probability of an observation falls into category $k$, $k=1, 2, \ldots, K$.
+One simple question is: does the data support or contradict the
+hypothesis that $p_k = p_{k0}$, $k=1, 2, \ldots, K$.
+One possible approach of addressing such a concern is
+Pearson's goodness-of-fit test. We phrase the question from
+an opposite angle: is there a significant evident against the null
+hypothesis $H_0: p_k = p_{k0}$?
+
+Let $o_k$ be the number of observations out of total $n$ fall into category $k$.
+Let $e_k = n p_{k0}$ denote the expected value of $o_k$ under the null model.
+Pearson's statistic for this test problem is defined to be
+\[
+W_n = \sum_{k=1}^K \frac{ (o_k - e_k)^2}{e_k}.
+\]
+This statistic clearly has one desired property for a test: when the
+true model deviates from the null hypothesis, we expect to have larger
+differences between $o_k$ and $e_k$. Thus, $W_n$ is stochastically
+larger when $H_0$ is severely violated. Naturally, we reject $H_0$ if
+$W_n$ value is large.
+
+The next desired property for a test statistics is to have a known distribution
+under $H_0$. This is not completely true. However, when $n \to \infty$ while
+$K$ is a fixed value, it can be shown that
+\[
+W_n \cd \chi_{K-1}^2.
+\]
+Since the chisquare distribution is well documented, we may use its upper
+$1-\alpha$ quantile as the critical region for this test. Namely,
+the test would be
+\[
+\mbox{Reject $H_0$ when } W_n > \chi^2_{K-1} (1 - \alpha).
+\]
+Of course, this writing has assumed a size-$\alpha$ test is desired
+in the first place.
+
+
+In a more realistic situation, for instance, these $K$ categories represent
+the number of boys in a family with $K-1$ children. Is this number
+truly binomially distributed as it would be under the assumption
+that there is no correlation between siblings and the population is
+homogeneous? In this case, we do not have $p_{k0}$'s completely
+specified but we have an analytical experssion:
+\[
+p_{0k}(\theta) = {K-1 \choose k-1} \theta^{k-1} (1-\theta)^{K-k}.
+\]
+Namely, they are specified by a single parameter, the probability
+of success.
+
+In this case, let $\hat \theta$ be the maximum likelihood estimate of $\theta$
+and compute
+\[
+\hat e_k = n p_{0k}(\hat \theta).
+\]
+Let us revise the definition of $W_n$ and get
+\[
+W_n = \sum_{k=1}^K \frac{ (o_k - \hat e_k)^2}{\hat e_k}.
+\]
+Although we have to estimate $\theta$, the limiting distribution of $W_n$
+is only altered slightly: 
+\[
+W_n \cd \chi_{K-2}^2.
+\]
+
+In general, if $p_{0k}$ are function of $\theta$ and $\theta$ has dimension $d$,
+the same approach is applicable. The limiting distribution remains chi-square
+with degrees of freedom being $K-d-1$.
+
+Being a course in mathematical statistics, one may ask how to establish the
+asymptotic result. One approach is to connect $W_n$ with the likelihood
+ratio test. This will be left as an assignment problem.
+
+The applied aspect of this test can be more troublesome. The biggest
+concern is when the chi-square approximation kicks in? The rumour is:
+do not use the goodness-of-fit test unless $\min \{ o_k\} \geq 5$.  
+In other applications, the observations
+are not ``naturally categorized''. The step of creating $K$ categories in order
+to examine the goodness-of-fit can be controversial.
+
+
+\section{Fisher's exact test}
+In a classical and likely fictional example, a lady
+claimed that she could tell whether or not
+tea was added after milk or the other way by tasting the mixture.
+Carrying out an experiment and analyzing the subsequent data
+is the best way to dispute the existence of such an ability. 
+We may put the inability as the null hypothesis.
+Rejection of which leads to the claim of this lady.
+
+Suppose $A + B$ cups of teas of two types of preparation
+were prepared as such. Assume that
+the lady had no ability to tell two types of teas apart.
+Her selection of $A$ cups of type A would no different from
+randomly selecting $A$ cups out of $A+B$ and then
+identifying them as cups with tea was added after milk. 
+Note that in this experiment, the
+total number of cups as well as how many of them are of
+type A are not random and known. The randomness comes from
+the lady who attempts to identify type A teas, given the
+knowledge of the split: $A$ and $B$.
+Let $X$ be the number of correctly identified type A cups.
+
+Under the null hypothesis that there is no correlation between
+being type A and identified as type A, random variable $X$
+as hypo-geometric distribution:
+\[
+\pr (X = x) = \frac{ {A \choose x} {B \choose A-x}}{ {A+B \choose A}}
+\]
+Clearly, this distribution does not depend on any unknown parameters
+as $A$ and $B$ are known.
+A large value of $X$ is an evidence against the null hypothesis
+pointing to the direction of positive correlation.
+It is therefore sensible to reject the null hypothesis when $X$ is large. 
+Statistic $X$ has two desired properties for a test statistic.
+Therefore, we would compute the p-value for the alternative
+that she has the skill as
+\[
+\pr (X > x_0) + 0.5 \pr (X = x_0)
+\]
+where $x_0$ is the observed value. The continuity correction
+here is intuitively helpful but there is no theory to support this
+practice.
+
+More generally, a $2 \times 2$ table may be formed as follows:
+\[
+\begin{array}{|c|c|c|}
+\hline
+n_{11} & n_{12} & n_{1+}\\
+\hline
+n_{21} & n_{22} & n_{2+}\\
+\hline
+n_{+1} & n_{+2} & n\\
+\hline
+\end{array}
+\]
+The experiment is carried out to have $n$ units placed into
+4 possible cells in this table. Without placing any restrictions,
+the probability of each unit falling into a cell may be denoted
+as $p_{ij}$ for $i, j = 1, 2$. 
+The joint distribution of $n_{11}, n_{12}, n_{21}, n_{22}$
+are multinomial with these probabilities.
+
+If the row and column counts are independent such that
+$p_{ij} = p_{i,\cdot} p_{\cdot, j}$ for some $p_{i,\cdot}, p_{\cdot, j}$.
+Conditioning on the marginal totals (corresponding to
+the knowledge of $A$ and $B$ in the tea experiment), 
+the size of $n_{11}$ has hypergeometric distribution.
+Again, $n_{11}$ has the two desired properties of a test statistic,
+in conditional sense: regarding marginal totals are not random.
+Extreme values of $n_{11}$ give evidence against independence
+assumption. One may select $n_{11}$ or $-n_{11}$ as a test
+statistic, or find a way to get them combined.
+
+Regardless the choice of a test statistic,
+the subsequent p-value of the test can be computed 
+via hypergeometric distribution
+which does not depend on any unknown parameters.
+The outcome of the p-value is exact in theory, when
+the error due to rounding is not taken into consideration. 
+In other words, no large sample approximations are needed for the p-value computation.
+This property together with its inventor gives the name of the test.
+
+

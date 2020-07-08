@@ -1,0 +1,863 @@
+\chapter{Tests under normality}
+
+There are many classical tests taught in introductory courses for various aspects
+of the population under normality assumption. They include test for the hypotheses
+such as whether the population mean is equal or larger than a specific 
+value when a single \iid sample is given; test for the hypotheses
+whether two population means are equal, or differ by specific amount
+when two independent \iid samples from two populations are given.
+We have them summarized in this chapter under the light of
+some types of optimality.
+
+\section{One-sample problem under normality}
+
+Suppose we have a random sample $x_1, \ldots, x_n$
+of size $n$ from $N(\theta, \sigma^2)$.
+We adopt common notations:
+sample mean $\bar x = n^{-1} \sum_{i=1}^n x_i$ and
+sample variance $s_n^2 = (n-1)^{-1}  \sum_{i=1}^n (x_i-\bar x)^2$;
+Let 
+\[
+T_n = \frac{\sqrt{n}( \bar x- \theta_0)}{s_n}
+\]
+for some given $\theta_0$ value.
+The well known test for $H_0: \theta \leq \theta_0$ against
+$H_1: \theta > \theta_0$ of size $\alpha$ is given by
+\[
+\phi(x) =
+\left \{
+\begin{array}{ll}
+1 &  \mbox{when  }  T_n \geq t_{n-1, 1-\alpha};
+\\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\]
+where $t_{n-1, 1-\alpha}$ is the upper $1-\alpha$ quantile of the t-distribution
+with $n-1$ degrees of freedom.
+
+\vs
+The well known t-test for $H_0: \theta = \theta_0$ against
+$H_1: \theta \neq \theta_0$ of size $\alpha$ is given by
+\[
+\phi(x) =
+\left \{
+\begin{array}{ll}
+1 &  \mbox{when  }  |T_n| \geq t_{n-1, 1-\alpha/2};
+\\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\]
+This is the famous two-sided t-test.
+
+Both tests are convenient to use and have nice properties. Yet after
+having studied the ``UMP'' theory, we may question their ``optimality''.
+We will not prove anything but cite a few classical theorems here.
+Their truthfulness is too involved to be lectured in this course. These interested are
+referred to reference textbooks. Even better, you may practice
+your technical skill through an attempt to prove to disprove these
+results.
+
+\begin{theorem}
+\label{thm19.1}
+Suppose we have an \iid\ sample from a distribution with density
+function from an exponential family
+\[
+f(x; \theta, \lambda) 
+=
+\exp\{ \theta U(x) + \lambda T(x) + A(\theta, \lambda) \}
+\]
+with respect to some $\sigma$-finite measure.
+The parameter $\theta$ is one-dimensional, while
+$\lambda$ can be multi-dimensional. 
+
+\vs
+\noindent
+(i) Suppose that $V = h(U, T)$ is independent of $T$ (being two independent random variables/vectors)
+when $\theta = \theta_0$. In addition, for each $t$, $h(u, t)$ is an increasing
+function in $u$. Then the test defined as follows
+\[
+\phi(v) =
+\left \{
+\begin{array}{ll}
+1 &  \mbox{when  }  v > k;\\
+c &  \mbox{when  }  v = k
+\\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\] 
+satisfying $\bbE\{ \phi(V); \theta_0 \} = \alpha$
+is an UMPU test for $H_0: \theta \leq \theta_0$ against
+$H_1: \theta > \theta_0$.
+
+\vs
+\noindent
+(ii) Assume the same conditions as in (i), but in addition,
+\[
+h(u, t) = a(t)u + b(t) ~~~\mbox{with}~~~ a(t) > 0.
+\]
+Let us define
+\[
+\phi(v) =
+\left \{
+\begin{array}{ll}
+1 &  \mbox{when  }  v > k_1 \mbox{ or }~~ v < k_2;
+\\
+c_j &  \mbox{when  }  v = k_j, ~~j=1, 2;
+\\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\] 
+for some constants $k_1 > k_2$ such that $\bbE\{ \phi(V); \theta_0 \} = \alpha$
+and $\bbE\{V \phi(V); \theta_0 \} = \alpha \bbE\{V; \theta_0 \}$.
+This test is an UMPU test for $H_0: \theta = \theta_0$ against
+$H_1: \theta \neq \theta_0$.
+\end{theorem}
+
+Clearly, this theorem targets problems
+when the hypothesis involves one specific component $\theta$ of parameter
+vector in the model while leaving other components $\lambda$ of parameters
+unspecified. Because of this, we refer  $\lambda$ as nuisance parameter.
+According to the results in this theorem, the UMPU tests have the
+same format to the ones we obtained in the absence of nuisance parameters
+when the model is an ``exponential family'' under some conditions.
+
+We use this theorem to construct
+a test for hypotheses about the variance $\sigma^2$
+under normal model in the following example.
+
+\begin{example}
+Suppose we have an \iid\ sample from $N(\xi, \sigma^2)$.
+The joint function can be written as
+\[
+f(x; \xi, \sigma^2) = 
+\exp\{ \theta U(x) + \lambda T(x) + A(\theta, \lambda) \}
+\]
+with $\theta = - 1/(2 \sigma^2)$, $\lambda = (n\xi)/\sigma^2$;
+and
+$U(x)  = \sum x_i^2$, $T(x) = \bar x$.
+
+Let 
+\[
+h(U, T) = U - n T^2 = \sum (x_i - \bar x)^2.
+\]
+It is seen that for any given value of $\sigma^2$,
+$h(U, T)$ is independent of $T$. 
+Thus, a UMPU  test  of size $\alpha$ for $H_0: \sigma \leq \sigma_0$
+against  $H_1: \sigma > \sigma_0$ is
+given by
+\[
+\phi(U) =
+\left \{
+\begin{array}{ll}
+1 &  \mbox{when  }  U > k;
+\\
+0 & \mbox{otherwise}
+\end{array}
+\right .
+\]
+Because $U/\sigma_0^2$ has chisquare distribution
+with $n-1$ degrees of freedom. The size of
+$k$ is therefore the $(1-\alpha)$th quantile of this distribution.
+\end{example}
+
+In the next example, we exchange the roles of $\sigma$ and $\mu$
+(in terms of notation)
+and therefore $U$ and $T$ to construct a UMPU about the
+size of population mean.
+
+\begin{example}
+Suppose we have an \iid\ sample from $N(\xi, \sigma^2)$.
+The joint function can be written as
+\[
+f(x; \xi, \sigma^2) = 
+\exp\{ \theta U(x) + \lambda T(x) + A(\theta, \lambda) \}
+\]
+with $\lambda = - 1/(2 \sigma^2)$, $\theta = (n\xi)/\sigma^2$;
+and
+$T(x)  = \sum x_i^2$, $U(x) = \bar x$.
+
+This time, we find
+\[
+V= h(U, T) 
+= \frac{U}{\sqrt{T - n U^2}} 
+= \frac{\bar X}{\sqrt{\sum (X_i - \bar X)^2}}
+\]
+is independent of $T(x)$ when $\xi = 0$. See the remark after this example.
+
+It is easily seen that $V$ is an increasing function of $U$ given $T$.
+Hence, a UMPU test for $H_0: \xi \leq 0$ versus $H_0: \xi > 0$
+can be easily obtained by the result of Theorem 
+\ref{thm19.1}
+
+In order to construct a UMPU test for $H_0: \xi = 0$ versus $H_0: \xi \neq 0$,
+we need to find a $V$ which is also linear in $U$ given $T$.
+This is not the case here. However, it is possible to use a mathematical
+trick to show a UMPU for this pair of hypothesis is still given by
+\[
+\phi(V) = \ind ( |V| > k)
+\]
+with $k$ satisfying $\bbE\{ \phi(V); \theta_0 \} = \alpha$
+and $\bbE\{V \phi(V); \theta_0 \} = \alpha \bbE\{V; \theta_0 \}$.
+The solution is certainly the famous two-sided $t$-test.
+
+This test is not in the exact form of the famous $t$-test.
+Some normalization steps are needed but omitted here.
+\end{example}
+
+Remark: When $\xi = 0$ is given, $T(x)$ is complete and sufficient for $\sigma^2$.
+At the same time, the distribution of $V$ is not dependent on $\sigma$. Thus,
+the classical theorem implies that they are independent.
+
+
+\section{Two-sample problem under normality assumption}
+
+The purpose of the first example is to show that the commonly used
+F-test is a UMPU test for the one-sided hypothesis. The conclusion is
+likely also ``true'' for the two-sided hypothesis with some complications.
+For the specific hypothesis to be discussed, we may simply put
+$\Delta = 1$ in the subsequent discussion. Ignore this $\Delta$
+if you find it disturbing.
+
+
+Let $X_1, \ldots, X_m$ and $Y_1, \ldots, Y_n$ be \iid\ samples from
+$N(\xi, \sigma^2)$ and $N(\eta, \tau^2)$ respectively. Their joint
+density function is given by
+\[
+f(X, Y; \xi, \eta, \sigma, \tau)
+=
+\exp \left \{ 
+- \frac{1}{2 \sigma^2} \sum x_i^2 - \frac{1}{2 \tau^2} \sum y_j^2 
++ \frac{m\xi}{\sigma^2} \bar x + \frac{n \eta}{\tau^2} \bar y 
+- A( \xi, \eta, \sigma, \tau) 
+\right \}.
+\]
+Next, let us transform the parameter by
+\[
+\theta = - \frac{1}{2 \tau^2} + \frac{ 1}{2 \Delta \sigma^2}
+\]
+and
+\[
+\lambda_1 = - \frac{1}{2 \sigma^2};~~
+\lambda_2 = \frac{m\xi}{\sigma^2};~~
+\lambda_3 = \frac{n \eta}{\tau^2}
+\]
+for some constant $\Delta > 0$.
+Let the corresponding sufficient statistics be
+\[
+U = \sum_{j=1}^n Y_j^2; ~~
+T_1 = \sum_{i=1}^m X_i^2 + \frac{1}{\Delta} \sum_{j=1}^n Y_j^2;~~
+T_2 = \bar X; ~~T_3 = \bar Y.
+\]
+
+\vs
+\noindent
+{\bf Test for equal variance}
+Consider the test for $H_0: \tau^2 \leq \sigma^2$ versus 
+$H_1: \tau^2 > \sigma^2$
+This is the same as, with $\Delta = 1$,
+\[
+H_0: \theta \leq 0; ~~~~\mbox{versus} ~~~H_1: \theta > 0.
+\]
+Define
+\[
+V = h(U, T_1, T_2, T_3) 
+= \frac{ \sum_{j=1}^n (Y_j - \bar Y)^2}{\sum_{i=1}^m (X_i - \bar X)^2}.
+\]
+It is seen that given $\theta = 0$, $V$ has F-distribution(after 
+some scale adjustment) which
+does not depend on any parameters. Thus, it is independent of
+the sufficient and complete statistic ($T_1, T_2, T_3$).
+To verify the sufficiency and completeness,
+work out the analytical form of the distribution family
+when $\theta=0$.
+It is also easy to show that $h(U, T)$ is monotone in $U$
+given $T$. 
+
+These discussions show the conditions specified in Theorem
+\ref{thm19.1} are satisfied with these parameters and statistics.
+Hence, a proper test based on $V$ is a UMPU test.
+That is, a UMPU test for $H_0: \tau^2 \geq \sigma^2$ versus 
+$H_1: \tau^2 < \sigma^2$ is given by
+\[
+\phi(V) = I(V > k)
+\]
+and this $k$ is chosen according to the F-distribution to make
+the size right.
+
+{\bf Extension}.
+By putting $\Delta$ at other values, we obtain many variations.
+One may also easily get the F-test for the two-sided test. 
+It appears that an UMPU test is not the same test when the
+rejection regions on two tails of $V$ having equal probability
+$\alpha/2$. 
+
+\section{Test for equal mean under equal variance assumption}
+
+We certainly know that the two-sample t-test will show up here.
+Consider the case where $\tau^2 = \sigma^2$. Under this
+assumption, the joint density of two samples is given by
+\[
+f(X, Y; \xi, \eta, \sigma, \tau)
+=
+\exp \left \{ 
+- \frac{1}{2 \sigma^2} \{\sum x_i^2 + \sum y_j^2 \}
++ \frac{m\xi}{\sigma^2} \bar x + \frac{n \eta}{\sigma^2} \bar y 
+- A( \xi, \eta, \sigma) 
+\right \}.
+\]
+Let
+\[
+\theta = \frac{\eta - \xi}{(m^{-1} +n^{-1} )\sigma^2};
+\]
+and
+\[
+\lambda_1 = \frac{m \xi + n \eta}{(m+n)\sigma^2}; ~~
+\lambda_2 = -\frac{1}{2\sigma^2}.
+\]
+The sufficient statistics are
+\[
+U = \bar Y - \bar X;~~ 
+T_1 = m \bar X + n \bar Y; ~~ 
+T_2= \sum_{i=1}^m X_i^2 + \sum_{j=1}^n Y_j^2.
+\]
+
+Consider a test for $H_0: \xi = \eta$ versus $H_1: \xi \neq \theta$,
+we construct a statistic
+\[
+V 
+= \frac{\bar Y - \bar X}
+{\sqrt{ \sum_{i=1}^m (X_i - \bar X)^2 + \sum_{j=1}^n (Y_j - \bar Y)^2}}
+\]
+which is a function of $U$, $T_1$, $T_2$ and $T_3$.
+Its distribution, when $\xi = \eta$ does not depend on $\lambda_j$, $j=1, 2, 3$.
+Thus, it serves the proper statistic for constructing UMPU.
+
+A UMPU test is given by
+\[
+\phi(V) = I( |V| > k)
+\]
+with $k$ satisfying $\bbE\{\phi(V); \eta = \xi\} = \alpha$ and 
+\[
+\bbE\{V\phi(V); \eta = \xi\} = \alpha \bbE\{V; \eta=\xi\}.
+\]
+
+This is apparently the two-sample t-test.
+Here are a few missing technical steps. First, the denominator
+in $V$ can be written as
+\[
+T_2 - \frac{1}{m+n} T_1^2 - \frac{mn}{m+n} U^2.
+\]
+This ensures that $V$ is indeed a function of the required format.
+
+The second is linearity of $V$ in $U$ given $T$. The linearity is not
+exactly true. However, $V$ is a monotone function of $W$:
+\[
+W 
+= \frac{\bar Y - \bar X}{\sqrt{ \sum x_i^2 + \sum y_j^2 
+ - (m+n)^{-1}(\sum x_i + \sum y_j)^2}}.
+\]
+So a test based on $W$ would satisfy all conditions specified in the theorem.
+Two tests are, however, equivalent.
+The reason for using $V$ instead of $W$ lies in the fact that the
+distribution of $V$ is clearly related to $t$, while the distribution of $W$
+is not ``standard''.
+
+\section{Test for equal mean without equal variance assumption}
+
+If $\sigma^2 = \tau^2$ is not assumed (or not known to be equal),
+there is no such a simple solution as UMPU test.
+This is so-called {\it Behrens-Fisher problem}.
+
+In terms of searching for ``optimal tests'', one usually starts to
+place restrictions on the test: we require the test is ``unbiased'',
+``invariant'', ``similar'' and so on. 
+
+With some considerations, it appears that a good test should reject
+the null hypothesis when
+\[
+\frac{\bar Y - \bar X}{\sqrt{(1/m)S_x^2 + (1/n)S_y^2}} \geq g(S_y^2/S_x^2)
+\]
+for some suitable function $g$.
+If the test is required to be unbiased, then only ``pathological functions
+$g$'' can have this property.
+
+``Approximate solutions are available which provide tests that are
+satisfactory for all practical purposes''. Among them, we probably
+know Welch's approximate $t$-test. In this case, a t-test statistic
+is defined to be
+\[
+t_n = \frac{\bar Y - \bar X}{\sqrt{(1/m)S_x^2 + (1/n)S_y^2}}.
+\]
+Clearly, it is simply the ``standardized difference in sample means''.
+Its distribution under $H_0$ depends on the actual value of
+$\sigma^2$ and $\tau^2$. Namely, it does not have the desired ``pivotal''
+property under $H_0$. 
+However, it is generally recommended in the
+literature that its distribution is well approximated by
+$t$-distribution with degree of freedom
+\[
+df = 
+\frac{[(1/m)S_x^2 + (1/n)S_y^2]^2}
+{[(1/m)S_x^2]^2/(m-1) + [(1/n)S_y^2]^2/(n-1)}.
+\]
+Because this $df$ is an approximation based on certain consideration,
+I am reluctant to declare that this is a ``correct approximation
+of the degree of freedom''.
+It is best to call it the Welch's approximation.
+
+I like the description of this famous problem in wikipedia:
+{\it
+One difficulty with discussing the Behrens--Fisher problem and proposed solutions, 
+is that there are many different interpretations of what is meant by
+``the Behrens-Fisher problem''. 
+These differences involve not only what is counted as being a relevant solution, 
+but even the basic statement of the context being considered.}
+
+My summary: if one attempts to have an ``optimal'' test for
+$\xi = \eta$ without knowing $\sigma = \tau$ in a two-sample problem,
+there may not be such a solution.
+If the ``optimality'' is not strictly observed, there are many sensible
+methods.
+
+
+\vs
+\noindent
+{\bf Summary.} We have gone over most famous tests based on
+data from normal models. We have not gone a complete list
+of all important cases.
+We did not go over the theorem based on which these tests
+are justified to have various optimality properties.
+
+The optimality will go away if the data are not from  a normal distribution.
+My experience indicates, however,
+that the two-sample t-test works really nicely even 
+when the normality is severely violated. 
+That is, the size of the test remains close to what is promised
+and the power is superior compared to many alternatives.
+One can find situations where this t-test is very poor in these
+respects. However, these situations are often too extreme to be taken
+seriously. The simplest case I can think of is when a few extremely
+large observed values are in presence compared to the
+majority of observed valued.
+
+If so, robust approaches are recommended.
+Some of them will be discussed next.
+
+\section{Assignment problems}
+\begin{enumerate}
+\item
+%%% Problem one. Taken from Lehman.
+Suppose $(X_i, Y_i)$, $i=1, 2, \ldots, n$ are a random sample from 
+a bivariate normal  distribution with density function
+\[
+f(x, y; \xi, \eta, \sigma, \tau) 
+=
+\big \{2\pi \sigma \tau \sqrt{1-\rho^2} \big \}^{-n} 
+\exp
+\big ( 
+- \frac{h(x, y ; \xi, \eta, \sigma, \tau)}{2(1-\rho^2)}
+\big )
+\]
+where
+\[
+h(x, y ; \cdots)
+=
+\frac{1}{\sigma^2} \sum(x_i - \xi)^2 
+- \frac{2 \rho}{\sigma \tau} \sum(x_i - \xi)(y_i - \eta)
++ \frac{1}{\tau^2}\sum (y_i - \eta)^2.
+\]
+
+(a) Determine the form of the UMPU test for $H_0: \rho \leq 0$ 
+versus $H_1: \rho > 0$.
+
+(b) Determine the rejection region of the
+test of size $\alpha$ in terms of the quantile of 
+a well known distribution (t-distribution).
+
+\item
+%% Problem 2: from Shao? PP410?
+Let $X_1, \ldots, X_n$ be a random sample from $N(\xi, \sigma^2)$. 
+
+(a).
+Show that the power of the student's t-test is an increasing function of 
+$\xi/\sigma$ for testing $H_0: \xi < 0$ versus $H_1: \xi > 0$. (One-sided test).
+
+(b).
+Show that the power of the student's t-test is an increasing function of 
+$|\xi|/\sigma$  for testing $H_0: \xi = 0$ versus $H_1: \xi \neq 0$. (two-sided test).
+
+\item
+%% Problem 3
+Suppose that $X_i = \beta_0 + \beta_1 t_i + \epsilon_i$,
+where $t_i$'s are fixed constants that are not all the same,
+$\epsilon_i$'s are \iid from N($0, \sigma^2$),
+and $\beta_0$, $\beta_1$ and $\sigma^2$ are unknown
+parameters. Derive a UMPU test of sizes $\alpha$
+for testing
+
+(a) $H_0: \beta_0 \leq \theta_0$ versus $H_1: \beta_0 > \theta_0$.
+
+(b) $H_0: \beta_0 = \theta_0$ versus $H_1: \beta_0 \neq \theta_0$.
+
+\end{enumerate}
+
+\endinput
+
+\ifstudents\endinput\fi
+%% something to be used in the future
+
+
+{\bf Solution to Problem 1}
+\vs
+{\bf Solution of (a)}.
+The key is to write the joint density into the form of
+\[
+\exp\{ \theta U + \lambda T + A\}
+\]
+where $A$ is a function of parameters not dependent on data,
+$U$ and $V$ are statistics (not dependent on parameters).
+
+This implies the coefficient $\{2\pi \sigma \tau \sqrt{1-\rho^2}\}^{-n}$
+in the joint density will merge into expression of $A$. We are free
+from handling it.
+
+The next important step is make $\theta$ a parameter relevant to
+the parameter of interest: $\rho$. The corresponding statistic
+is clearly $\sum x_i y_i$ or its centralised version.
+
+My arrangements are:
+\[
+\theta = \frac{ \rho}{\sigma \tau (1-\rho^2)}; ~~~
+\lambda_1 =  - \frac{1 }{\sigma^2 (1-\rho^2)}; ~~~
+\lambda_2 =  - \frac{1}{ \tau^2 (1-\rho^2)};
+\]
+\[
+\lambda_3 =  
+ \frac{n \xi }{\sigma^2 (1-\rho^2)} +- \frac{n \eta }{\sigma \tau (1-\rho^2)}; ~~~
+\lambda_4 = 
+ \frac{n \eta }{\tau^2 (1-\rho^2)} +- \frac{n \xi }{\sigma \tau (1-\rho^2)}.
+\]
+The corresponding statistics are:
+\[
+U = \sum x_i y_i; ~~T_1 = \sum x_i^2 ; ~~T_2 = \sum y_i^2;
+\]
+\[
+T_3 = \bar x; ~~T_4 = \bar y.
+\]
+Define
+\[
+V = \frac{U - n T_3 T_4}{\sqrt{ (T_1 - n T_3^2) (T_2 - n T_4^2)}}
+=
+\frac{ \sum (x_i - \bar x)(y_i - \bar y)}
+{\sqrt{\sum (x_i - \bar x)^2 \sum (y_i - \bar y)^2}}.
+\]
+That is, it is the usual sample correlation coefficient.
+Given $T_1, T_2, T_3, T_4$, this statistic is increasing in $U$.
+
+When $\rho = 0$, its distribution is free from any unknown parameters.
+Its independence to $ T_3, T_4$ is well known regardless of $\rho$.
+When $\rho = 0$, $T_1, T_2, T_3, T_4$ are jointly complete
+and sufficient for $\xi, \eta, \tau, \sigma$. Thus,
+$V$ is independent of $T_1, T_2, T_3, T_4$.
+
+Based on the theorem given in class, a UMPU test is
+to reject $H_0: \rho \leq 0$ when $V$ takes a large value.
+
+{\bf Solution for (b)}. 
+Let $X$ and $Y$ be vectors of observed value.
+Since the distribution of $V$ no longer depends on the means
+and variances, we take means as 0, and variance as 1.
+
+We first notice that if $Y$ is non-random, then the numerator
+of $V$ is a linear combination of components of $X$. 
+The denominator is a quadratic in $X$ after it is squared.
+Since $X$ and $Y$ are also independent under the null
+model, it implies
+that the numerator and dominators are independent
+without any conditions.
+
+Let $a_i = (y_i - \bar y)/s_y$, and $\bfa = (a_1, \ldots, a_n)^\tau$
+with
+\[
+s_x^2 = \sum (x_i - \bar x)^2; ~~  s_y^2 = \sum (y_i - \bar y)^2.
+\]
+Since in matrix notation,
+\[
+s_x^2 = x^\tau \{I -  n^{-1} \one_n \one^\tau_n\} x
+\]
+we have
+\[
+s_x^2 
+= 
+x^\tau \bfa \bfa^\tau x + x^\tau \{I -  n^{-1} \one_n \one^\tau_n - \bfa \bfa^\tau)x.
+\]
+Let
+\[
+B = I_n -  n^{-1} \one_n \one^\tau_n - \bfa \bfa^\tau.
+\]
+We can verify that $B$ is idempotent, i.e. $B*B = B$ helped by 
+the fact that $a$ and $\one$ are orthogonal. Its trace equals
+$(n-2)$. Thus, $x^\tau B x$ has chisquared
+distribution with $n-2$ degrees of freedom
+
+The same ``orthogonality'' also implies that
+$\bfa^\tau x $ is independent of $x^\tau B x$.
+Thus,  we have
+\ba
+V = \frac{\bfa^\tau x}{s_x} 
+&=&
+\frac{\bfa^\tau x}{\sqrt{ x^\tau \bfa \bfa^\tau x + x^\tau B x}}\\
+&=&
+\frac{T}{\sqrt{ T^2 + (n-2)}}
+\ea
+where
+\[
+T = \frac{\bfa^\tau x}{\sqrt{(n-2)^{-1} x^\tau B x}}
+\]
+which has $t$-distribution with $n-2$ degrees of freedom.
+
+Based on the above result, it is seen
+that the rejection region can be determined through
+the $t$ distribution.
+
+\vs
+{\bf Solution to Problem 2}.
+
+{\bf Solution of (a)}. 
+The rejection region of the student's t-test is formed by
+$\bar X_n \geq c S_n$ for some constant $c$ with
+$\bar X_n$ and $S_n$ being sample mean and standard
+deviation.
+
+Regardless of the value of $\xi$, the sample mean and
+the sample variance are independent under normal model.
+In addition, the distribution of $S_n$ is free from $\xi$.
+
+Note that
+\ba
+\beta(\xi, \sigma) 
+&=& 
+P( \bar X_n \geq c S_n; \xi , \sigma )\\
+&=& 
+P( ( \bar X_n- \xi)/\sigma + \xi/\sigma  \geq c S_n/\sigma;  \xi, \sigma).
+\ea
+Note that now $( \bar X_n- \xi)/\sigma$ and $S_n/\sigma$
+are pivotal quantities. That is, their distributions
+do not depend on any unknown parameter values.
+Denote them as $Z$ and $S$ for clarity.
+
+Subsequently,
+\[
+\beta(\xi, \sigma) 
+=
+P( Z + \xi/\sigma \geq c S)
+\]
+which is clearly an increasing function of $\xi/\Sigma$.
+This proves the monotonicity.
+
+{\bf Solution of (b)}. 
+Similarly, the rejection region of the student's
+t-test is formed by
+$|\bar X_n| \geq c S_n$ for some constant $c > 0$.
+Due to symmetry, we need only consider the case where
+$\xi > 0$.
+
+Let $\Phi(\cdot)$ and $\phi(\cdot)$ be the cdf and pdf 
+of the standard normal distribution.
+It is seen that
+\ba
+\beta(\xi, \sigma) 
+&=& 
+1 - P( - c S_n - \xi \leq \bar X_n- \xi  \leq c S_n - \xi)\\
+&=& 
+1 - P( - c S - \xi/\sigma \leq Z  \leq c S - \xi/\sigma)\\
+&=&
+1- E\{ \Phi( \sqrt{n} [ c S - \xi/\sigma] ) - \Phi( \sqrt{n} [ - c S - \xi/\sigma])\}\\
+&=&
+1- E\{ \Phi( \sqrt{n} [ c S - \theta] ) - \Phi( \sqrt{n} [ - c S - \theta])\}
+\ea
+where $\theta = \xi/\sigma$.
+Taking derivative with respect to $\theta$, 
+and the expectation and derivative
+can clearly be exchanged, we find the derivative is
+\[
+\sqrt{n} E \{ \phi(\sqrt{n} [ c S - \theta]) - \phi(\sqrt{n} [ -c S - \theta])\}.
+\]
+Because when $\theta > 0$ and $c > 0$, we have
+\[
+| -c S - \theta | > | c S - \theta |
+\]
+which implies the density function $\phi(\cdot)$ is smaller at $\sqrt{n} [ -c S_n - \theta]$.
+Hence, the above derivative is negative.
+at all $\theta > 0$. Hence, the power function increases with $\theta = \xi/\sigma$
+over $\xi > 0$. The other case is the same.
+
+\vs
+{\bf Solution of Problem 3}.
+
+{\bf Solution}. 
+
+Let $\hat \beta_0$ and $\hat \beta_1$ be least squares estimators of
+$\beta_0$ and $\beta_1$. The sum of squares can be decomposed as
+\[
+\sum (x_i - \beta_0 - \beta_1 t_i)^2
+=
+\sum (x_i - \hat \beta_0 - \hat \beta_1 t_i)^2
++
+n \{\hat \beta_0 - \beta_0 + c(\hat \beta_1 - \beta_1)\}^2
++ \{\sum u_i^2\} (\hat \beta_1 - \beta_1)^2.
+\]
+
+Let $\bt = (t_1, \ldots, t_n)^\tau$ and let $a = \sum t_i/\sum t_i^2$.
+It is seen that
+\[
+\one - a \bt
+\]
+is orthogonal to $\bt$.
+
+We may now re-write the model as
+\[
+x_i = (1-a t_i) \beta_0 +  (a \beta_0 + \beta_1) t_i + \epsilon_i
+\]
+The design matrix
+\[
+B= [B_0, B_1]
+=
+\left [
+\begin{array}{cc}
+1-at_1 &  t_1\\
+1-at_2 & t_2 \\
+\cdots \\
+1 - a t_n & t_n
+\end{array}
+\right ]
+\]
+is now orthogonal with
+\[
+B^\tau B = 
+\left [
+\begin{array}{cc}
+\sum (1-at_i)^2  & 0\\
+0 & \sum t_i^2
+\end{array}
+\right ].
+\]
+Write $x$ as the column vector of response values.
+Let $\alpha_0 = \beta_0$ and 
+\[
+\alpha = (\alpha_0, \alpha_1)^\tau = (\beta_0, a \beta_0 + \beta_1)
+\]
+be the new parameter vector.
+Denote their least square estimators (or MLE) by
+$\hat \alpha = (\hat \alpha_0, \hat \alpha_1)^\tau$.
+The reparameterization does not change the value of the actual
+estimate.
+We still have
+\[
+\hat \alpha_0 = \hat \beta_0 = \bar x - \bar t \hat \beta_1
+\]
+and
+\[
+\hat \beta_1 = \frac{\sum ( t_i - \bar t) x_i}{\sum (t_i - \bar t)^2}.
+\]
+We also have
+\[
+\var(\hat \alpha_0) = \frac{ \sum t_i^2}{ n \sum (t_i - \bar t)^2} \sigma^2
+\]
+and
+\[
+\hat \sigma^2 = (n-2)^{-1} \sum (x_i - \hat \beta_0 - \hat \beta_1 t_i)^2.
+\]
+
+We then have easy decomposition of the sum of squares as
+\ba
+&& \hspace{-2em}
+(x - B \alpha)^\tau (x - B \alpha)\\
+&=&
+(x - B \hat \alpha)^\tau (x - B \hat \alpha)
++
+(\alpha_0 - \hat \alpha_0)^2 \|B_0\|^2
++
+(\alpha_1 - \hat \alpha_1)^2 \|B_1\|^2\\
+&=&
+(n-2)\hat \sigma^2
+- \{2 \hat \alpha_0\|B_0\|^2\} \alpha_0 
+- \{2 \hat \alpha_1\|B_1\|^2\} \alpha_1 \\
+&&
++ 
+\hat \alpha_0^2 \|B_0\|^2
++
+\hat \alpha_1^2 \|B_1\|^2
++
+C_1(\alpha).
+\ea
+where $C_1(\cdot)$ is a function that does not depend
+on random observations.
+
+With these preparations, we can write the log joint
+density function as
+\ba
+&& \hspace{-2em}
+- \{\hat \alpha_0\|B_0\|^2\} (\alpha_0 /\sigma^2)
+- \{ \hat \alpha_1\|B_1\|^2\} (\alpha_1 /\sigma^2) \\
+&&
++ 
+\{ (n-2) \hat \sigma^2+ \hat \alpha_0^2 \|B_0\|^2 + \hat \alpha_1^2 \|B_1\|^2\}/(2 \sigma^2)
++
+C_2(\alpha, \sigma^2)
+\ea
+where $C_2 = C_1(\alpha)/(2 \sigma^2)$.
+
+We are now ready to use whatever we learned before.
+Let
+\[
+\theta = \alpha_0/\sigma^2; ~~
+\lambda_1 = \alpha_1/\sigma^2; ~~
+\lambda_2 = 1/(2 \sigma^2)
+\]
+accompanied by
+\[
+U = \hat \alpha_0\|B_0\|^2; ~~
+T_1 = \hat \alpha_1\|B_1\|^2; ~~
+T_2 = (n-2) \hat \sigma^2 + \hat \alpha_0^2 \|B_0\|^2 + \hat \alpha_1^2 \|B_1\|^2.
+\]
+Interestingly, we find
+\[
+T_2 = \sum x_i^2
+\]
+is the total sum of squares.
+
+Let
+\[
+V
+=
+ \left \{ \frac{U}{\sqrt{T_2 - T_1^2/\|B_1\|^2 }} 
+\right \}
+\]
+Namely, we have expressed the usual $t$-test statistic
+in regression context as a function of $U$, $T_1$ and $T_2$.
+It is apparent when $\alpha_0 = 0$, 
+the $T_1$ and $T_2$ are complete and
+sufficient for $\lambda_1$ and $\lambda_2$.
+At the same time, $V$ has a distribution free from
+any parameters. Thus, it is independent of $T_1$ and $T_2$.
+In addition, it is monotone in $U$ given $T_1$ and $T_2$.
+
+Now $\theta = 0$ or $\theta > 0$ are concordant with $\beta_0 = \alpha_0 = 0$
+and $\beta_0 = \alpha_0 > 0$. Hence, the UMPU tests
+for both hypotheses can be constructed based on $V$.
+
+In addition, $V$ is a monotone function of
+\[
+T = \frac{cU}{ \sqrt{T_2 - U^2/\|B_0\|^2 - T_1^2/\|B_1\|^2 }}
+\]
+for some positive constant $c$. With a proper choice of $c$,
+this $T$ has t-distribution, the same as the t-statistics
+used in classical linear regression analysis.
+
+Hint: this is a problem from Lehman's book. 
+Go through the algebra there rather than working out all details yourself. 

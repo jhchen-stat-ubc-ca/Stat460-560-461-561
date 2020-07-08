@@ -1,0 +1,330 @@
+\chapter{Locally most powerful test}
+
+While the UMP theorems seem impressive mathematically,
+they are not broad enough. Other than being hard to find them,
+they often do not exist unless the data are from
+some classical well behaved parametric models.
+We have no choice but to relax the optimality requirements
+if we wish to recommend some effective methods for hypothesis test
+in real world applications.
+
+\begin{defi}
+Consider the simple null hypothesis $H_0: \{ \theta_0\}$
+against $H_1: \theta > \theta_0$ in a one parameter setting.
+Let $\beta(\theta)$ be the power function of
+a test $\phi(x)$ of size $\alpha$.
+Suppose for any other test $\phi^*(x)$ of size $\alpha$, 
+there exists an $\epsilon > 0$ such that 
+\[
+\bbE\{ \phi^*(X) ; \theta\} \leq \beta(\theta)
+\]
+for all $\theta \in (\theta_0, \theta_0+ \epsilon)$. 
+Then we say $\phi(X)$ is {\it locally most powerful}.
+\end{defi}
+
+There are a number of easily missed out details in this definition.
+One is that the locally most powerful criterion is only applicable
+to one-parameter distribution families. In addition, it is
+restricted to specific type of null and alternative hypothesis.
+Namely, the null hypothesis contains a single distribution
+and the alternative hypothesis is one-sided.
+
+An immediately question after this definition is: 
+under what conditions such a locally most powerful test exists. 
+We give this answer in the next section.
+
+\section{Score test and its local optimality}
+
+We give a straightforward theorem about existence as
+follows.
+
+\begin{theorem}
+Let $\{f(x; \theta): \theta \in \Theta\}$ be a regular statistic
+model with score function defined to be
+\[
+S(\theta; x) = \frac{\partial \log f(x; \theta) }{\partial \theta}.
+\]
+We consider the case where $\Theta$ is an interval of real number.
+A test defined by
+\[
+\phi(x) =  \ind (S(\theta_0; x) > k)
+\]
+is a locally most powerful test for
+$H_0: \{ \theta_0\}$ against $H_1: \theta > \theta_0$
+among the tests with size $\alpha = \bbE\{ \phi(X); \theta_0\}$.
+\end{theorem}
+
+\vs \no
+{\bf Remark}: 
+For mathematical simplicity, we have totally ignored
+the request of having pre-specified size $\alpha$.
+The one we defined about is a test of whatever size itself ends up.
+Also, even though the result is presented as if
+it is applicable when there is only a single observation $x$.
+It is applicable if $x$ is a vector, particularly when it is a
+vector made of \iid observations. In that case, we use
+$S(x_i; \theta)$ for the contribution of the $i$th sample.
+The overall score function would be $\sum_i S(x_i; \theta)$.
+
+We have switched two entries of $S(\cdot, \cdot)$
+because we intend to study its randomness induced
+by the randomness of $X$. If we intend to study
+it as a function of $\theta$ given some observed value $x$,
+we use $S(\theta; x)$.
+
+\vs
+Being regular for a model here means that for any $T(X)$ integrable,
+\[
+\bbE\{ T(X); \theta\} = \int T(x) f(x; \theta) d\nu(x)
+\]
+is differentiable with respect to $\theta$ and the
+derivative can be taken within the integration sign.
+In simple words, the order of derivative and integration can be
+exchanged without altering the outcome.
+
+\vs
+The local optimality holds for only simple null hypothesis 
+against the one-sided alternative. 
+The local optimality is lost immediately if any of these is violated.
+Nevertheless, the above score test itself is broadly applicable.
+
+
+\vs \noindent
+{\bf Proof}: Being locally most power is the same as to require
+\[
+\beta(\theta) = \bbE\{ \phi(X); \theta\}
+\]
+to have the largest possible derivative at $\theta = \theta_0$
+among all tests of size $\alpha$.
+Thus, we show the test defined by $\phi(x) =  \ind (S(\theta_0; x) > k)$
+makes $\beta(\theta)$ having the largest derivative.
+
+Let $\phi_*(x)$ be another test of the same size. Then
+\[
+\{\phi(x) - \phi_*(x) \} \{S(x; \theta_0) - k\} \geq 0.
+\]
+Taking expectation under distribution $f(x; \theta_0)$, and
+noticing $\bbE \{\phi(x) - \phi_*(x); \theta_0\} = 0$, we
+get
+\[
+\bbE \{[\phi(X) - \phi_*(X)] S(X; \theta) \} \geq 0.
+\]
+Under regularity conditions, the left hand side is the
+difference of derivatives of two power functions.
+\hfill{$\diamondsuit$}
+
+\vs
+The proof seems not tight enough and the problem occurs when
+\[
+\bbE \{[\phi(X) - \phi_*(X)] S(X; \theta) \} = 0.
+\]
+Further investigation reveals that this occurs only if
+$\phi(x) = \phi_*(x)$ with probability one with respect to
+$f(x; \theta_0)$. 
+
+
+\begin{example}
+Let $X_1, \ldots, X_n$ be an iid sample from Cauchy distribution with
+\[
+f(x; \theta) = \frac{1}{\pi \{ 1 + (x - \theta)^2 \}}.
+\]
+Consider the test for $H_0: \theta = 0$ 
+against $H_1: \theta > 0$.
+
+The locally most powerful test is
+\[
+\phi(x) = \ind ( 2 \sum x_i/(1+ x_i^2) > k)
+\]
+for some $k$ such that the test has the require size.
+\end{example}
+
+The distribution of $\sum \{X_i/(1+ X_i^2)\}$ is not well investigated.
+There is no simple way to compute $k$ value with which
+the size requirement is met precisely.
+However, it is easy to show that
+$\sum X_i/(1+ X_i^2)$ is asymptotically $N(0, n/8)$.
+Thus, when $n$ is large (say larger than 20), we may use normal
+approximation to get a $k$ value so that the size of the test
+is close to required size.
+
+From this example, we notice that the above discussion leaves
+out a practical consideration: choosing the constant $k$ so that
+the test can be implemented in a real world problem. 
+A general principle is work out the distribution of the score
+function $\sum_i S(x_i; \theta_0)$. Let $k$ be its upper
+$1-\alpha$th quantile. If $\sum_i S(x_i; \theta_0)$ has a discrete
+distribution, one may use randomization to achieve exact size
+$\alpha$. Apparently, randomization is not so important in real
+world applications.
+
+When $n$ is not large, the normal approximation ``can be'' used,
+but the precision ``may be'' poor. Such a problem will probably
+not occur in real world applications. If we have to work on such
+a problem, then one may simulate the distribution of $\sum X_i/(1+ X_i^2)$.
+For instance, when $n=10$, the 95\% quantile of the normal distribution
+with variance $n/8$ is $1.839$. Based on 100,000 data sets simulation, the
+observed 95\% sample quantile is $1.848$.
+It turns out that the normal approximation is not so poor at all
+in this particular example. One reason is that even though
+Cauchy distribution does not have even the first moment, the
+random variable $X/(1+X^2)$ is bounded and has symmetric
+distribution. Hence, the normal approximation works nicely.
+
+\section{General score test}
+The locally most powerful test we gave in the last section is a score test.
+When the model assumption $f(x; \theta)$ is correct, we have
+\[
+\bbE \{ S(X; \theta); \theta \} = 0
+\]
+for any $\theta$ under regularities conditions.
+To emphasize the random aspect of the score function, we
+put $x$ ahead of $\theta$ in the score function in this section.
+
+If a statistician is asked to judge whether or not $\theta = \theta_0$
+is a plausible value, he or she could take a look at the value
+\[
+\sum_{i=1}^n S(x_i; \theta_0)
+\]
+where the summation is needed when we are given
+a set of  \iid observations.
+From pure significance test point of view, this is an
+informative statistic about whether $\theta_0$ is
+an acceptable value.
+
+More specifically, if $\theta$ is the only parameter under consideration.
+The null hypothesis is $\theta = \theta_0$ and the alternative is
+$\theta \neq \theta_0$, then the score test is to reject
+the null hypothesis when $|\sum S(x_i; \theta_0)| > k$ for some $k$.
+When the sample size $n$ is large enough, say over 20, we use
+central limit theory to decide the size $k$ so that the test has
+size approximately equaling the specified $\alpha$. 
+
+Note that the alternative hypothesis in this section is
+$H_1: \theta \neq \theta_0$ which is two-sided.
+Because of this, there generally exist no locally most powerful
+tests similar to the one discussed in the beginning.
+Another point is that the rejection region is more
+conveniently defined as
+\[
+(x_1, \ldots, x_n): \{ \sum S(x_i; \theta_0) \}^2 > k
+\]
+for some $k$. 
+Let
+\[
+\bbI(\theta) = \bbE \{ S(X; \theta)\}^2
+\]
+be the Fisher information.
+Under some conditions, $ \{ \sum S(x_i; \theta_0) \}^2/\bbI(\theta_0)$
+has chisquare limiting distribution with one degree of freedom.
+This result is often used to find approximate $k$ value so that
+the test has (approximately) the required size.
+
+Once we leave the territory of optimality consideration, we
+generally do not make a fuss on ``randomization'' to 
+ensure the size of the test exactly the same as pre-specified.
+The above suggestion for score test
+also works when $\theta$ is a vector parameter.
+
+Suppose we can split a vector parameter $\theta = (\xi, \eta)$
+and wishes to test $H_0: \xi = \xi_0$. Note that the null
+hypothesis becomes composite, namely, it contains a set
+of distributions instead of a single. One may work out
+\[
+S(x, \xi_0, \eta) = 
+\left .
+\frac{\partial \log f(x; \xi, \eta)}{\partial \xi} 
+\right |_{\xi = \xi_0}
+\]
+and build a test statistics based on 
+\[
+\sum_{i=1}^n S(x_i, \xi_0, \hat \eta_0)
+\]
+where $\hat \eta_0$ is the MLE of $\eta$ given $\xi = \xi_0$.
+That is,
+\[
+\hat \eta_0 = \arg\max \{\ell_n(\xi_0; \eta): \eta\}.
+\]
+To effectively use this statistic, we need to find out its distribution, 
+at least the asymptotic one, in order to specify the rejection
+region so that the size of the test meets some specification.
+We do not leave more details about the asymptotic
+distribution to a later chapter.
+
+In general, if there is a function $g(x; \theta)$ 
+such that $\bbE\{ g(X; \theta); \theta\} = 0$
+for all $\theta \in H_0$. Then, the value of
+\[
+T
+= \inf_{\theta \in H_0} |\sum g(x_i; \theta) |
+\]
+could be used as some kind of statistic for
+``pure significance hypothesis test''.
+Among all such choices, the score test is optimal
+in some sense.
+
+\section{Implementation remark}
+Whether we test for one-sided alternative or two-sided, we need to
+given a ``rejection region'' which is linked to the choice of $k$, given
+the desired size of the test. Particularly in assignment problems, the
+distribution of the score function at $\theta = \theta_0$ under the
+null hypothesis may be a member of well known distribution family.
+Thus, a constant $k$ can be selected accordingly without much difficulty.
+In more realistic situations, we general use the limiting distribution of
+the score function at $\theta = \theta_0$ to choose a $k$ such that
+the size of the test is approximately $\alpha$.
+
+When both approaches are feasible, the first choice is preferred.
+Yet it does not mean the second choice is wrong: it is an approximate
+answer. The approximation may not be accurate when the sample
+size is not very large. Thus, we do not recommend computing the
+value $k$ based on limiting distribution unless the sample size
+is reasonably large. This recommendation is not applicable to
+classroom, assignment or textbook problems. In real world situations, use
+simulation to decide how well the approximation is and whether it
+is satisfactory given the current sample size.
+
+\section{Assignment problems}
+\begin{enumerate}
+\item
+Let $X_1, \ldots, X_n$ be \iid observations from Cauchy distribution
+with density function
+\[
+f(x; \theta) = \frac{1}{\pi \{ 1 + (x - \theta)^2\}}
+\]
+with the location parameter $\theta \in \cR$.
+We wish to test the hypothesis for $H_0: \theta = 0$ against an alternative
+to be specified. We set the size of the test at $\alpha = 0.05$.
+
+(a) Derive the score test statistic against the alternative $H_1: \theta > 0$.
+  If $n=10$ and the size of the test is set at $\alpha = 0.05$, specify the rejection region.
+
+(b) Derive the score test statistic against the alternative $H_1: \theta < 0$.
+
+(c) Suppose one chooses $T_n$ to be the sample median as his/her test statistic
+to test against $H_1: \theta > 0$.
+  If $n=10$ and the size of the test is set at $\alpha = 0.05$, specify the rejection region.
+  
+(d) Following (c), what would be the rejection region if the
+hypotheses are replaced by $H_0: \theta = 6$ against $H_1: \theta > 6$?
+  
+(e) Use computer simulation to compare the powers of the tests in (a) and (c)
+at $\theta = 0.2$. 
+
+Remark: generate at least 20K data sets so that the simulation error is
+most likely below 0.3\%.
+
+\item
+Suppose we have one observation from Binomial distribution
+with parameters $m = 50$ and probability of success $p$.
+ We set the size of the test at $\alpha = 0.05$.
+
+(i) Obtain the locally most powerful test
+for $H_0: p = 0.3$ versus $H_1: p > 0.3$.
+
+(ii) Obtain the score test
+for $H_0: p = 0.3$ versus $H_1: p \neq 0.3$.
+
+Remark: obtain the rejection region but ignore the need of randomization in (i).
+Use chisquare approximation in (ii) to determine the rejection region.
+Use software R for numerical calculations.
+\end{enumerate}

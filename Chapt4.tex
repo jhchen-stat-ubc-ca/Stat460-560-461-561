@@ -1,0 +1,843 @@
+\chapter{Optimality criteria of point estimation}
+
+A general setting of the mathematical statistics is: we are given a data
+$x$ believed to be the observed value of a random object $X$. The probability
+distribution of $X$ will be denoted as $F^*$ and $F^*$ is believed to be
+a member of a distribution family $\cF$. Based on the fact that $X$ has
+an observed value $x$, identify a single or a set of $F$ in $\cF$ which
+might be the ``true'' $F^*$ that describe the probability distribution of $X$.
+
+There are many serious fallacies related to the above thinking. The first
+one  is the specification of $\cF$, which is referred as a model
+in this course. If a specific form of $\cF$ is given, how certain are we
+on $F^*$ is one of $\cF$? Even if the distribution of $X$ is a member of $\cF$,
+$X$ may not be accurately observed. What we have recorded may be
+$Y = X + \epsilon$. Hence, we may unknowingly work on the distribution
+of $Y$ instead that of $X$.
+
+In this course, we do not discuss these possible fallacies but
+leave them to applied courses. We take the approach that
+if the distribution of $X$ is indeed a member of $\cF$ and $x$ is its
+accurate observed value, what can we say about $F^*$? 
+Also, we often study the situation where $X$ is an \iid\ replication of
+some random system so that $X = (X_1, \ldots, X_n)$.
+The model of the distribution of $X$ will be then taken over by the
+model for $X_1$ which is representative for every $X_i$,
+$i=1, 2, \ldots, n$. We state that $X_1, \ldots, X_n$ is an random
+or an \iid\ sample from population/distribution $F$ of $\cF$. 
+In this case $n$ is referred to as sample size.
+With many replications, or when $n \to \infty$, we should be able to learn
+a lot more about $F^*$. 
+
+\section{Point estimator and some optimality criteria}
+
+Let $\theta$ be a parameter in the probability model $\cF$ and 
+suppose we have a random sample $X$. The parameter space is
+loosely $\Theta = \{ \theta: \theta = g(F), F \in \cF\}$ for some functional
+$g$. A point estimator of $\theta$ is a statistic $T$
+whose range is $\Theta$. The realized value of $T$, $T(x)$, is an estimate
+of $\theta$. We generally allow, for the least, $T$ to take values on 
+the smallest closed set containing $\Theta$. That is, taking values
+on limiting points of $\Theta$. 
+
+\begin{defi}
+A point estimator of $\theta$ is a statistic $T$ whose range is $\Theta$. 
+The realized value of $T$, $T(x)$, is an estimate of $\theta$.
+\end{defi}
+
+The definition implies that as an estimator, $T(X)$ is regarded as a
+mechanism/rule of mapping $X$ to $\Theta$; as an estimate, $T(x)$
+is a value in $\Theta$ which corresponding to data $x$.
+In both cases, we may use $\hat \theta$ as their common notation.
+
+One must realize $T(x) = 0$ is an estimator of $\theta$ as long
+as $0 \in \Theta$. Hence, we {\it always can} estimate the parameter
+in any statistical models, no matter how complex the model is.
+We may not be able to find an estimator with a satisfactory precision
+or certain desired properties.
+
+Suppose the parameter space is a subset of $\cR^d$ for
+some integer $d$. Hence, $T(X)$ takes values in $\cR^d$.
+When the distribution of $X$ is given by an $F \in \cF$ or 
+equivalently \cdf\ $F(x; \theta)$ or \pdf\ $f(x; \theta)$.
+Hence, $T(X)$ is a distribution induced by $F(x; \theta)$
+or simply by $\theta$. To fix the idea, we assume
+the ``true'' parameter value of $F$ is $\theta$, the generic $\theta$.
+When $\hat \theta = T(X)$ has finite expectation under any $\theta$, 
+we define
+\[
+\bias(\hat \theta) = \bbE \{ T(X); \theta\} - \theta
+\]
+as the bias of $\hat \theta = T(X)$ when it is used as an estimator of $\theta$ and
+when the true parameter value is $\theta$.
+
+\begin{defi}
+Suppose $X$ has a distribution $F \in \cF$ which is parameterized
+by $\theta \in \Theta$.
+Suppose $T(X)$ is an estimator of $\theta$ such that
+\[
+\bbE \{T(X); \theta\} = \theta
+\]
+for all $\theta \in \Theta$, then we say $T(X)$ is an unbiased
+estimator of $\theta$.
+\end{defi}
+
+For some reason, statisticians and others prefer estimators that
+are unbiased. This is not always well justified.
+
+\begin{example}
+Suppose $X$ has binomial distribution with parameters $n$ and $\theta$,
+$n$ is known and $\theta$ is an unknown parameter. 
+
+A commonly used estimator for $\theta$ is
+\[
+\hat \theta = \frac{X}{n}.
+\]
+An estimator motivated by Bayesian approach is
+\[
+\tilde \theta = \frac{X+1}{n+2}.
+\]
+
+It is seen $\bbE\{\hat \theta; \theta\} = \theta$. Hence, it is an unbiased
+estimator.
+
+We find that other than $\theta = 0.5$, 
+\[
+\bias (\tilde \theta) = \frac{1-2\theta}{n+2} \neq 0.
+\]
+Hence, $\tilde \theta$ is a biased estimator.
+
+Which estimator makes more sense to you?
+\end{example}
+
+In the above example, the bias of $\tilde \theta$ has a limit 0
+when $n$ goes to infinite. Often, we discuss situations where
+the data set contains $n$ \iid\ observations from a distribution
+$F$ which is a member of $\cF$. The above result indicates
+that even though $\tilde \theta$ is biased, the size of the
+bias diminishes when the sample size $n$ gets large.
+Many of us tends to declare that $\tilde \theta$ is asymptotically
+unbiased when this happens.
+
+While we do not feel such a notion of ``asymptotically unbiased''
+is wrong, this terminology is often abused. In statistical literature,
+people may use this term when
+\[
+\sqrt{n} (\hat \theta - \theta) 
+\]
+has a limiting distribution whose mean is zero. In this case, the bias
+of $\hat \theta$ does not necessarily goes to zero.
+
+To avoid such confusions, let us invent a formal definition.
+
+\begin{defi}
+Suppose there is an index $n$ such that $X_n$ has a distribution
+in $\cF_n$ and $a_n \to \infty$ as $n \to \infty$ while the parameter
+space $\Theta$ of $\cF_n$ does not depend on $n$. Let $\theta$
+be the true parameter value and $\hat \theta_n$ is an estimator
+(a sequence of estimators).
+If 
+\[
+a_n(\hat \theta_n - \theta)
+\]
+has a limiting distribution whose expectation is zero, for any $\theta \in \Theta$,
+then we say $\hat \theta_n$ is asymptotically rate-$a_n$ unbiased.
+\end{defi}
+
+
+Most often, we take $a_n = n^{1/2}$ in the above definition.
+We do not have good reasons to require an estimator unbiased. 
+Yet we feel that being asymptotically unbiased for
+some $a_n$ is a necessity. When
+$n \to \infty$ in common settings, the amount of information about
+which $F$ is the right $F$ becomes infinity. If we cannot make
+it right in this situation, the estimation method is likely very poor.
+
+The variance of an estimator is as important a criterion in judging
+an estimator. Clearly, having a lower variance implies the estimator
+is more accurate. In fact, let $\varphi(\cdot)$ be a convex function.
+Then an estimator is judged superior if
+\[
+\bbE\{\varphi(\hat \theta - \theta)\}
+\]
+is smaller. When $\varphi(x) = x^2$, the above criterion becomes
+Mean Squared Error:
+\[
+\mse (\hat \theta)
+= \bbE \{ (\hat \theta - \theta)^2\}.
+\]
+It is seen that
+\[
+\mse (\hat \theta) = \bias^2 (\hat \theta) + \var(\hat \theta).
+\]
+To achieve lower \mse\, the estimator must balance the
+loss due to variation and bias. 
+
+Similar to asymptotic bias, it helps to give definite notions of
+asymptotic variance and \mse\ of an estimator.
+
+\begin{defi}
+Suppose there is an index $n$ such that $X_n$ has a distribution
+in $\cF_n$ and $a_n \to \infty$ as $n \to \infty$ while the parameter
+space $\Theta$ of $\cF_n$ does not depend on $n$. Let $\theta$
+be the true parameter value and $\hat \theta_n$ is an estimator
+(a sequence of estimators).
+Suppose
+\[
+a_n(\hat \theta_n - \theta)
+\]
+has a limiting distribution with mean ${\rm B}(\theta)$
+and variance $\sigma^2(\theta)$, for $\theta \in \Theta$.
+
+We say $\hat \theta_n$ has asymptotic bias ${\rm B}(\theta)$
+and asymptotic variance $\sigma^2(\theta)$ at
+rate $a_n$.
+
+Further more, we define the asymptotic \mse\ at rate $a_n$ as
+the $\sigma^2(\theta) + {\rm B}^2(\theta)$.
+\end{defi}
+
+Unfortunately, the \mse\ is often a function of $\theta$. In any
+specific application, the ``true value'' of $\theta$ behind $X$
+is not known. Hence, it is not possible to find an estimator
+which is a better estimator in terms of variance or \mse\
+whichever value $\theta$ is the true value.
+
+\begin{example}
+Suppose $X_1, X_2, \ldots, X_n$ form an \iid\ sample from
+$N(\theta; 1)$ such that $\Theta = \cR$. 
+
+Define $\hat \theta = n^{-1} \sum X_i$ and $\tilde \theta = 0$.
+
+It is seen that $\var (\hat \theta) = n^{-1} > \var(\tilde \theta)$ for any
+$\theta \in \cR$. However, no one will be happy to use $\tilde \theta$
+as his/her estimator.
+
+In addition, $\mse (\hat \theta) = n^{-1} > \mse (\tilde \theta)$
+for all $|\theta| < n^{-1/2}$. Hence, even if we use a more sensible
+performance criterion, it still does not imply that our preferred sample
+mean is indisputably a superior estimator.
+\end{example}
+
+\section{Uniformly minimum variance unbiased estimator}
+
+This section contains some materials that most modern statisticians
+believe we should not have them included in statistical classes.
+Yet we feel a quick discussion is still a good idea.
+
+Either \bias, \var, \mse\ can be used to separate the performance
+of estimators we can think of. Yet without any performance measure,
+how can statisticians recommend any method to scientists?
+This is the same problem when professors are asked to
+recommend their students. Everyone is unique. Simplistically
+declaring one of them is the best will draw more criticisms than
+praises. Yet at least, we can timidly say one of the students has
+the highest average mark on mathematics courses, in this term,
+among all students with green hair and so on.
+
+\begin{defi}
+Suppose $X$ is a random sample from $\cF$ with parameter
+$\theta \in \Theta$.
+
+An unbiased estimator $\hat \theta$ is uniformly minimum variance
+estimator of $\theta$, UMVUE, if for any other unbiased
+estimator $\tilde \theta$ of $\theta$,
+\[
+\var_\theta (\hat \theta) \leq \var_\theta (\tilde \theta)
+\]
+for all $\theta \in \Theta$.
+\end{defi}
+
+In the above definition, we added a subscript $\theta$ to
+highlight the fact that the variance calculation is based on
+the assumption that the  of $X$ has true parameter
+value $\theta$. We do not always do so in other part of the
+course note.
+
+Upon the introduction of UMVUE, a urgent question to be
+answered is its existence. This answer is positive at least
+in textbook examples.
+
+\begin{example}
+Suppose $X_1, X_2, \ldots, X_n$ form an \iid\ sample from
+Poisson distribution with mean parameter $\theta$
+and the parameter space is $\Theta = \cR^+$. 
+
+Let $\hat \theta = \bar X_n = n^{-1} \sum X_i$. It is easily seen that
+$\hat \theta$ is an unbiased estimator of $\theta$.
+
+Suppose that $\tilde \theta$ is another unbiased estimator of $\theta$.
+Because $\bar X_n$ is complete and sufficient statistic, we find
+\[
+\breve{\theta} = \bbE\{ \tilde \theta | \bar X_n) 
+\]
+is a function of data only. Hence, it is an estimator of $\theta$.
+Using a formula that for any two random variables,
+$\var(Y) = \bbE\{ \var(Y|Z)\} + \var \{ \bbE(Y|Z)\}$,
+we find
+\[
+\var(\breve \theta) \leq \var(\tilde \theta).
+\]
+Furthermore, this estimator is also unbiased. Hence,
+\[
+\bbE\{ \hat \theta - \breve{\theta}\} = 0
+\]
+for all $\theta \in \cR^+$.
+Because both estimators are function of $\bar X_n$
+and the completeness of $\bar X_n$, we have
+\[
+\hat \theta = \breve{\theta}.
+\]
+Hence, 
+\[
+\var(\hat \theta) = \var(\breve{\theta}) \leq \var(\tilde \theta).
+\]
+Therefore, $\bar X_n$ is the UMVUE.
+\end{example}
+
+Now, among all estimators of $\theta$ that are unbiased,
+the sample mean has the lowest possible variance. 
+If UMVUE is a criterion we accept, then the sample mean
+is the best possible estimator under the Poisson model
+for the mean parameter $\theta$.
+
+Why is such a beautiful conclusion out of fashion these days?
+Some of the considerations are as follows. In real world applications,
+having a random sample strictly \iid\ from a Poisson distribution
+is merely a fantasy. If so, why should we bother?
+Our defence is as follows. If the sample mean is
+optimal in the sense of UMVUE under the ideal situation,
+it is likely a superior one even if the situation is slightly different
+from the ideal. In addition, the optimality consideration is
+a good way of thinking.
+
+Suppose $\lambda = 1/\theta$ which is called
+rate parameter under Poisson model assumption.
+How would you estimate $\lambda$? Many will suggest
+that $\bar X_n^{-1}$ is a good candidate estimator. Sadly, this
+estimator is biased and has infinite variance!
+Lastly, in modern applications, we rarely work with such simplistic
+models. In these cases, it is nearly impossible to have
+a UMVUE. If so, we probably should not bother our students
+with such technical notions.
+
+\section{Information inequality}
+
+At least in textbook examples, some estimators are fully
+justified as optimal. This implies that there is an intrinsic limit
+on how precise an estimator can achieve.
+
+Let $X$ be a random variable modelled by $\cF$ or more
+specifically a parametric family $f(x; \theta)$.
+Let $T(X)$ be a statistic with finite variance given any
+$\theta \in \Theta$. Denote
+\[
+\psi(\theta) = \bbE\{T(X); \theta\}
+= 
+\int T(x) f(x; \theta) dx
+\]
+where the Lebesgue measure can be replaced by any other
+suitable measures. Suppose some regularity conditions on
+$f(x; \theta)$ are satisfied so that our following manipulations
+are valid. Taking derivatives with respect to $\theta$ on two
+sides of the equality, we find
+\bea
+\psi'(\theta) 
+&=& \int T(x) f'(x; \theta) dx \\
+&=& \int T(x) s(x; \theta) f(x; \theta)dx
+\eea
+where 
+\[
+s(x; \theta) = \frac{f'(x; \theta)}{f(x; \theta)} 
+= \frac{\partial}{\partial \theta} \{\log f(x; \theta)\}.
+\]
+It is seen that 
+\[
+\int s(x; \theta) f(x; \theta)dx
+=
+\int f'(x; \theta)dx
+=
+\frac{d}{d\theta}\int f(x; \theta)dx
+=0.
+\]
+We define the Fisher information 
+\[
+\bbI(\theta) = \bbE \left [ \frac{\partial }{\partial \theta} \{\log f(X; \theta)\} \right ]^2 
+= \bbE\{ s(X; \theta)\}^2.
+\]
+Hence,
+\bea
+\{ \psi'(\theta) \}^2
+&=& 
+\{ \int \{ T(x) - \psi(\theta) \} f(x; \theta)dx \}^2 \\
+&\leq &
+\int \{ T(x) - \psi(\theta) \} ^2 s(x; \theta) f(x; \theta)dx 
+\times
+\int \{ s(x; \theta)\}^2 f(x; \theta)dx \\
+&=& 
+\var(T(x)) \bbI(\theta).
+\eea
+
+This leads to the following theorem.
+
+\begin{theorem}
+{\bf Cram\'er-Rao information inequality}.
+Let $T(X)$ be any statistic with finite variance for all $\theta \in \Theta$.
+Under some regularity conditions,
+\[
+\var(T(X)) \geq \frac{\{\psi'(\theta)\}^2}{\bbI(\theta)}
+\]
+where $\psi(\theta) = \bbE(T(X); \theta)$.
+\end{theorem}
+
+If $T(X)$ is unbiased for $\theta$, then $\psi'(\theta) = 1$.
+Therefore, $\var(T) \geq \bbI^{-1}(\theta)$.
+When $\bbI(\theta)$ is larger, the variance of $T$ could be
+smaller. Hence, it indeed measures the information content
+in data $X$ with respect to $\theta$. For convenience of
+reference, we call $\bbI^{-1}(\theta)$ the information lower
+bound for estimating $\theta$.
+
+In assignment problems, $X$ is often made of $n$ \iid\ observations
+from $f(x; \theta)$. Let $X_1$ be one component of $X$.
+It is a simple exercise to show that
+\[
+\bbI(\theta; X) = n \bbI(\theta; X_1)
+\]
+in the obvious notation. We need to pay attention to
+what $\bbI(\theta)$ stands for in many occasions. It
+could be the information contained in a single $X_1$,
+but also could be information contained in the \iid\
+sample $X_1, \ldots, X_n$. 
+
+\begin{example}
+Suppose $X_1, X_2, \ldots, X_n$ form an \iid\ sample from
+Poisson distribution with mean parameter $\theta$
+and the parameter space is $\Theta = \cR^+$. 
+
+The density function of $X_1$ is given by
+\[
+f(x; \theta) = P(X_1 = x; \theta) 
+= \frac{\theta^x}{x!} \exp( - \theta).
+\]
+Hence, 
+\[
+s(x; \theta) = \frac{x}{\theta} - 1
+\]
+and the information in $X_1$ is given by
+\[
+\bbI(\theta) = \bbE \left \{ \frac{X}{\theta} - 1 \right \}^2 = \frac{1}{\theta}.
+\]
+Therefore, for any unbiased estimator $T_n$ of $\theta$
+based on the whole sample, we have
+\[
+\var (T_n) \geq \frac{1}{n\bbI(\theta)} = \frac{\theta}{n}.
+\]
+Since the sample mean is unbiased and has variance $\theta/n$,
+it is an estimator that attains the information lower bound.
+\end{example}
+
+The definition of Fisher information depends on how the distribution
+family is parameterized. If $\eta$ is a smooth function of $\theta$,
+the Fisher information with respect to $\eta$ is not the same as
+the Fisher information with respect to $\theta$. 
+
+As an exercise, find the information lower bound for estimating
+$\eta = \exp( - \theta)$ under Poisson distribution model. Derive its
+UMVUE given $n$ \iid\ observations.
+
+\section{Other desired properties of a point estimator}
+
+Given a data set from an assumed model $\cF$, we often ask
+or are asked whether certain aspect of $\cF$ can be estimated. This
+can be the mean or median of $F$ where $F$ is any member of $\cF$.
+In general, we may write the parameter as $\theta = \theta(F)$, 
+a functional defined on $\cF$.
+
+\begin{defi}
+{\bf Obsolete Concept of Estimability}. 
+Suppose the data set $X$ is a random sample
+from a model $\cF$ and suppose $\theta = \theta(F)$ is a
+parameter. We say $\theta$ is estimable if there exists
+a function $T(\cdot)$ such that
+\[
+\bbE(T(X); F) = \theta(F)
+\]
+for all $F \in \cF$.
+\end{defi}
+
+
+In other words, a parameter is estimable if we can find
+an unbiased estimator for this parameter. We can give many
+textbook examples of estimability. In contemporary applications,
+we are often asked to ``train'' a model given a data set
+with very complex structure. In this case, we do not even have a good
+description of $\cF$. Because of this, being estimable for a
+useful functional on $\cF$ is a luxury. 
+We have to give up this concept but remain aware of such
+a definition.
+
+It is not hard to give an example of un-estimable
+parameters according to the above definition though 
+the example can overly technical. Instead, we show
+that there is a basic requirement for a parameter to be estimable.
+
+\begin{defi}
+{\bf Identifiability of a statistical model}. 
+Let $\cF$ be a parametric model in statistics and
+$\Theta$ be its parameter space. We say
+$\cF$ is identifiable if for any $\theta_1, \theta_2 \in \Theta$,
+\[
+F(x; \theta_1) = F(x; \theta_2)
+\]
+for all $x$ implies $\theta_1 = \theta_2$.
+\end{defi}
+
+A necessary condition for a parameter $\theta$ to be estimable
+is that $\theta$ is identifiable. Otherwise,
+suppose $F(x; \theta_1) = F(x; \theta_2)$ for all $x$, but
+$\theta_1 \neq \theta_2$. 
+For any estimator $\hat \theta$, we cannot have
+both
+\[
+\bbE\{ \hat\theta; \theta_1\} = \theta_1;~~
+\bbE\{ \hat\theta; \theta_2\} = \theta_2
+\]
+because two expectations are equal while $\theta_1 \neq \theta_2$.
+
+\begin{defi}
+{\bf Proposed notion of estimability}. 
+Let $\cF$ be a parametric model in statistics and
+$\Theta$ be its parameter space. 
+Suppose the sample plan under consideration
+may be regarded as one of a sequence of sampling
+plans indexed by $n$ with sample $X_n$ from $\cF$.
+If there exists an estimator $T_n$, a function of $X_n$, such
+that 
+\[
+P( |T_n - \theta| \geq \epsilon; \theta) \to 0
+\]
+for any $\theta \in \Theta$ and $\epsilon > 0$ as $n \to \infty$,
+then we say $\theta$ is (asymptotically) estimable.
+\end{defi}
+
+The sampling plans in my mind include the plan of obtaining
+\iid\ observations,  obtaining observations of time series
+with extended length and so on. This definition makes sense
+but we will not be surprised to draw serious criticisms.
+
+\begin{example}
+Suppose we have an \iid\ sample of size $n$ from Poisson
+distribution. Let $\lambda$ be the rate parameter.
+It is seen that $\lambda$ is asymptotically estimable
+because
+\[
+P\big ( \big | \frac{1}{n^{-1} + \bar X_n} - \lambda \big | > \epsilon \big ) \to 0
+\]
+as $n \to \infty$, where $\bar X_n$ is the sample mean.
+\end{example}
+
+In this example, I have implicitly regarded ``having \iid\ sample of
+size $n$'' as a sequence of sampling plan. If one cannot obtain
+more and more \iid\ observations from this population, then the
+asymptotic estimability does not make a lot of sense.
+
+If two random variables are related by $Y = (5/9)(X - 32)$ such as
+the case where $Y$ and $X$ are the temperatures
+measured in Celsius and  Fahrenheit. Given measures
+$X_1, X_2, \ldots, X_n$ on a random sample
+from some population, it is most sensible to estimate the
+mean temperature as $\bar X_n$, the sample mean of
+$X$. If one measures the
+temperature in Celsius to get $Y_1, \ldots, Y_n$ on the
+same random sample, we should have estimated
+the mean by $\bar Y_n$, the sample mean of $Y$.
+Luckily, we have $\bar Y_n = (5/9)(\bar X_n - 32)$.
+Some internal consistency is maintained.
+Such a desirable property is termed as {\it equivariant}.
+and sometimes is also called {\it invariant}.
+See Lehmann for references.
+
+In another occasion, one might be interested in estimating
+mean parameter $\mu$ in Poisson distribution. This parameter
+tells us the average number of events occuring in a time period
+of interest. At the same time, one might be interested
+in knowing the chance that nothing happens in the period
+which is $\exp(- \mu)$.
+Let $\bar X_n$ as the sample mean of the number
+of events over $n$ distinct periods of time. 
+We naturally estimate $\mu$ by $\bar X_n$ and
+$\exp( - \mu)$ by $\exp( - \bar X_n)$. If so, we find
+\[
+\widehat {g(\mu)} = g(\hat \mu)
+\]
+with $g(x) = \exp(-x)$.
+This is a property most of us will find desirable. 
+When an estimator satisfies above property, we say
+it is {\it invariant}. 
+
+Rigorous definitions of equivariance and invariance can
+be lengthy. We will be satisfied with a general discussion
+as above. 
+
+In the Poisson distribution example, it is seen that
+\[
+\bbE\{ \exp(- \bar X_n)\}
+= 
+\exp \{ n \mu [ \exp( - 1/n) - 1] \} 
+\neq 
+\exp(- \mu).
+\]
+Hence, the most natural estimator of $\exp(-\mu)$ is not unbiased.
+
+The UMVUE of $\exp( - \mu)$ is given by
+$\bbE\{\ind(X_1 = 0)| \bar X_n\}$.
+The UMVUE of $\mu$ is given by $\bar X_n$.
+Thus, the UMVUE is not invariant when the population
+is the Poisson distribution family. As a helpful exercise for
+improving one's technical strength, work out the explicit 
+expression of $\bbE\{\ind(X_1 = 0)| \bar X_n\}$.
+
+\section{Consistency and asymptotic normality}
+
+A point estimator is a function of data and the data are a
+random sample from a distribution/population that is a member
+of distribution family. Hence, it is random in general: its does
+not take a value with probability one. In other words, we can
+never be completely sure about the unknown parameter.
+However, when the sample size increases, we gain more
+and more information about its underlying population.
+Hence, we should be able to decide what the ``true'' parameter
+value with higher and higher precision.
+
+\begin{defi}
+Let $\theta_n$ be an estimator of $\theta$ based on a sample
+of size $n$ from a distribution family $F(x; \theta): \theta \in \Theta$. 
+We say that $\theta_n$ is weakly consistent
+if, as $n \to \infty$, for any $\epsilon > 0$ and $\theta \in \Theta$
+\[
+P( | \hat \theta_n - \theta| \geq \epsilon;  \theta) \to 0.
+\]
+\end{defi}
+
+In comparison, we have a stronger version of consistency.
+
+\begin{defi}
+Let $\theta_n$ be an estimator of $\theta$ based on a sample
+of size $n$ from a distribution family $F(x; \theta): \theta \in \Theta$. 
+We say that $\theta_n$ is strongly consistent
+if, as $n \to \infty$, for any $\theta \in \Theta$
+\[
+P( \lim_{n \to \infty} \hat \theta_n= \theta; \theta) = 1.
+\]
+\end{defi}
+
+Here are a few remarks one should not take them seriously but
+worth to point out. First, the \iid\ structure in the above definitions
+is not essential. However, it is not easy to give a more general and
+rigorous definition without this structure.
+Second, the consistency is not really a property of {\bf one} estimator,
+but a {\bf sequence} of estimators. Unless $\hat \theta_n$ for all $n$
+are constructed based on the same principle, otherwise, the consistency
+is nothing relevant in applications: your $n$ is far from infinity.
+For this reason, there is a more sensible definition called Fisher
+consistency. To avoid too much technicality, it is mentioned but
+not spelled out here.
+Lastly, when we say an estimator is consistent, we mean weakly
+consistent unless otherwise stated.
+
+The next topic is asymptotic normality. It is in fact best to be called
+limiting distributions. Suppose $\hat \theta_n$ is an estimator of
+$\theta$ based on $n$ \iid\ observations from some distribution
+family. The precision of this estimator can be judged by its bias,
+variance, mean square error and so on. Ultimately, the precision
+of $\hat \theta_n$ is its {\bf sample distribution}. Unfortunate, the
+sample distribution of $\hat \theta_n$ is often not easy to directly
+work with.
+At the same time, when $n$ is very large, the distribution of its
+standardized version stabilizes. This is the limiting distribution.
+If we regard the limiting distribution as the sample distribution of
+$\hat \theta$, the difference is not so large. That is, the error diminishes
+when $n$ increases. For this reason, statisticians are fond of finding
+limiting distributions.
+
+\begin{defi}
+Let $T_n$ be a sequence of random variables, we say its distribution
+converges to that of $T$ if
+\[
+\lim_{n \to \infty} P(T_n \leq t) = P(T\leq t)
+\]
+for all $t \in \cR$ at which $F(t) = P(T \leq t)$  is continuous.
+\end{defi}
+
+In this definition, $T_n$ is just any sequence random variable, it may
+contain unknown parameters in specific examples. The index
+$n$ need not be the sample size in typical set up. The multivariate
+case will not be given here.
+The typical applications, the limiting distribution
+is about asymptotic normality.
+
+\begin{example}
+Suppose we have an \iid\ sample $X_1, \ldots, X_n$ from a
+distribution family $\cF$. A typical estimator for $F(t)$, the
+cumulative distribution function of $X$ is the
+empirical distribution
+\[
+F_n(t) = n^{-1} \sum_{i=1}^n \ind(X_i \leq t).
+\]
+For each given $t$, the distribution of $F_n(t)$ is kind of binomial.
+At the same time,
+\[
+\sqrt{n} \{ F_n(t) - F(t) \} \cd N(0, \sigma^2)
+\]
+with $\sigma^2 = F(t) \{ 1 - F(t)\}$ as $n \to \infty$. 
+\end{example}
+
+Remark: in this example, we have a random variable on one side
+but a distribution on the other side. It is interpreted as the distribution
+sequence of the random variables, indexed by $n$, converges to the
+distribution specified on the right hand side.
+
+As an exercise, one can work out the following example.
+
+\begin{example}
+Suppose we have an \iid\ sample $X_1, \ldots, X_n$ from a
+uniform distribution family $\cF$ such that 
+$F(x; \theta)$ is uniform on $(0, \theta)$ and 
+$\Theta = \cR^+$.
+Define
+\[
+\hat \theta_n = \max\{X_1, X_2, \ldots, X_n\}
+\]
+which is often denoted as $X_{(n)}$ and called order statistic.
+It is well known that
+\[
+n \{ \theta - \hat \theta \} \cd \exp ( \theta).
+\]
+Namely, the limiting distribution is exponential.
+
+Is $\hat \theta$ asymptotically unbiased at rate $\sqrt{n}$, at rate $n$?
+\end{example}
+
+\section{Assignment problems}
+
+\begin{enumerate}
+\item 
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid\ sample from the Uniform distribution $ \mathrm{Unif} (0, \theta) $. 
+Define $ \hat \theta_{n} = \max \{ X_{1}, X_{2}, \ldots, X_{n} \} $, 
+which is often denoted as $ X_{ (n) } $ and called order statistic.  
+
+Find the limiting distribution of $ n ( \theta - \hat \theta_{n} ) $ as $ n \to \infty $. 
+
+Is $\hat \theta$ asymptotically unbiased at rate $\sqrt{n}$, at rate $n$?
+
+
+\item 
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random sample from 
+Poisson $ (\theta) $, and let $ \eta = \exp ( - \theta ) $. 
+From the previous assignment, we find that the UMVUE for $ \eta $ is given by 
+\[ 
+\hat \eta = (1 - 1/n)^{ n \bar X }. \\ 
+\] 
+
+(a) Follow the Definition 4.9 as given in the Lecture Notes, 
+prove that $ \hat \eta $ is weakly consistent, i.e., prove that, for any $ \varepsilon > 0 \text { and } \theta > 0 $, 
+\[ 
+P ( | \hat \eta - \eta | > \varepsilon; \eta ) \to 0, 
+\] 
+as $ n \to \infty $. 
+
+(b) Conduct a simulation study to find the probability in part (a). 
+Let $\epsilon = 0.01, \eta = \exp(-1)$ and repeat
+the simulation with sample sizes $n=100$ and 1000, with $N=20000$
+repetitions.
+Report your findings. 
+
+
+\item
+Let  $ X_{1}, X_{2}, ... , X_{n} $ be an \iid\ sample 
+from the following mixture model, with density function 
+\[ 
+f(x; \lambda, \pi) 
+= (1 - \pi) \exp( - x ) + \pi \lambda^{ - 1 } \exp ( - x/\lambda ), 
+~~~ x > 0. 
+\]  
+
+Suppose we observe the sample data 
+
+\begin{verbatim}
+0.61683384, 0.49301343, 0.08751571, 6.32112518, 1.46224603, 
+0.17420356, 1.07460011, 0.18795447, 2.01524287, 0.83013365, 
+0.04476622, 2.01365679, 1.63824658, 0.01627277, 5.71925356, 
+3.85095169, 0.75024996, 1.26231923, 0.70529060, 1.66594757
+\end{verbatim}
+
+(a)
+Derive an analytical expression for moment estimate of  
+the parameters $ \lambda \text { and } \pi $.
+
+(b)  Obtain their numerical values.
+
+
+
+\item 
+Given a positive constant $k$, we define a function for the purpose
+of M-estimation:
+\[ 
+\varphi(x; \theta) = 
+\begin{cases} 
+(x - \theta)^{2} &, \text { if } | x - \theta | \leq k; \\ 
+k^{2} &, \text { if } | x - \theta | > k. 
+\end{cases} 
+\] 
+ 
+(a) The M-Estimator $ \hat \theta \text { of } \theta $ is the value at which
+$ M_{n} ( \theta ) = \sum_{i=1}^{n} \varphi ( X_{i}, \theta ) $ is minimized. 
+
+Assume that none of $i$ makes $ | X_{i} - \hat \theta | = k $
+where $\hat \theta$ is the solution to the optimization problem. 
+
+Show that $\hat \theta$ is the mean of $X_{i}$ such that
+$ | X_{i} - \hat \theta | < k $. 
+
+(b) Given the sample data 
+
+\begin{verbatim}
+1.551 -1.170 -0.201 1.143 0.138 3.103 1.455 -2.121 -1.672 6.150
+\end{verbatim}
+
+and that $ k = 2.0 $, calculate the value of the M-Estimate
+defined in part (a). 
+
+\item
+Let $ X_{1}, X_{2}, ... , X_{n} $ be an \iid random sample 
+from the Exponential distribution 
+Exp $(\theta ) $ with mean $ \theta $ 
+(the density is $ f (x; \theta) = \theta^{ - 1 } \exp ( - x/\theta ) $). 
+
+Denote by $ X_{ (1) }, X_{ (2) }, \ldots, X_{ (n) } $ 
+the corresponding order statistics for this random sample. 
+Then, $ W_{k} = X_{ (k+1) } - X_{ (k) }, 1 \leq k \leq n - 1 $ 
+are called the {\em spacings } of the order statistics. 
+By convention, define $ W_{0} = X_{ (1) } $, the first order statistic. 
+
+
+(a) It is known that $ W_{0}, W_{1}, ... , W_{n - 1} $ 
+are independent to each other, with 
+\[ 
+W_{k} \sim \exp ( \frac { \theta } { n - k } ),  
+\]  
+for $ k = 0, 1, \ldots, n - 1 $. 
+Verify this result for the case where $ n = 2 $. 
+
+(b) Let $ T_{n} = X_{ (1) } + X_{ (2) } + \cdots + X_{ (k) } + (n - k) X_{ (k) } $. 
+
+Suppose $ n = 10, k = 8 $, find the mean and variance for this statistic $ T_{n} $. 
+
+
+(c) Suppose $ n = 10, k = 8 $, and use on your result from part (b), 
+work out an unbiased L-Estimator for the parameter $ \theta $. 
+
+\end{enumerate}
+
+
